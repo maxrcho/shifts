@@ -1,17 +1,15 @@
 def stale_shift_email(department)
   
-  # @users = department.active_users.sort_by(&:name)
-  # for user in @users
   stale_shifts = []
   stale_shifts = Shift.stale_shifts_with_unsent_emails(department)
   
   for shift in stale_shifts     
   email = ArMailer.create_stale_shift(shift.user, shift, department)
   ArMailer.deliver(email)
-     # for shift in stale_shifts
-      #   shift.stale_shifts_unsent = false
-      #   shift.save
-      # end
+     for shift in stale_shifts
+        shift.stale_shifts_unsent = false
+        shift.save
+    end
   end
    
 end
