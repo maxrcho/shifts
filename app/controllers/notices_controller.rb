@@ -104,15 +104,15 @@ class NoticesController < ApplicationController
   def destroy
     @notice = Notice.find(params[:id])
     unless @notice.is_sticky || current_user.is_admin_of?(current_department)
-      redirect_with_flash("You are not authorized to remove this notice", :back) and return
+      redirect_with_flash("You are not authorized to remove this notice.", :back) and return
     end
     unless @notice.is_current?
-      redirect_with_flash("This notice was already removed on #{@notice.end_time}", :back) and return
+      redirect_with_flash("This notice was already removed on #{@notice.end_time}.", :back) and return
     end
     if @notice.remove(current_user) && @notice.save
-      redirect_with_flash("Notice successfully removed", :back)
+      redirect_with_flash("Notice successfully removed.", :back)
     else
-      redirect_with_flash("Error removing notice", :back)
+      redirect_with_flash("Error removing notice.", :back)
     end
   end
 

@@ -1,2 +1,23 @@
---- {}
-
+--- 
+emails_001: 
+  created_at: 2010-06-17 00:06:10
+  created_on: 2010-06-17 00:06:10
+  from: noreply@shifts.app
+  id: "3"
+  last_send_attempt: "0"
+  mail: "Date: Wed, 16 Jun 2010 20:06:10 -0400\r\n\
+    From: noreply@shifts.app\r\n\
+    To: ms.altyeva@gmail.com\r\n\
+    Subject: Your Shift in the [add location here later] has been inactive for an hour.\r\n\
+    Mime-Version: 1.0\r\n\
+    Content-Type: text/plain; charset=utf-8\r\n\
+    \r\n\
+    Hi Maria Altyeva, \n\n\
+    The following shift has not been updated in the past hour:\n\
+    \tCluster:  Io\n\
+    \tDate:     Wed, Jun 16\n\
+    \tTime:     10:15 AM - 11:00 AM\n\
+    \t\n\
+    Please update your shift report or sign out if you had forgotten to do so at the end of your shift. "
+  to: ms.altyeva@gmail.com
+  updated_at: 2010-06-17 00:06:10

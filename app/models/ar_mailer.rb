@@ -74,18 +74,18 @@ class ArMailer < ActionMailer::ARMailer
     recipients   dept.department_config.stats_mailer_address  
     from         dept.department_config.mailer_address
     sent_on      Time.now
-    body         :missed_shifts => missed_shifts, :late_shifts => late_shifts, :left_early_shifts => left_early_shifts #variables from .erb file go here?
+    body         :missed_shifts => missed_shifts, :late_shifts => late_shifts, :left_early_shifts => left_early_shifts
   end
   
-  #INACTIVE SHIFTS
+  #STALE SHIFTS
   #an email is sent to a student if they have been inactive in their shift for an hour
- # def inactive_shift(dept) #add more variables here
-    #subject "Your Shift in the [add location] has been inactive for an hour."
-   # recipients #add user here
-    #from "#{dept.department_config.mailer_address}"
-    #sent_on Time.now
-    #body #add variables here
-  #end
+ def stale_shift(user, stale_shifts, dept) 
+    subject       "Your Shift in the [add location here later] has been inactive for an hour."
+    recipients    'ms.altyeva@gmail.com' #"#{user.name} <#{user.email}>"
+    from          dept.department_config.mailer_address
+    sent_on       Time.now
+    body          :user => user, :stale_shifts => stale_shifts
+  end
 
 end
 

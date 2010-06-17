@@ -126,15 +126,6 @@ user_configs_014:
   view_week: ""
   watched_data_objects: ""
 user_configs_015: 
-  created_at: 2009-06-30 19:58:09
-  default_dept: 
-  id: "19"
-  updated_at: 2009-06-30 19:58:09
-  user_id: "49"
-  view_loc_groups: ""
-  view_week: ""
-  watched_data_objects: ""
-user_configs_016: 
   created_at: 2009-06-30 19:58:26
   default_dept: 
   id: "16"
@@ -143,7 +134,7 @@ user_configs_016:
   view_loc_groups: ""
   view_week: ""
   watched_data_objects: ""
-user_configs_017: 
+user_configs_016: 
   created_at: 2009-06-30 20:23:05
   default_dept: 
   id: "17"
@@ -152,7 +143,7 @@ user_configs_017:
   view_loc_groups: ""
   view_week: ""
   watched_data_objects: ""
-user_configs_018: 
+user_configs_017: 
   created_at: 2009-07-10 12:59:25
   default_dept: 
   id: "18"
@@ -161,7 +152,16 @@ user_configs_018:
   view_loc_groups: ""
   view_week: ""
   watched_data_objects: ""
-user_configs_020: 
+user_configs_018: 
+  created_at: 2009-06-30 19:58:09
+  default_dept: 
+  id: "19"
+  updated_at: 2009-06-30 19:58:09
+  user_id: "49"
+  view_loc_groups: ""
+  view_week: ""
+  watched_data_objects: ""
+user_configs_019: 
   created_at: 2009-06-22 17:42:57
   default_dept: "1"
   id: "20"
@@ -170,7 +170,7 @@ user_configs_020:
   view_loc_groups: 2, 3, 4
   view_week: whole_period
   watched_data_objects: ""
-user_configs_021: 
+user_configs_020: 
   created_at: 2009-06-22 17:42:57
   default_dept: "1"
   id: "21"
@@ -179,7 +179,7 @@ user_configs_021:
   view_loc_groups: 2, 3, 4
   view_week: whole_period
   watched_data_objects: ""
-user_configs_022: 
+user_configs_021: 
   created_at: 2009-06-22 17:42:57
   default_dept: "1"
   id: "22"
@@ -188,7 +188,7 @@ user_configs_022:
   view_loc_groups: 2, 3, 4
   view_week: whole_period
   watched_data_objects: ""
-user_configs_023: 
+user_configs_022: 
   created_at: 2009-06-22 17:42:57
   default_dept: "1"
   id: "23"
@@ -197,7 +197,7 @@ user_configs_023:
   view_loc_groups: 2, 3, 4
   view_week: whole_period
   watched_data_objects: ""
-user_configs_024: 
+user_configs_023: 
   created_at: 2009-06-22 17:42:57
   default_dept: "1"
   id: "24"
@@ -206,7 +206,7 @@ user_configs_024:
   view_loc_groups: 2, 3, 4
   view_week: whole_period
   watched_data_objects: ""
-user_configs_025: 
+user_configs_024: 
   created_at: 2009-06-22 17:42:57
   default_dept: "1"
   id: "25"
@@ -215,7 +215,7 @@ user_configs_025:
   view_loc_groups: 2, 3, 4
   view_week: whole_period
   watched_data_objects: ""
-user_configs_026: 
+user_configs_025: 
   created_at: 2009-06-22 17:42:57
   default_dept: "1"
   id: "26"
@@ -223,4 +223,4 @@ user_configs_026:
   user_id: "105"
   view_loc_groups: 2, 3, 4
   view_week: whole_period
-  watched_data_objects: ""  
+  watched_data_objects: ""

@@ -54,7 +54,7 @@ class Notice < ActiveRecord::Base
   end
 
   def remove(user)
-    self.errors.add_to_base "This notice has already been removed by #{remover.name}" and return if self.remover && self.end_time
+    self.errors.add_to_base "This notice has already been removed by #{remover.name}." and return if self.remover && self.end_time
     self.end_time = Time.now
     self.indefinite = false
     self.remover = user
@@ -71,7 +71,7 @@ class Notice < ActiveRecord::Base
     if self.announcement || self.sticky
       errors.add_to_base "Your notice must display somewhere or for someone." if self.location_sources.empty? && self.user_sources.empty?
     else
-      errors.add_to_base "Your link must disply somewhere" if self.location_sources.empty?
+      errors.add_to_base "Your link must displqy somewhere." if self.location_sources.empty?
     end
   end
 
