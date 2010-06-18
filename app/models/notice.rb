@@ -71,7 +71,7 @@ class Notice < ActiveRecord::Base
     if self.announcement || self.sticky
       errors.add_to_base "Your notice must display somewhere or for someone." if self.location_sources.empty? && self.user_sources.empty?
     else
-      errors.add_to_base "Your link must displqy somewhere." if self.location_sources.empty?
+      errors.add_to_base "Your link must display somewhere." if self.location_sources.empty?
     end
   end
 
