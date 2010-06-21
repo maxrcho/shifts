@@ -10,6 +10,10 @@
       <%= f.label :name %><br />
       <%= f.text_field :name %>
     </p>
+		<p>
+			<%= f.label :help_text %><br />
+			<%= f.text_field :help_text %>
+		</p>
     <p>
       <%= f.label :display_type %><br />
       <%= f.select :display_type, options=(DataField::DISPLAY_TYPE_OPTIONS), {}, :class => "display_type" %><br/>   
