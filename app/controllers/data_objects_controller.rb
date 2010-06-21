@@ -37,7 +37,7 @@ class DataObjectsController < ApplicationController
     else
       @data_entries = DataEntry.find(:all, :conditions => {:data_object_id => @data_object.id},
                                            :limit => 50, :offset => offset,
-                                           :order => 'created_at DESC')
+                                           :order => 'created_at')
     end
   end
 

@@ -22,9 +22,9 @@
 
     <%= form_tag data_object_path(@data_object), :method => :get %>
       Viewing
-      <%= select_date(@data_entries.last.created_at, :prefix => 'start') %>
+      <%= select_date(@data_entries.first.created_at, :prefix => 'start') %>
       to
-      <%= select_date(@data_entries.first.created_at, :prefix => 'end') %>
+      <%= select_date(@data_entries.last.created_at, :prefix => 'end') %>
     <%= submit_tag 'Select Dates' %><br/>
 
 
