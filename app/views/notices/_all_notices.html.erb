@@ -25,7 +25,7 @@
       <% @loc_current_notices = loc.current_notices %>
       <% unless @loc_current_notices.empty? %>
         <fieldset class ="index">
-          <legend id ="blue_fieldset"><%= loc.name %></legend>
+          <legend id ="index"><%= loc.name %></legend>
           <%= render :partial => 'notice', :collection => @loc_current_notices%>
         </fieldset>
         <br/>
