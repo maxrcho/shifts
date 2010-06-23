@@ -1,0 +1,29 @@
+<% title "Shift Reports from #{@location.name}" %>
+
+<br />
+<center><table id="report_all">
+    <tr>
+      <th class="list_header" colspan="2">
+        <h3><%= "Reports" %> - <%= "Reports from TIMEX TO TIMEY" %> <br />
+      </th>
+    </tr>
+    <tr>
+     
+     <strong>  <h3> <th align="left">Name</th>
+            <th align="left">Time</th>
+           <th align="left">Report</th>	
+       </h3></strong>
+
+    </tr>
+
+  <tbody id="report_list">
+
+   <% for report_item in @report_items %>
+    <tr> 
+      <td><%=h report_item.report.shift.user.name %> </td>
+      <td><%=h report_item.time %> </td>  
+      <td><%=h report_item.content %> </td>
+    </tr>
+   <% end %>
+  </tbody>
+</table>
