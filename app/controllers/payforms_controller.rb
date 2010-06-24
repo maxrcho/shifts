@@ -97,6 +97,7 @@ class PayformsController < ApplicationController
     if @payform_set.save && @payform.save
       flash[:notice] = "Successfully created payform set."
       redirect_to @payform_set
+      #put code here
     else
       flash[:notice] = "Error saving print job. Make sure approved payforms exist."
       redirect_to @payform
@@ -105,7 +106,6 @@ class PayformsController < ApplicationController
 
   def search
     users = current_department.active_users
-
     #filter results if we are searching
     if params[:search]
       search_result = []
@@ -133,7 +133,7 @@ class PayformsController < ApplicationController
 
   def send_reminders
     message = params[:post]["body"]
-    @users = current_department.users.select {|u| if u.is_active?(current_department) then u.email end }
+    @users = current_department.active_users.sort_by(&:name)
     admin_user = current_user
     users_reminded = []
     for user in @users
@@ -142,6 +142,7 @@ class PayformsController < ApplicationController
     end
     redirect_with_flash "E-mail reminders sent to the following: #{users_reminded.to_sentence}", :action => :email_reminders, :id => @department.id
   end
+
 
   def send_warnings
     message = params[:post]["body"]

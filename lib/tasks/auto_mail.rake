@@ -1,6 +1,6 @@
   def send_reminders(department)
     message = department.department_config.reminder_message
-    @users = department.users.select {|u| if u.is_active?(department) then u.email end }
+    @users = current_department.active_users.sort_by(&:name)
     users_reminded = []
     for user in @users
       ArMailer.deliver(ArMailer.create_due_payform_reminder(user, message, department))

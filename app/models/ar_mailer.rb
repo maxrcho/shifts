@@ -12,7 +12,7 @@ class ArMailer < ActionMailer::ARMailer
     body          :edit_new_user_password_url => edit_password_reset_url(user.perishable_token)
   end
 
-# Beginning of payform notification methods
+  #  PAYFORM
   def due_payform_reminder(user, message, dept)
     subject     'Due Payform Reminder'
     recipients  "#{user.name} <#{user.email}>"
@@ -31,6 +31,7 @@ class ArMailer < ActionMailer::ARMailer
     body        :user => user, :message => message
   end
 
+#notifies a student that their payform has been edited
   def printed_payforms_notification(admin_user, message, attachment_name)
     subject       'Printed Payforms ' + Date.today.strftime('%m/%d/%y')
     recipients    "#{admin_user.email}"
