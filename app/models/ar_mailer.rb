@@ -31,7 +31,7 @@ class ArMailer < ActionMailer::ARMailer
     body        :user => user, :message => message
   end
 
-#notifies a student that their payform has been edited
+#creates a spreadsheet for an admin to see all of the printed payforms
   def printed_payforms_notification(admin_user, message, attachment_name)
     subject       'Printed Payforms ' + Date.today.strftime('%m/%d/%y')
     recipients    "#{admin_user.email}"
@@ -44,18 +44,18 @@ class ArMailer < ActionMailer::ARMailer
                 :body         => File.read("data/payforms/" + attachment_name),
                 :filename     => attachment_name
   end
-
-# Notifies a user when somebody else edits their payform
-  def admin_edit_notification(payform, payform_item, edit_item, dept)
-    user = payform.user
-    subject       'Your payform has been edited'
-    recipients    "#{user.name} <#{user.email}>"
-    from          dept.department_config.mailer_address
-    cc            User.find_by_login(edit_item.edited_by).email
-    sent_on       Time.now
-    content_type  'text/plain'
-    body          :payform => payform, :payform_item => payform_item, :edit_item => edit_item
-  end
+# THIS DUPLICATES AN APP MAILER FUNCTION
+# # Notifies a user when somebody else edits their payform
+#   def admin_edit_notification(payform, payform_item, edit_item, dept)
+#     user = payform.user
+#     subject       'Your payform has been edited'
+#     recipients    "#{user.name} <#{user.email}>"
+#     from          dept.department_config.mailer_address
+#     cc            User.find_by_login(edit_item.edited_by).email
+#     sent_on       Time.now
+#     content_type  'text/plain'
+#     body          :payform => payform, :payform_item => payform_item, :edit_item => edit_item
+#   end
 
   # SUB REQUEST:
   # email the specified list or default list of eligible takers

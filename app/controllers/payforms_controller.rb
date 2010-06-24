@@ -97,7 +97,7 @@ class PayformsController < ApplicationController
     if @payform_set.save && @payform.save
       flash[:notice] = "Successfully created payform set."
       redirect_to @payform_set
-      #put code here
+       ArMaier.deliver(ArMailer.create_printed_payforms_notification(admin_user, message, attachment_name))
     else
       flash[:notice] = "Error saving print job. Make sure approved payforms exist."
       redirect_to @payform
