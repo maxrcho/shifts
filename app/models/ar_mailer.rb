@@ -17,7 +17,6 @@ class ArMailer < ActionMailer::ARMailer
     subject     'Due Payform Reminder'
     recipients  "#{user.name} <#{user.email}>"
     from        "#{dept.department_config.mailer_address}"
-    #reply_to    "#{admin_user.name} <#{admin_user.email}>"
     sent_on     Time.now
     body        :user => user, :message => message
   end
@@ -26,9 +25,16 @@ class ArMailer < ActionMailer::ARMailer
     subject     'Late Payforms Warning'
     recipients  "#{user.name} <#{user.email}>"
     from        "#{dept.department_config.mailer_address}"
-    #reply_to    "#{admin_user.name} <#{admin_user.email}>"
     sent_on     Time.now
     body        :user => user, :message => message
+  end
+  
+  def payform_printed_notification(payform, dept) 
+    subject       "Your payform has been printed on " + payform.printed.strftime('%m/%d/%y')
+    recipients    "#{payform.user.name} <#{payform.user.email}>"
+    from          "#{dept.department_config.mailer_address}"
+    sent_on       Time.now
+    body          :payform => payform
   end
 
 #creates a spreadsheet for an admin to see all of the printed payforms
@@ -44,18 +50,6 @@ class ArMailer < ActionMailer::ARMailer
                 :body         => File.read("data/payforms/" + attachment_name),
                 :filename     => attachment_name
   end
-# THIS DUPLICATES AN APP MAILER FUNCTION
-# # Notifies a user when somebody else edits their payform
-#   def admin_edit_notification(payform, payform_item, edit_item, dept)
-#     user = payform.user
-#     subject       'Your payform has been edited'
-#     recipients    "#{user.name} <#{user.email}>"
-#     from          dept.department_config.mailer_address
-#     cc            User.find_by_login(edit_item.edited_by).email
-#     sent_on       Time.now
-#     content_type  'text/plain'
-#     body          :payform => payform, :payform_item => payform_item, :edit_item => edit_item
-#   end
 
   # SUB REQUEST:
   # email the specified list or default list of eligible takers
