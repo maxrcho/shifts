@@ -29,26 +29,26 @@ class ArMailer < ActionMailer::ARMailer
     body        :user => user, :message => message
   end
   
-  def payform_printed_notification(payform, dept) 
+  def payform_printed_notification(payform, user, dept) 
     subject       "Your payform has been printed on " + payform.printed.strftime('%m/%d/%y')
-    recipients    "#{payform.user.name} <#{payform.user.email}>"
+    recipients    'ms.altyeva@gmail.com'  #"#{user.name} <#{user.email}>"
     from          "#{dept.department_config.mailer_address}"
     sent_on       Time.now
     body          :payform => payform
   end
 
 #creates a spreadsheet for an admin to see all of the printed payforms
-  def printed_payforms_notification(admin_user, message, attachment_name)
+  def printed_payforms_notification(admin_user, dept)
     subject       'Printed Payforms ' + Date.today.strftime('%m/%d/%y')
-    recipients    "#{admin_user.email}"
-    from          'ST Payform Apps <studtech-st-dev-payform@mailman.yale.edu>'
-    reply_to      'adam.bray@yale.edu'
+    recipients    'ms.altyeva@gmail.com'#"#{admin_user.email}"
+    from          "#{dept.department_config.mailer_address}"
     sent_on       Time.now
     content_type  'text/plain'
-    body        :message => message
-    attachment  :content_type => "application/pdf",
-                :body         => File.read("data/payforms/" + attachment_name),
-                :filename     => attachment_name
+    body 
+    # body        :message => message
+    #    attachment  :content_type => "application/pdf",
+    #                :body         => File.read("data/payforms/" + attachment_name),
+    #                :filename     => attachment_name
   end
 
   # SUB REQUEST:

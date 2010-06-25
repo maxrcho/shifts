@@ -59,7 +59,7 @@ class PayformItemsController < ApplicationController
         @payform.submitted = nil
         @errors = "Failed to unsubmit payform" unless @payform.save
       end
-      if @payform_item.user != current_user
+      if @payform_item.user != current_user && @payform_item.user.user_config.payform_email_subscription? 
         AppMailer.deliver_payform_item_change_notification(@payform_item.parent, @payform_item, @payform.department)
       end
       flash[:notice] = "Successfully edited payform item."
@@ -95,7 +95,7 @@ class PayformItemsController < ApplicationController
       PayformItem.transaction do
         @payform_item.save!
       end
-      if @payform_item.payform.user != current_user  # just for testing; should be != instead
+      if @payform_item.user != current_user && @payform_item.user.user_config.payform_email_subscription?
         AppMailer.deliver_payform_item_deletion_notification(@payform_item, @payform.department)
       end
       flash[:notice] = "Payform item deleted." if @payform_item.payform.submitted == false

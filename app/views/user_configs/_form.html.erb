@@ -37,6 +37,12 @@
                                     @data_objects, :id, :name,
                                     :selected_items => @selected_data_objects) %>
   </fieldset>
+  <fieldset class = "index">
+	<legend>Email Notifications</legend>
+	<small> There should be text for this in an earlier task i did</small> <br />
+	<%= f.check_box :payform_email_subscription %>
+	<%= f.label :payform_email_subscription, text = "Enable email notifications regarding payforms:" %>
+	</fieldset>
   <p>
     <%= f.submit "Submit" %>
   </p>

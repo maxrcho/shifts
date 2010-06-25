@@ -26,6 +26,7 @@ class AppMailer < ActionMailer::Base
     body        :sub_request => sub_request, :new_shift => new_shift
   end
 
+#Code regarding payforms
   def payform_item_change_notification(old_payform_item, new_payform_item, dept)
     recipients  new_payform_item.user.email
     from        dept.department_config.mailer_address
@@ -41,15 +42,8 @@ class AppMailer < ActionMailer::Base
     subject     "Your payform item has been deleted by #{old_payform_item.source}"
     body        :old_payform_item => old_payform_item
   end
-  
-  def payform_printed_notification(payform, dept) 
-    recipients    payform.user.email
-    from          dept.department_config.mailer_address
-    sent_on       Time.now
-    subject       "Your payform has been printed on " + payform.printed.strftime('%m/%d/%y')
-    body          :payform => payform
-  end
 
+#Code regarding password resetting
   def password_reset_instructions(user)
     subject     "Password Reset Instructions"
     from        "Yale@yale.edu"

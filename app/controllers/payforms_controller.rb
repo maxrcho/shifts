@@ -89,20 +89,17 @@ class PayformsController < ApplicationController
 
 
   def print
-    #@users = department.active_users.sort_by(&:name)
     @payform = Payform.find(params[:id])
     @payform.printed = Time.now
     @payform_set = PayformSet.new
     @payform_set.department = @payform.department
     @payform_set.payforms << @payform
     if @payform_set.save && @payform.save
-        ArMailer.deliver(ArMailer.create_payform_printed_notification(@payform, @payform.department))
+      ArMailer.deliver(ArMailer.create_payform_printed_notification(@payform, @payform.user, @payform.department))
+      ArMailer.deliver(ArMailer.create_printed_payforms_notification(@payform.approved_by, @payform.department))       
       flash[:notice] = "Successfully created payform set."
       redirect_to @payform_set
-      #work on armailer after appmailer works
-       #ArMailer.deliver(ArMailer.create_printed_payforms_notification(admin_user, message, attachment_name))
-       #AppMailer.deliver_payform_item_change_notification(@payform_item.parent, @payform_item, @payform.department)
-       
+      #work on armailer after the above function works
     else
       flash[:notice] = "Error saving print job. Make sure approved payforms exist."
       redirect_to @payform
