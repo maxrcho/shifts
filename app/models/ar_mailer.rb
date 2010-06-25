@@ -29,8 +29,8 @@ class ArMailer < ActionMailer::ARMailer
     body        :user => user, :message => message
   end
   
-  def payform_printed_notification(payform, user, dept) 
-    subject       "Your payform has been printed on " + payform.printed.strftime('%m/%d/%y')
+  def user_printed_payforms_notification(payform, user, dept) 
+    subject       "Your payform has been printed on " + Date.today.strftime('%m/%d/%y')
     recipients    'ms.altyeva@gmail.com'  #"#{user.name} <#{user.email}>"
     from          "#{dept.department_config.mailer_address}"
     sent_on       Time.now
@@ -38,12 +38,12 @@ class ArMailer < ActionMailer::ARMailer
   end
 
 #creates a spreadsheet for an admin to see all of the printed payforms
-  def printed_payforms_notification(admin_user, dept)
+  def admin_printed_payforms_notification(admin_user, dept)
     subject       'Printed Payforms ' + Date.today.strftime('%m/%d/%y')
     recipients    'ms.altyeva@gmail.com'#"#{admin_user.email}"
     from          "#{dept.department_config.mailer_address}"
     sent_on       Time.now
-    content_type  'text/plain'
+   # content_type  'text/plain'
     body 
     # body        :message => message
     #    attachment  :content_type => "application/pdf",
