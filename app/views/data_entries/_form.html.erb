@@ -3,24 +3,25 @@
   <%= hidden_field_tag :thickbox, @thickbox %>  
   
   <% @data_object.data_type.data_fields.each do |field| %>
-    <% args = field.prepare_form_helpers %>
-    <fieldset class = "index">
-      <legend><%= "#{field.name}" %></legend>
-			<% if field.help_text %> 
-				<div id = "helptext">
-      	<%= field.help_text %><br />
-				</div>
-			<% end %>
-      <% if ["text_field", "select", "text_area"].include? field.display_type %>
-        <%= send(field.display_type, *args) %>
-      <% elsif ["check_box", "radio_button"].include? field.display_type %>
-        <% args.each do |options| %>
-          <%= send(field.display_type, *options) %> 
-          <%= label "data_fields[#{field.id}]", "#{options.last}" %>      
-        <% end %>
-      <% end %>
-
-    </fieldset>
+		<% if field.permissions[1,1] == "T" %>
+		  <% args = field.prepare_form_helpers %>
+		  <fieldset class = "index">
+		    <legend><%= "#{field.name}" %></legend>
+				<% if field.help_text %> 
+					<div id = "helptext">
+		    	<%= field.help_text %><br />
+					</div>
+				<% end %>
+		    <% if ["text_field", "select", "text_area"].include? field.display_type %>
+		      <%= send(field.display_type, *args) %>
+		    <% elsif ["check_box", "radio_button"].include? field.display_type %>
+		      <% args.each do |options| %>
+		        <%= send(field.display_type, *options) %> 
+		        <%= label "data_fields[#{field.id}]", "#{options.last}" %>      
+		      <% end %>
+		    <% end %>
+		  </fieldset>
+		<% end %>
   <% end %>
  
   <p><%= f.submit "Submit" %></p>

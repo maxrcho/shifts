@@ -11,4 +11,12 @@ module DataTypesHelper
       fields_for("data_type[#{prefix}_data_field_attributes][]", data_field, &block)
     end
   end
+
+	def display_data_field_permissions(permissions)
+		display = []
+		display << "Admin" if permissions[0,1] == 'T'
+		display << "Private" if permissions[1,1] == 'T'
+		display << "Public" if permissions[2,2] == 'T'
+		return display.to_sentence
+	end
 end

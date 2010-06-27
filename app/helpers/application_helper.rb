@@ -1,12 +1,6 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
 
-  def link_to_post_a_new_notice(report = false)
-    report == true ? height = 200 : height = 445
-    height = 540 if current_user.is_admin_of?(current_department)
-    link_to_unless_current('Post a New Notice', new_notice_path(:height => "#{height}", :width => 515), :title => "Post a new notice", :class => "thickbox")
-  end
-
   def link_to_post_a_useful_link
     link_to_unless_current('Post a new link', new_notice_path(:height => "330", :width => 515, :type => "link"), :title => "Post a new link", :class => "thickbox", :id => "post_link" )
   end
