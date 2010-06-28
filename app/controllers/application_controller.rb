@@ -79,15 +79,33 @@ class ApplicationController < ActionController::Base
 #  end
 
   def load_department
+#   if DepartmentsUser.find_by_user_id(current_user.id).active
+    
     if (params[:department_id])
       @department = Department.find_by_id(params[:department_id])
-      if @department
+      if @department && current_user.is_active?(@department)
         session[:department_id] = params[:department_id]
+      else
+        redirect_to access_denied_path
       end
     end
-    @department ||= current_department
-
-    # update department id in session if neccessary so that we can use shallow routes properly
+    
+    # if (params[:department_id])
+    #   @department = Department.find_by_id(params[:department_id])
+    #   if @department && current_user.is_active?(@department)
+    #     session[:department_id] = params[:department_id]
+    #   else
+    #     department_list = DepartmentsUser.all.select{|u| u.user_id == current_user.id && u.active}
+    #     if department_list.empty?
+    #       redirect_to access_denied_path
+    #     else
+    #       @department = department_list.first.department
+    #     end
+    #   end
+    # end 
+    # @department ||= current_department
+    
+#   update department id in session if neccessary so that we can use shallow routes properly
 #      if params[:department_id]
 #        session[:department_id] = params[:department_id]
 #        @department = Department.find_by_id(session[:department_id])
