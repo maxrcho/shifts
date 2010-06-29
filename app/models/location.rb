@@ -33,20 +33,16 @@ class Location < ActiveRecord::Base
     Notice.active.select {|n| n.locations.include?(self)}
   end
 
-  def current_links
-    Notice.active_links.select {|n| n.locations.include?(self)}
-  end
-
-  def stickys
-    self.notices.select {|n| n.sticky}
+  def stickies
+    self.current_notices.select {|n| n.type == "Sticky"}
   end
 
   def announcements
-    self.notices.select {|n| n.announcement}
+    self.current_notices.select {|n| n.type == "Announcement"}
   end
 
   def links
-    self.current_links.select {|n| n.useful_link}
+    self.current_notices.select {|n| n.type == "Link"}
   end
 
   def restrictions #TODO: this could probalby be optimized

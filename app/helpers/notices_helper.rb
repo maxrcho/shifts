@@ -1,6 +1,10 @@
 module NoticesHelper
 
   def department_check(dept)
+
+		#for now
+		return false
+
     @notice.location_sources.all.each do |ls|
       return true if ls == dept
     end
@@ -8,6 +12,10 @@ module NoticesHelper
   end
 
   def loc_group_check(loc_group)
+		
+		#for now
+		return false
+ 
     @notice.loc_groups.each do |lg|
       return true if lg == loc_group
     end
@@ -15,6 +23,10 @@ module NoticesHelper
   end
 
   def location_check(location)
+
+		# for now
+		return false 
+
     @notice.locations.each do |loc|
       return true if loc == location
     end
@@ -28,6 +40,10 @@ module NoticesHelper
   end
 
   def end_time_check(indefinite)
+
+		#for now
+		return false
+
     if indefinite
       return true unless @notice.end_time
     else
@@ -36,6 +52,10 @@ module NoticesHelper
   end
 
   def start_time_check(now)
+
+		#for now
+		return false
+
     if now
       !@notice.is_upcoming?
     else

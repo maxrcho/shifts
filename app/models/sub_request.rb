@@ -1,6 +1,7 @@
 class SubRequest < ActiveRecord::Base
   belongs_to :shift
   belongs_to :user
+  before_validation :join_date_and_time
 
   validates_presence_of :reason
   validates_presence_of :shift
@@ -9,6 +10,15 @@ class SubRequest < ActiveRecord::Base
   validate :start_less_than_end
   validate :not_in_the_past
   validate :user_does_not_have_concurrent_sub_request
+  attr_accessor :mandatory_start_date
+  attr_accessor :mandatory_start_time
+  attr_accessor :mandatory_end_date
+  attr_accessor :mandatory_end_time
+  attr_accessor :start_date
+  attr_accessor :start_time
+  attr_accessor :end_date
+  attr_accessor :end_time
+
 
   before_destroy :destroy_user_sinks_user_sources
   #
@@ -96,6 +106,13 @@ class SubRequest < ActiveRecord::Base
 
   private
 
+  def join_date_and_time
+    self.start = self.start_date.to_date.to_time + self.start_time.seconds_since_midnight
+    self.end = self.end_date.to_date.to_time + self.end_time.seconds_since_midnight
+    self.mandatory_start = self.mandatory_start_date.to_date.to_time + self.mandatory_start_time.seconds_since_midnight
+    self.mandatory_end = self.mandatory_end_date.to_date.to_time + self.mandatory_end_time.seconds_since_midnight
+  end
+
   def start_and_end_are_within_shift
     unless self.start.between?(self.shift.start, self.shift.end) && self.end.between?(self.shift.start, self.shift.end)
       errors.add_to_base("Sub Request must be within shift.")
@@ -115,7 +132,7 @@ class SubRequest < ActiveRecord::Base
   end
 
   def not_in_the_past
-    errors.add_to_base("Can't create a sub request for a time that has already passed!") if self.start < Time.now
+    errors.add_to_base("Can't create a sub request for a time that has already passed") if self.start < Time.now
   end
 
   def user_does_not_have_concurrent_sub_request

@@ -22,9 +22,13 @@ class SubRequestsController < ApplicationController
   end
 
   def create
+    parse_date_and_time_output(params[:sub_request])
     @sub_request = SubRequest.new(params[:sub_request])
     @sub_request.shift = Shift.find(params[:shift_id])
     @sub_request.user = @sub_request.shift.user
+
+
+ ###################################################################################################
     begin
       SubRequest.transaction do
         @sub_request.save(false)
@@ -73,6 +77,10 @@ class SubRequestsController < ApplicationController
       @sub_request.user_sources << l[0].constantize.find(l[1]) if l.length == 2
       @sub_request.user_sources << User.find_by_login(l[0]) if l.length == 1
     end
+
+
+    parse_date_and_time_output(params[:sub_request])
+
     if @sub_request.update_attributes(params[:sub_request])
       flash[:notice] = 'SubRequest was successfully updated.'
       redirect_to @sub_request
@@ -116,5 +124,12 @@ class SubRequestsController < ApplicationController
       render :action => "get_take_info"
      end
   end
+
+
+
+
+
+
+
 end
 

@@ -266,13 +266,33 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def redirect_with_flash(msg = nil, options = {:action => :index})
-    if msg
-      msg = msg.join("<br/>") if msg.is_a?(Array)
-      flash[:notice] = msg
+#  def redirect_with_flash(msg = nil, options = {:action => :index})
+#    if msg
+#      msg = msg.join("<br/>") if msg.is_a?(Array)
+#      flash[:notice] = msg
+#    end
+#    redirect_to options
+#  end
+
+  def parse_date_and_time_output(form_output)
+    %w{start end mandatory_start mandatory_end}.each do |field_name|
+
+        unless form_output["#{field_name}_date"].blank?
+          form_output["#{field_name}_date"] = Date.parse( form_output["#{field_name}_date"] )
+        end
+
+        unless form_output["#{field_name}_time(5i)"].blank?
+          form_output["#{field_name}_time"] = Time.parse( form_output["#{field_name}_time(5i)"] )
+        end
+        form_output.delete("#{field_name}_time(5i)")
+
     end
-    redirect_to options
+    form_output
   end
+
+
+
+
 
   private
 
@@ -309,3 +329,4 @@ class ApplicationController < ActionController::Base
 
 
 end
+

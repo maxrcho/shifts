@@ -9,12 +9,16 @@ class Shift < ActiveRecord::Base
   has_one :report, :dependent => :destroy
   has_many :sub_requests, :dependent => :destroy
   before_update :disassociate_from_repeating_event
+  before_validation :join_date_and_time
 
-  validates_presence_of :user
   validates_presence_of :location
   validates_presence_of :start
   validate :is_within_calendar
   before_save :set_active
+  attr_accessor :start_date
+  attr_accessor :start_time
+  attr_accessor :end_date
+  attr_accessor :end_time
 
 #TODO: remove all to_sql calls except where needed for booleans
   named_scope :active, :conditions => {:active => true}
@@ -36,8 +40,7 @@ class Shift < ActiveRecord::Base
 
   #TODO: clean this code up -- maybe just one call to shift.scheduled?
   validates_presence_of :end, :if => Proc.new{|shift| shift.scheduled?}
-  validates_presence_of :user
-  
+
   before_validation :adjust_end_time_if_in_early_morning, :if => Proc.new{|shift| shift.scheduled?}
   validate :start_less_than_end, :if => Proc.new{|shift| shift.scheduled?}
   validate :shift_is_within_time_slot, :if => Proc.new{|shift| shift.scheduled?}
@@ -192,7 +195,7 @@ class Shift < ActiveRecord::Base
   # ==================
   # = Object methods =
   # ==================
-  
+
   def css_class(current_user = nil)
     if current_user and self.user == current_user
       css_class = "user"
@@ -339,11 +342,19 @@ class Shift < ActiveRecord::Base
     SubRequest.find_by_shift_id(self.id)
   end
 
+
+
+
   private
 
   # ======================
   # = Validation helpers =
   # ======================
+  def join_date_and_time
+    self.start = self.start_date.to_date.to_time + self.start_time.seconds_since_midnight
+    self.end = self.end_date.to_date.to_time + self.end_time.seconds_since_midnight
+  end
+
   def restrictions
     unless self.power_signed_up
       errors.add(:user, "is required") and return if self.user.nil?
@@ -422,14 +433,14 @@ class Shift < ActiveRecord::Base
       errors.add_to_base("#{self.location.name} only allows #{max_concurrent} concurrent shifts.") if people_count.values.select{|n| n >= max_concurrent}.size > 0
     end
   end
-  
+
   def obeys_signup_priority
     #check for all higher-priority locations in this loc group
     prioritized_locations = self.loc_group.locations.select{|l| l.priority > self.location.priority}
     seconds_increment = self.department.department_config.time_increment * 60
     prioritized_locations.each do |prioritized_location|
       min_staff_filled = true
-      
+
       time = self.start
       end_time = self.end
       while (time < end_time)
@@ -474,7 +485,7 @@ class Shift < ActiveRecord::Base
   def disassociate_from_repeating_event
     self.repeating_event_id = nil
   end
-  
+
   def adjust_end_time_if_in_early_morning
     #increment end by one day in cases where the department is open past midnight
     self.end += 1.day if (self.end <= self.start and (self.end.hour * 60 + self.end.min) <= (self.department.department_config.schedule_end % 1440))
