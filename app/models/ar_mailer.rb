@@ -31,7 +31,7 @@ class ArMailer < ActionMailer::ARMailer
   
   def printed_payforms_notification(payform) 
     subject       "Your payform has been printed on " + Date.today.strftime('%m/%d/%y')
-    recipients    'ms.altyeva@gmail.com'  #"#{payform.user.name} <#{payform.user.email}>"
+    recipients    "#{payform.user.name} <#{payform.user.email}>"
     from          "#{payform.department.department_config.mailer_address}"
     sent_on       Time.now
     body          :payform => payform

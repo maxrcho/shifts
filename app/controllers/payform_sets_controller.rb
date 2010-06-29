@@ -24,8 +24,7 @@ class PayformSetsController < ApplicationController
     @payform_set.payforms.map {|p| p.printed = Time.now }
     if @payform_set.save
       @payform_set.payforms.each do |payform|
-        raise @payform_set.payforms.to_yaml
-       if payform.printed?
+       if payform.printed? && payform.user.user_config.payform_email_subscription? 
         email = ArMailer.create_printed_payforms_notification(payform)
         ArMailer.deliver(email)                 
        end

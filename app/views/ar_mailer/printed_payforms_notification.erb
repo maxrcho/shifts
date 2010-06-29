@@ -1,5 +1,5 @@
 Hello <%= @payform.user.first_name %>, 
 
-Your payform for the week of <%= @payform.date %> has been approved and printed by <%= @payform.approved_by.name%> on <%= @payform.printed %>. 
+Your payform for the week of <%= @payform.date %> has been approved and printed by <%= @payform.approved_by.name%> at <%= @payform.printed.to_s(:am_pm) %>. 
 
 Have a nice day!
