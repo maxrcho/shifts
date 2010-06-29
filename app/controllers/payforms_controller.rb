@@ -94,13 +94,7 @@ class PayformsController < ApplicationController
     @payform_set = PayformSet.new
     @payform_set.department = @payform.department
     @payform_set.payforms << @payform
-    if @payform_set.save && @payform.save
-      ArMailer.deliver(ArMailer.create_admin_printed_payforms_notification(@payform.approved_by, @payform.department))       
-      # @payform_set.payforms.each do |payform|
-      #   if payform.printed
-      #     ArMailer.deliver(ArMailer.create_user_printed_payforms_notification(payform, payform.user, payform.department))                  
-      #   end
-      # end           
+    if @payform_set.save && @payform.save        
       flash[:notice] = "Successfully created payform set."
       redirect_to @payform_set
     else

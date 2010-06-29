@@ -42,6 +42,15 @@ class AppMailer < ActionMailer::Base
     subject     "Your payform item has been deleted by #{old_payform_item.source}"
     body        :old_payform_item => old_payform_item
   end
+  
+  
+  def admin_printed_payforms_notification(dept)
+    recipients    'ms.altyeva@gmail.com'#"#{admin_user.email}"
+    from          "#{dept.department_config.mailer_address}"
+    sent_on       Time.now
+    subject       'Printed Payforms ' + Date.today.strftime('%m/%d/%y')
+  end
+  
 
 #Code regarding password resetting
   def password_reset_instructions(user)

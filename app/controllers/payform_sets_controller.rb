@@ -23,6 +23,13 @@ class PayformSetsController < ApplicationController
     @payform_set.payforms = current_department.payforms.unprinted
     @payform_set.payforms.map {|p| p.printed = Time.now }
     if @payform_set.save
+      @payform_set.payforms.each do |payform|
+        raise @payform_set.payforms.to_yaml
+       if payform.printed?
+        email = ArMailer.create_printed_payforms_notification(payform)
+        ArMailer.deliver(email)                 
+       end
+      end
       flash[:notice] = "Successfully created payform set."
       redirect_to @payform_set
     else
@@ -30,5 +37,4 @@ class PayformSetsController < ApplicationController
       redirect_to payforms_path
     end
   end
-
 end

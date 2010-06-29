@@ -29,32 +29,18 @@ class ArMailer < ActionMailer::ARMailer
     body        :user => user, :message => message
   end
   
-  def user_printed_payforms_notification(payform, user, dept) 
+  def printed_payforms_notification(payform) 
     subject       "Your payform has been printed on " + Date.today.strftime('%m/%d/%y')
-    recipients    'ms.altyeva@gmail.com'  #"#{user.name} <#{user.email}>"
-    from          "#{dept.department_config.mailer_address}"
+    recipients    'ms.altyeva@gmail.com'  #"#{payform.user.name} <#{payform.user.email}>"
+    from          "#{payform.department.department_config.mailer_address}"
     sent_on       Time.now
     body          :payform => payform
   end
 
-#creates a spreadsheet for an admin to see all of the printed payforms
-  def admin_printed_payforms_notification(admin_user, dept)
-    subject       'Printed Payforms ' + Date.today.strftime('%m/%d/%y')
-    recipients    'ms.altyeva@gmail.com'#"#{admin_user.email}"
-    from          "#{dept.department_config.mailer_address}"
-    sent_on       Time.now
-   # content_type  'text/plain'
-    body 
-    # body        :message => message
-    #    attachment  :content_type => "application/pdf",
-    #                :body         => File.read("data/payforms/" + attachment_name),
-    #                :filename     => attachment_name
-  end
 
   # SUB REQUEST:
   # email the specified list or default list of eligible takers
   def sub_created_notify(email_to, sub)
-
     subject     "[Sub Request] Sub needed for " + sub.shift.short_display
     recipients  email_to
     from        sub.user.email
