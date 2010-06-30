@@ -40,14 +40,14 @@ class ApplicationController < ActionController::Base
 
   protected
   def current_user
-    @current_user ||= ()
+    @current_user ||= (
     if @user_session
       @user_session.user
     elsif session[:cas_user]
       User.find_by_login(session[:cas_user])
     else
       nil
-    end
+    end)
   end
 
   def current_department
