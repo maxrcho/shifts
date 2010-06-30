@@ -40,14 +40,14 @@ class ApplicationController < ActionController::Base
 
   protected
   def current_user
-    @current_user ||= (
+    @current_user ||= ()
     if @user_session
       @user_session.user
     elsif session[:cas_user]
       User.find_by_login(session[:cas_user])
     else
       nil
-    end)
+    end
   end
 
   def current_department
@@ -65,13 +65,17 @@ class ApplicationController < ActionController::Base
 
 
   def load_department
-    if (params[:department_id])
-      @department = Department.find_by_id(params[:department_id])
-      if @department
-        session[:department_id] = params[:department_id]
+    if DepartmentsUser.find_by_user_id(current_user).active
+      if (params[:department_id])
+        @department = Department.find_by_id(params[:department_id])
+        if @department
+          session[:department_id] = params[:department_id]
+        end
       end
+      @department ||= current_department
+    else
+      redirect_to access_denied_path
     end
-    @department ||= current_department
   end
 
   def load_user
