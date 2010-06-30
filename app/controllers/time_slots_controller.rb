@@ -31,6 +31,7 @@ class TimeSlotsController < ApplicationController
     @time_slots = []
     errors = []
     parse_date_and_time_output(params[:time_slot])
+    
 #date should ideally come from the hidden date field across the application, and it can be forced through this way;
 #but the way it's written, week_start_date makes more sense to keep ~Casey
     week_start_date = (params[:date] ? Date.parse(params[:date]).previous_sunday : Date.today.previous_sunday).to_time

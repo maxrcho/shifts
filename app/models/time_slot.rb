@@ -7,10 +7,13 @@ class TimeSlot < ActiveRecord::Base
   before_validation :join_date_and_time, :adjust_for_multi_day
   before_update :disassociate_from_repeating_event
 
-  validates_presence_of :start, :end, :location_id
+  validates_presence_of :start, :end, :location_ids, :days
   validate :start_less_than_end
   validate :is_within_calendar
   validate :no_concurrent_timeslots
+  #adding these manually because they don't work above
+  validate :presence_of_location
+  validate :presence_of_day
   attr_accessor :start_date
   attr_accessor :start_time
   attr_accessor :end_date
@@ -146,6 +149,14 @@ class TimeSlot < ActiveRecord::Base
 
   def start_less_than_end
     errors.add(:start, "must be earlier than end time") if (self.end <= start)
+  end
+  
+  def presence_of_location
+    errors.add("Location can't be blank.") if params[:location_ids] == nil || params[:location_ids].empty?
+  end
+  
+  def presence_of_day
+    errors.add("Day can't be blank") if params[:days] == nil || params[:days].empty?
   end
 
   def no_concurrent_timeslots
