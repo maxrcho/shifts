@@ -5,7 +5,7 @@ class DataObjectsController < ApplicationController
 # Note: there are good reasons not to do this by merely hiding the group_by divs
   def public
    # @selected_location = Location.find(params[:location][:id])
-   #@data_objects_at_location = DataObject.all
+   @data_objects_at_location = DataObject.all
   end
   
   def index
