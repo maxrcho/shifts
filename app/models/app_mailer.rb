@@ -41,7 +41,7 @@ class AppMailer < ActionMailer::Base
     sent_on     Time.now
     subject     "Your payform item has been deleted by #{old_payform_item.source}"
     body        :old_payform_item => old_payform_item
-  end  
+  end
 
 #Code regarding password resetting
   def password_reset_instructions(user)

@@ -94,7 +94,7 @@ class PayformsController < ApplicationController
     @payform_set = PayformSet.new
     @payform_set.department = @payform.department
     @payform_set.payforms << @payform
-    if @payform_set.save && @payform.save        
+    if @payform_set.save && @payform.save
       flash[:notice] = "Successfully created payform set."
       redirect_to @payform_set
     else
@@ -105,6 +105,7 @@ class PayformsController < ApplicationController
 
   def search
     users = current_department.active_users
+    
     #filter results if we are searching
     if params[:search]
       search_result = []
@@ -131,14 +132,13 @@ class PayformsController < ApplicationController
   end
 
   def send_reminders
-    @message = params[:post]["body"] || current_department.department_config.reminder_message
-    @users = current_department.active_users.select {|u| !u.payforms.blank?}.select {|u| !u.payforms.last.submitted}
-    for user in @users
-      ArMailer.deliver(ArMailer.create_due_payform_reminder(user, @message, current_department))
-    end
-    redirect_with_flash "E-mail reminders sent to all #{@users.length} users", :action => :email_reminders, :id => current_department
+     @message = params[:post]["body"] || current_department.department_config.reminder_message
+     @users = current_department.active_users.select {|u| !u.payforms.blank?}.select {|u| !u.payforms.last.submitted}
+     for user in @users
+       ArMailer.deliver(ArMailer.create_due_payform_reminder(user, @message, current_department))
+     end
+     redirect_with_flash "E-mail reminders sent to all #{@users.length} users", :action => :email_reminders, :id => current_department
   end
-
 
   def send_warnings
       @message = params[:post]["body"] || current_department.department_config.reminder_message
