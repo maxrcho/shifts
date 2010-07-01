@@ -17,9 +17,9 @@ class DataFieldsController < ApplicationController
   def create
     @data_field = DataField.new(params[:data_field])
     @data_field.data_type_id = params[:data_type_id]
-    @data_field.permissions[0] = 'T' if params[:admin_permissions]
-    @data_field.permissions[1] = 'T' if params[:private_permissions]
-    @data_field.permissions[2] = 'T' if params[:public_permissions]
+    @data_field.permissions[0,1] = 'T' if params[:admin_permissions]
+    @data_field.permissions[1,1] = 'T' if params[:private_permissions]
+    @data_field.permissions[2,1] = 'T' if params[:public_permissions]
     if @data_field.save
       flash[:notice] = "Successfully created data field."
       redirect_to (params[:add_another] ? new_data_type_data_field_path(params[:data_type_id]) : (data_type_path(params[:data_type_id]) ))
@@ -34,9 +34,9 @@ class DataFieldsController < ApplicationController
   
   def update
     @data_field = DataField.find(params[:id])
-    params[:admin_permissions] ? @data_field.permissions[0] = 'T' : @data_field.permissions[0] = 'F'
-    params[:private_permissions] ? @data_field.permissions[1] = 'T' : @data_field.permissions[1] = 'F'
-    params[:public_permissions] ? @data_field.permissions[2] = 'T' : @data_field.permissions[2] = 'F'
+    params[:admin_permissions] ? @data_field.permissions[0,1] = 'T' : @data_field.permissions[0,1] = 'F'
+    params[:private_permissions] ? @data_field.permissions[1,1] = 'T' : @data_field.permissions[1,1] = 'F'
+    params[:public_permissions] ? @data_field.permissions[2,1] = 'T' : @data_field.permissions[2,1] = 'F'
 		raise @data_field.to_yaml
     if @data_field.update_attributes(params[:data_field])
       flash[:notice] = "Successfully updated data field."
