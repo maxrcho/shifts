@@ -14,6 +14,7 @@
 
 	
 <p>
-	     <%= label_tag 'Object:' %><br />
-	     <%= @help_object = collection_select(:help_location, :data_object_id, @selected_location, :id, :name, options ={:prompt => "Select an Object"}, :class =>'object') %><br/>
+	 <%= label_tag 'Object:' %><br />
+	 <%= @help_object = collection_select(:help_location, :data_object_id, @data_objects_at_location, :id, :name, options ={:prompt => "Select an Object"}, :class =>'object') %><br/>
 </p>
+
