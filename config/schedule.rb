@@ -14,6 +14,7 @@
 # end
 every :sunday, :at => "9am" do
   rake "auto_remind"
+  rake "auto_warn"
 end
 
 every 3.minutes do

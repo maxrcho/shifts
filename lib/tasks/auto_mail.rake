@@ -1,38 +1,26 @@
   def send_reminders(department)
     message = department.department_config.reminder_message
-    @users = current_department.active_users.sort_by(&:name)
-    users_reminded = []
+    @users = department.active_users.select {|u| !u.payforms.blank?}.select {|u| !u.payforms.last.submitted}
     for user in @users
       ArMailer.deliver(ArMailer.create_due_payform_reminder(user, message, department))
-      users_reminded << "#{user.name} (#{user.login})"
     end
-    puts "#{users_reminded.length} users in the #{department.name} department "  +
+    puts "#{@users.length} users in the #{department.name} department "  +
          "have been reminded to submit their due payforms."
   end
   
   def send_warnings(department)
     message = department.department_config.warning_message
     start_date = (w = department.department_config.warning_weeks) ? Date.today - w.week : Date.today - 4.week
-    @users = department.active_users.sort_by(&:name)
-    users_warned = []
-    
-    for user in @users     
-      #Payform.build(department, user, Date.today)
-      unsubmitted_payforms = (Payform.all( :conditions => { :user_id => user.id, :department_id => department.id, :submitted => nil }, :order => 'date' ).select { |p| p if p.date >= start_date && p.date < Date.today }).compact
-      
-      unless unsubmitted_payforms.blank?
-        weeklist = ""
-        for payform in unsubmitted_payforms
-          weeklist += payform.date.strftime("\t%b %d, %Y\n")
-        end
-        email = ArMailer.create_late_payform_warning(user, message.gsub("@weeklist@", weeklist), department)
-        ArMailer.deliver(email)
-        users_warned << "#{user.name} (#{user.login}) <pre>#{email.encoded}</pre>"
-      end
-    end  # currently I am not doing anything with the list of users, it should be displayed somewhere
-    puts "#{users_warned.length} users in the #{department.name} department "  +
+    @unsubmitted_payforms =  Payform.unsubmitted.in_department(department).between(start_date, Date.today)
+  
+    for payform in @unsubmitted_payforms     
+        weeklist = payform.date.strftime("\t%b %d, %Y\n")
+        ArMailer.deliver(ArMailer.create_late_payform_warning(payform.user, message.gsub("@weeklist@", weeklist), department))
+    end  
+    puts "#{@unsubmitted_payforms.collect(&:user).uniq.count} users in the #{department.name} department "  +
          "have been warned to submit their late payforms."
   end
+
 
 #rake part
 desc "Send automatic reminders for due payforms"

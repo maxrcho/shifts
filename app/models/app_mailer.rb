@@ -41,21 +41,12 @@ class AppMailer < ActionMailer::Base
     sent_on     Time.now
     subject     "Your payform item has been deleted by #{old_payform_item.source}"
     body        :old_payform_item => old_payform_item
-  end
-  
-  
-  def admin_printed_payforms_notification(dept)
-    recipients    'ms.altyeva@gmail.com'#"#{admin_user.email}"
-    from          "#{dept.department_config.mailer_address}"
-    sent_on       Time.now
-    subject       'Printed Payforms ' + Date.today.strftime('%m/%d/%y')
-  end
-  
+  end  
 
 #Code regarding password resetting
   def password_reset_instructions(user)
     subject     "Password Reset Instructions"
-    from        "Yale@yale.edu"
+    from        AppConfig.first.mailer_address
     recipients  user.email
     sent_on     Time.now
     body        :edit_password_reset_url => edit_password_reset_url(user.perishable_token)
@@ -63,7 +54,7 @@ class AppMailer < ActionMailer::Base
 
   def admin_password_reset_instructions(user)
     subject       "Password Reset Instructions"
-    from          "Yale@yale.edu"
+    from          AppConfig.first.mailer_address
     recipients    user.email
     sent_on       Time.now
     body          :edit_admin_password_reset_url => edit_password_reset_url(user.perishable_token)
@@ -80,7 +71,7 @@ class AppMailer < ActionMailer::Base
 
   def change_auth_type_password_reset_instructions(user)
     subject       "Password Creation Instructions"
-    from          "Yale@yale.edu"
+    from          AppConfig.first.mailer_address
     recipients    user.email
     sent_on       Time.now
     body          :edit_password_url => edit_password_reset_url(user.perishable_token)
