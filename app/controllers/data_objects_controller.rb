@@ -4,8 +4,8 @@ class DataObjectsController < ApplicationController
 # Needs views revised for non-ajax degradeability -ben
 # Note: there are good reasons not to do this by merely hiding the group_by divs
   def public
-    @selected_location = Location.find(params[:location][:id])
-    @data_objects_at_location = @selected_location.data_objects
+   # @selected_location = Location.find(params[:location][:id])
+   #@data_objects_at_location = DataObject.all
   end
   
   def index
@@ -90,6 +90,15 @@ class DataObjectsController < ApplicationController
     flash[:notice] = "Successfully destroyed data object."
     redirect_to data_type_path(@data_type)
   end
+
+	def update_public_form
+		@selected_location = Location.find(params[:value])
+		@data_objects_at_location = @selected_location.data_objects
+		respond_to do |format|
+      format.js
+    end
+	end
+		
 
 private
 

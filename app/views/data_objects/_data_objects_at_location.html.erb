@@ -1,0 +1,2 @@
+<%= label_tag 'Object:' %><br />
+<%= collection_select(:data_object, :id, @data_objects_at_location, :id, :name, options ={:prompt => "Select an Object"}, :class =>'object') %><br/>
