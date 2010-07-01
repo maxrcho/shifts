@@ -1,4 +1,12 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :shift_duty_archives
+
+  map.resources :shift_duties
+
+  map.resources :shift_duty_archives
+
+  map.resources :shift_duties
+
   map.resources :stickies
 
   map.resources :announcements
