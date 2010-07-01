@@ -430,17 +430,6 @@ legend {
   padding: 0.2em 1em;
 }
 
-/* used in all_notices, but why? */
-#blue_fieldset fieldset {
-  background: #ddf;
-}
-#blue_fieldset fieldset legend {
-  color: #eef;
-  background: #123456;
-  font-family: sans-serif;
-  padding: 0.2em 1em;
-}
-
 /* = used by notices */
 textarea#content {
     width: 95%;
@@ -522,6 +511,14 @@ span#progress_bar #current_step a {
 span#progress_bar #other_step {
 	border: 1px black solid;
 	padding: 3px;
+}
+
+/* = Data Field help text
+======================================================================= */
+
+#helptext {
+	color: gray;
+	font-style: italic;
 }
 
 /* = Tables
