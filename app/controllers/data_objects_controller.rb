@@ -4,9 +4,17 @@ class DataObjectsController < ApplicationController
 # Needs views revised for non-ajax degradeability -ben
 # Note: there are good reasons not to do this by merely hiding the group_by divs
   def public
-    @selected_location = Location.find(params[:location][:id])
+    @selected_location = Location.find(params[:location][:location_id])
     @data_objects_at_location = @selected_location.data_objects
+    
+    @selected_object = DataObject.find(params[:data_object][:data_object_id])
+    @data_type_of_object = @selected_object.data_type
+
   end
+  
+  def public_admin
+  end
+  
   
   def index
     @data_objects = current_department.data_objects

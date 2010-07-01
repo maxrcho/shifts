@@ -2,7 +2,7 @@
 
 <p>
      <%= label_tag 'Location:' %><br />
-     <%= collection_select(:location, :id, Location.all, :id, :name, options ={:prompt => "Select a location"}, :class =>'location') %><br/>
+     <%= collection_select(:location, :location_id, Location.all, :id, :name, options ={:prompt => "Select a location"}, :class =>'location') %><br/>
  </p>
 
 <%= observe_field('location',
@@ -15,6 +15,10 @@
 	
 <p>
 	 <%= label_tag 'Object:' %><br />
-	 <%= @help_object = collection_select(:help_location, :data_object_id, @data_objects_at_location, :id, :name, options ={:prompt => "Select an Object"}, :class =>'object') %><br/>
+	 <%= collection_select(:data_object, :data_object_id, @data_objects_at_location, :id, :name, options ={:prompt => "Select an Object"}, :class =>'object') %><br/>
 </p>
 
+<p>
+	<%= label_tag 'Problem:'%><br/>
+	<%= collection_select(:help_location, :data_object_id, @data_objects_at_location, :id, :name, options ={:prompt => "Select an Object"}, :class =>'object') %><br/>
+</p>
