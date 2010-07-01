@@ -81,10 +81,10 @@ ActionController::Routing::Routes.draw do |map|
     data_type.resources :data_objects, :only => [:new, :create]
   end
 
-  map.resources :data_objects do |data_object|
+  map.resources :data_objects, :collection => {:public => :get} do |data_object|
     data_object.resources :data_entries
   end
-
+ 
   map.resources :departments, :shallow => true do |departments|
     departments.resources :users, :collection => {:mass_add => :get, :mass_create => :post, :restore => :post, :autocomplete => :get, :search => :post, :import => :get, :save_import => :post}
     departments.resources :loc_groups

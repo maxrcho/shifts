@@ -1,8 +1,12 @@
-class DataObjectsController < ApplicationController
+class DataObjectsController < ApplicationController  
   helper :data_entries
 
 # Needs views revised for non-ajax degradeability -ben
 # Note: there are good reasons not to do this by merely hiding the group_by divs
+  def public
+    @selected_location = params[location][id]
+  end
+  
   def index
     @data_objects = current_department.data_objects
     @group_type_options = options_for_group_type
@@ -132,4 +136,3 @@ private
   end
 
 end
-
