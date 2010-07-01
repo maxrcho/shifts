@@ -5,8 +5,9 @@
       <legend>Payform Reminders</legend>
       <% form_tag( { :action => :send_reminders, :id => @department.id }, { :method => :post }) do %>
         <%= text_area :post, :body, :size => "80x5", :value => current_department.department_config.reminder_message %>
-        <%= submit_tag "Remind users to Submit Payforms" %>
-      <% end %>
+        <%= submit_tag "Remind users to Submit payforms" %>
+      <% end %>		
+<!-- TODO:  Might be worth distinguishing between this and the auto-rake task that runs automatically on sundays at 9..      -->
     </fieldset>
     <fieldset class="reminders">
       <legend>Late Payform Warnings</legend>
