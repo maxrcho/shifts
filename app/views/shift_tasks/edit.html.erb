@@ -1,0 +1,16 @@
+<h1>Editing shift_task</h1>
+
+<% form_for(@shift_task) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :on_time %><br />
+    <%= f.check_box :on_time %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @shift_task %> |
+<%= link_to 'Back', shift_tasks_path %>

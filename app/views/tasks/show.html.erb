@@ -1,0 +1,38 @@
+<p>
+  <b>Name:</b>
+  <%=h @task.name %>
+</p>
+
+<p>
+  <b>Type:</b>
+  <%=h @task.type %>
+</p>
+
+<p>
+  <b>Start:</b>
+  <%=h @task.start %>
+</p>
+
+<p>
+  <b>End:</b>
+  <%=h @task.end %>
+</p>
+
+<p>
+  <b>Interval:</b>
+  <%=h @task.interval %>
+</p>
+
+<p>
+  <b>Interval completed:</b>
+  <%=h @task.interval_completed %>
+</p>
+
+<p>
+  <b>Active:</b>
+  <%=h @task.active %>
+</p>
+
+
+<%= link_to 'Edit', edit_task_path(@task) %> |
+<%= link_to 'Back', tasks_path %>

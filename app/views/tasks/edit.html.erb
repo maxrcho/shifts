@@ -1,6 +1,6 @@
-<h1>Editing Shift Duty</h1>
+<h1>Editing task</h1>
 
-<% form_for(@shift_duty) do |f| %>
+<% form_for(@task) do |f| %>
   <%= f.error_messages %>
 
   <p>
@@ -8,8 +8,8 @@
     <%= f.text_field :name %>
   </p>
   <p>
-    <%= f.label :duty_type %><br />
-    <%= f.text_field :duty_type %>
+    <%= f.label :type %><br />
+    <%= f.text_field :type %>
   </p>
   <p>
     <%= f.label :start %><br />
@@ -24,8 +24,8 @@
     <%= f.text_field :interval %>
   </p>
   <p>
-    <%= f.label :completed %><br />
-    <%= f.check_box :completed %>
+    <%= f.label :interval_completed %><br />
+    <%= f.check_box :interval_completed %>
   </p>
   <p>
     <%= f.label :active %><br />
@@ -36,5 +36,5 @@
   </p>
 <% end %>
 
-<%= link_to 'Show', @shift_duty %> |
-<%= link_to 'Back', shift_duties_path %>
+<%= link_to 'Show', @task %> |
+<%= link_to 'Back', tasks_path %>

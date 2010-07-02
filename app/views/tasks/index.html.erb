@@ -1,0 +1,32 @@
+<h1>Listing tasks</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Type</th>
+    <th>Start</th>
+    <th>End</th>
+    <th>Interval</th>
+    <th>Interval Completed</th>
+    <th>Active</th>
+  </tr>
+
+<% @tasks.each do |task| %>
+  <tr>
+    <td><%=h task.name %></td>
+    <td><%=h task.type %></td>
+    <td><%=h task.start %></td>
+    <td><%=h task.end %></td>
+    <td><%=h task.interval %></td>
+    <td><%=h task.interval_completed %></td>
+    <td><%=h task.active %></td>
+    <td><%= link_to 'Show', task %></td>
+    <td><%= link_to 'Edit', edit_task_path(task) %></td>
+    <td><%= link_to 'Destroy', task, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Task', new_task_path %>
