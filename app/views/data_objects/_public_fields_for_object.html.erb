@@ -1,0 +1,2 @@
+<%= label_tag 'Problem:' %><br />
+<%= collection_select(:data_field, :id, @public_fields_for_object, :id, :name, options ={:prompt => "Select a Problem"}, :class =>'object') %><br/>

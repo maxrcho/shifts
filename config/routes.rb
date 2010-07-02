@@ -81,7 +81,7 @@ ActionController::Routing::Routes.draw do |map|
     data_type.resources :data_objects, :only => [:new, :create]
   end
 
-  map.resources :data_objects, :collection => {:public => :get, :public_admin} do |data_object|
+  map.resources :data_objects, :collection => {:public => :get} do |data_object|
     data_object.resources :data_entries
   end
  
