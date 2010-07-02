@@ -86,19 +86,33 @@ class DataObjectsController < ApplicationController
   end
 
   def public
+    
      @data_objects_at_location = DataObject.all
-     @public_fields_for_object = DataField.all
+     @public_fields_for_object = DataType.all
   end
 
-	def update_public_form
+	def update_public_form_first
 		@selected_location = Location.find(params[:value])
 		@data_objects_at_location = @selected_location.data_objects
 		respond_to do |format|
       format.js
     end
 	end
-		
+	
+	def update_public_form_second
+  	respond_to do |format|
+  	  format.js
+	  end
+  end
 
+  def upate_public_form_third
+    @@selected_data_object = DataObject.find(params[:data_object][:id])
+  	@data_fields_for_object = @selected_data_object.data_type
+  	respond_to do |format|
+  	  format.js
+	  end
+  end
+  	
 private
 
 # Currently not in use -ben

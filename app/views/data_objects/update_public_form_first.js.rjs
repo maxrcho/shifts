@@ -1,0 +1,1 @@
+page.replace_html "data_objects_at_location", :partial => "data_objects_at_location"

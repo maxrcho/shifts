@@ -1,0 +1,1 @@
+page.replace_html "refresh_public_fields", :partial => "refresh_public_fields"
