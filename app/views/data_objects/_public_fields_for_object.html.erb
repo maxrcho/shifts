@@ -1,9 +1,2 @@
-<%= observe_field('data_object_id',
-:url => {:controller => :data_objects,
-         :action => :update_public_form_third, 
-         :layout => false},
-:with => :value,          
-:on => "change")%>
-
 <%= label_tag 'Problem:' %><br />
 <%= collection_select(:data_field, :id, @public_fields_for_object, :id, :name, options ={:prompt => "Select a Problem"}, :class =>'field') %><br/>
