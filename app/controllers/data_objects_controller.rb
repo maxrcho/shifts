@@ -99,10 +99,9 @@ class DataObjectsController < ApplicationController
     end
 	end
 	
-  def upate_public_form_second
+  def update_public_form_second
     @selected_data_object = DataObject.find(params[:value])
-  	@selected_data_type = @selected_data_object.data_type
-  	@public_fields_for_object = @selected_data_type.data_fields
+  	@public_fields_for_object = @selected_data_object.data_type.data_fields
   	
   	respond_to do |format|
   	  format.js
