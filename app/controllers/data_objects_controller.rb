@@ -86,7 +86,6 @@ class DataObjectsController < ApplicationController
   end
 
   def public
-    
      @data_objects_at_location = DataObject.all
      @public_fields_for_object = DataType.all
   end

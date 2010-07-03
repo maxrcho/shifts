@@ -1,5 +1,5 @@
 <% title "Help Request Form"%>
- 
+
 <p>
     <%= label_tag 'Location:' %><br />
  	<%= collection_select(:location, :id, Location.all, :id, :name, options ={:prompt => "Select a location"}) %><br/>
@@ -17,9 +17,6 @@
 		<%= render :partial => 'data_objects_at_location' %>
 	</p>
 </div>
-
-
-
 
 <div id = 'public_fields_for_object'>
 	<p>

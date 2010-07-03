@@ -1,2 +1,6 @@
-<%= label_tag 'Problem:' %><br />
+<%= label_tag 'Problem:' %><br/>
 <%= collection_select(:data_field, :id, @public_fields_for_object, :id, :name, options ={:prompt => "Select a Problem"}, :class =>'field') %><br/>
+<% @public_fields_for_object.each do |field| %>
+<%= field.name %>:<br/>
+<%= field.display_type %><br/>
+<% end %>
