@@ -16,6 +16,7 @@ class DataEntriesController < ApplicationController
       flash[:error] = "You are not signed into a shift."
       redirect_to(access_denied_path) and return false
     end
+
     @data_entry.write_content(params[:data_fields])
 
     if @data_entry.save
