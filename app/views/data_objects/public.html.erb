@@ -1,5 +1,5 @@
 <% title "Help Request Form"%>
-	
+
 <body>
 	<p>
 		<h3><%= label_tag 'Location' %></h3>
@@ -12,13 +12,15 @@
          	:layout => false},
 	:with => :value,          
 	:on => "change")%>
-
+	
+	
 	<div id = 'data_objects_at_location'>
 		<p>
 			<%= render :partial => 'data_objects_at_location' %>
 		</p>
 	</div>
-	<p>	
-		<div id = 'public_fields_for_object'></div>
-	</p>
+		<p>	
+			<div id = 'public_fields_for_object'></div>
+		</p>
+
 </body>
