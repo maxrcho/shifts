@@ -1,3 +1,6 @@
+<% remote_form_for [@selected_data_object, @data_entry] do |f| %>
+	  <%= f.error_messages %>
+
 <h3><%= label_tag 'Form' %></h3>
 
 <% @public_fields_for_object.each do |field| %>
@@ -6,7 +9,7 @@
     	<p class="indented">
       		<%= label "data_fields[#{field.id}]", "#{field.name}" %>:<br />
         	<% if ["text_field", "select", "text_area"].include? field.display_type %>
-        		<%= 	send(field.display_type, *args) %>
+        		<%= send(field.display_type, *args) %>
       		<% elsif ["check_box", "radio_button"].include? field.display_type %>
         		<% args.each do |options| %>
           			<%= send(field.display_type, *options) %> 
@@ -18,5 +21,6 @@
 <% end %>
 
 <p class="indented">
-<%= submit_tag "Submit" %>
+	<%= f.submit "Submit" %>
+	<% end %>
 </p>

@@ -98,12 +98,17 @@ class DataObjectsController < ApplicationController
       end
     @locations.flatten!.uniq!
             
-     @data_objects_at_location = DataObject.all
+    @data_objects_at_location = []
+      DataObject.all.each do |obj|
+        obj.data_type.data_fields.each do |field|
+          @data_objects_at_location << obj if field.permissions[2,1] == "T"
+        end
+      end
+    @data_objects_at_location.uniq!
   end
 
 	def update_public_form_first
 		@selected_location = Location.find(params[:value])
-	#	@data_objects_at_location = @selected_location.data_objects
 		
 		@data_objects_at_location = []
 		
@@ -113,7 +118,7 @@ class DataObjectsController < ApplicationController
 	    end
 	  end
 
-	 # @data_objects_at_location.uniq!
+	  @data_objects_at_location.uniq!
 
 		respond_to do |format|
       format.js
@@ -122,6 +127,8 @@ class DataObjectsController < ApplicationController
 	
   def update_public_form_second
     @selected_data_object = DataObject.find(params[:value])
+    @data_entry = DataEntry.new
+    #raise @selected_data_object.to_yaml
   	@public_fields_for_object = @selected_data_object.data_type.data_fields
   	
   	respond_to do |format|
