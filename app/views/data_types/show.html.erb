@@ -16,7 +16,7 @@
         </li>
         <ul style="margin-left: 1em">
           <li>Type: <%= field.display_type.humanize %>
-					<li>Help text: <%= field.help_text %>
+					<li>Help text: <%#= field.help_text %>
           <li>Values: <%= (field.values.nil? or field.values.empty?) ? "none" : field.values %>
 					<li>Permissions: <%= display_data_field_permissions(field.permissions) %>        
 				</ul>

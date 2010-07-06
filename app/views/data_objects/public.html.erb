@@ -1,25 +1,24 @@
 <% title "Help Request Form"%>
-
-<p>
-    <%= label_tag 'Location:' %><br />
- 	<%= collection_select(:location, :id, Location.all, :id, :name, options ={:prompt => "Select a location"}) %><br/>
-</p>
-
-<%= observe_field('location_id',
-:url => {:controller => :data_objects,
-         :action => :update_public_form_first, 
-         :layout => false},
-:with => :value,          
-:on => "change")%>
-
-<div id = 'data_objects_at_location'>
+	
+<body>
 	<p>
-		<%= render :partial => 'data_objects_at_location' %>
+		<h3><%= label_tag 'Location' %></h3>
+ 		<%= collection_select(:location, :id, @locations, :id, :name, options ={:prompt => "Select a location"}) %><br/>
 	</p>
-</div>
 
-<div id = 'public_fields_for_object'>
-	<p>
-		<%= render :partial => 'public_fields_for_object' %>
+	<%= observe_field('location_id',
+	:url => {:controller => :data_objects,
+         	:action => :update_public_form_first, 
+         	:layout => false},
+	:with => :value,          
+	:on => "change")%>
+
+	<div id = 'data_objects_at_location'>
+		<p>
+			<%= render :partial => 'data_objects_at_location' %>
+		</p>
+	</div>
+	<p>	
+		<div id = 'public_fields_for_object'></div>
 	</p>
-</div>
+</body>

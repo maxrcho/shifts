@@ -37,7 +37,6 @@ class DataFieldsController < ApplicationController
     params[:admin_permissions] ? @data_field.permissions[0,1] = 'T' : @data_field.permissions[0,1] = 'F'
     params[:private_permissions] ? @data_field.permissions[1,1] = 'T' : @data_field.permissions[1,1] = 'F'
     params[:public_permissions] ? @data_field.permissions[2,1] = 'T' : @data_field.permissions[2,1] = 'F'
-		raise @data_field.to_yaml
     if @data_field.update_attributes(params[:data_field])
       flash[:notice] = "Successfully updated data field."
       redirect_to (params[:add_another] ? new_data_type_data_field_path(params[:data_type_id]) : data_type_path(params[:data_type_id]))
@@ -63,7 +62,7 @@ end
       format.js
     end
   end
-      
+     
   private
   
   # Intercept and redirect if no data type id provided

@@ -2,6 +2,10 @@ class DataObjectsController < ApplicationController
   helper :data_entries
 # Needs views revised for non-ajax degradeability -ben
 # Note: there are good reasons not to do this by merely hiding the group_by divs
+  
+  #skip_before_filter CASClient::Frameworks::Rails::Filter, :only => [:public, :update_public_form_first, :update_public_form_second]
+  #skip_before_filter :login_check, :only => [:public, :update_public_form_first, :update_public_form_second]
+  
   def index
     @data_objects = current_department.data_objects
     @group_type_options = options_for_group_type
@@ -86,13 +90,31 @@ class DataObjectsController < ApplicationController
   end
 
   def public
+    @locations = []
+      DataType.all.each do |type|
+        type.data_fields.each do |field|
+          @locations << field.data_type.data_objects.collect{|obj| obj.locations}.uniq if field.permissions[2,1] == "T"
+        end
+      end
+    @locations.flatten!.uniq!
+            
      @data_objects_at_location = DataObject.all
-     @public_fields_for_object = DataType.all
   end
 
 	def update_public_form_first
 		@selected_location = Location.find(params[:value])
-		@data_objects_at_location = @selected_location.data_objects
+	#	@data_objects_at_location = @selected_location.data_objects
+		
+		@data_objects_at_location = []
+		
+		@selected_location.data_objects.each do |obj|
+	    obj.data_type.data_fields.each do |field|
+	      @data_objects_at_location << obj if field.permissions[2,1] == "T"
+	    end
+	  end
+
+	 # @data_objects_at_location.uniq!
+
 		respond_to do |format|
       format.js
     end

@@ -42,5 +42,7 @@ class DataType < ActiveRecord::Base
       data_field.save(false)
     end
   end
+  attr_reader :permissions
+  attr_reader :display_type
 end
 

@@ -69,5 +69,4 @@ class DataEntry < ActiveRecord::Base
     end
     return true
   end
-
 end
