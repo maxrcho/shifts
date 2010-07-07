@@ -36,7 +36,17 @@
 			<% @location = @report.shift.location %>
 			<% tasks = Task.in_location(@location) %>
       <% tasks.each do |thing| %>
-      <%= print thing %>
+      <%= thing.name %>
+      <ul class="checkbox-list">
+      <% tasks.each do |task| -%>
+      <li><%= check_box_tag "task[task_ids][]", task.id, task_done?(task) -%> 
+      <%= task.boxcheck -%></li>
+ 
+       <% end -%>
+      </ul>
+      
+
+      <br />
       <% end %>
 		</fieldset>
 
