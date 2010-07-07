@@ -1,24 +1,26 @@
-<h1>Listing tasks</h1>
+<h1>Listing Tasks</h1>
 
 <table>
   <tr>
     <th>Name</th>
-    <th>Type</th>
+    <th>Kind</th>
+		<th>Location</th>
+		<th>Calendar</th>
     <th>Start</th>
     <th>End</th>
     <th>Interval</th>
-    <th>Interval Completed</th>
     <th>Active</th>
   </tr>
 
 <% @tasks.each do |task| %>
   <tr>
     <td><%=h task.name %></td>
-    <td><%=h task.type %></td>
+    <td><%=h task.kind %></td>
+    <td><%=h task.location_id %></td> <!-- rewrite to give actual location names w/ named scopes -->
+    <td><%=h task.calendar_id %></td>
     <td><%=h task.start %></td>
     <td><%=h task.end %></td>
     <td><%=h task.interval %></td>
-    <td><%=h task.interval_completed %></td>
     <td><%=h task.active %></td>
     <td><%= link_to 'Show', task %></td>
     <td><%= link_to 'Edit', edit_task_path(task) %></td>

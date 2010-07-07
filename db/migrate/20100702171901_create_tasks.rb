@@ -3,9 +3,8 @@ class CreateTasks < ActiveRecord::Migration
     create_table :tasks do |t|
       t.references :location
       t.references :calendar
-      t.references :repeating_event
       t.string :name
-      t.string :type
+      t.string :kind
       t.datetime :start
       t.datetime :end
       t.integer :interval
