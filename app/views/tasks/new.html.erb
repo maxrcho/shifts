@@ -5,7 +5,7 @@
 
   <p>
     <%= f.label :name %><br />
-    <%= select_tag 'task[name]', options_for_select(["Check Printers", "Rotate Lost and Found", "Wake Cluster Computers"], "Check Printers") %>
+    <%= f.text_field :name %>
   </p>
   <p>
     <%= f.label :kind %><br />
@@ -14,10 +14,6 @@
   <p>
     <%= f.label :location_id, text = 'Location' %><br />
     <%= select_tag 'task[location_id]', options_from_collection_for_select(@department.locations.active, :id, :name)%><br />
-  </p>
-  <p>
-    <%= f.label :location_id, text = 'Calendar' %><br />
-    <%= select_tag 'task[calendar_id]', options_from_collection_for_select(@department.calendars.active, :id, :name)%><br />
   </p>
   <p>
     <%= f.label :start %><br />

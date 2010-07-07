@@ -36,7 +36,8 @@
 			<% @location = @report.shift.location %>
 			<% tasks = Task.in_location(@location) %>
       <% tasks.each do |thing| %>
-      <%= print thing %>
+      <%= thing.name %>
+			<br/>
       <% end %>
 		</fieldset>
 
