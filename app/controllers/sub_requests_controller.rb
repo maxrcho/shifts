@@ -31,6 +31,7 @@ class SubRequestsController < ApplicationController
   def new
     @sub_request = SubRequest.new
     @sub_request.shift = Shift.find(params[:shift_id])
+    @shift=@sub_request.shift
    return unless user_is_owner_or_admin_of(@sub_request.shift, current_department)    #is 'return unless' unnessecary here? -Bay
   end
 
@@ -40,22 +41,24 @@ class SubRequestsController < ApplicationController
   end
 
   def create
-      @sub_request = SubRequest.new(params[:sub_request])
-      @sub_request.shift = Shift.find(params[:shift_id])
-      begin
-      SubRequest.transaction do  
-          @sub_request.save(false)
-          unless params[:list_of_logins].empty? 
-             params[:list_of_logins].split(",").each do |l|
-                l = l.split("||")
-                if l.length == 2
-                  for user in l[0].constantize.find(l[1]).users 
-                    @sub_request.requested_users << user
-                  end
+    parse_date_and_time_output(params[:sub_request])
+    @sub_request = SubRequest.new(params[:sub_request])
+    @sub_request.shift = Shift.find(params[:shift_id])
+    @shift=@sub_request.shift
+    begin
+    SubRequest.transaction do  
+        @sub_request.save(false)
+        unless params[:list_of_logins].empty? 
+          params[:list_of_logins].split(",").each do |l|
+              l = l.split("||")
+              if l.length == 2
+                for user in l[0].constantize.find(l[1]).users 
+                  @sub_request.requested_users << user
                 end
-                @sub_request.requested_users << User.find_by_login(l[0]) if l.length == 1
-             end
+              end
+              @sub_request.requested_users << User.find_by_login(l[0]) if l.length == 1
            end
+         end
         @sub_request.save!
       end
     rescue Exception => e
@@ -89,6 +92,7 @@ class SubRequestsController < ApplicationController
                 @sub_request.requested_users << User.find_by_login(l[0]) if l.length == 1
              end
            end
+          parse_date_and_time_output(params[:sub_request])
           @sub_request.update_attributes(params[:sub_request])
           @sub_request.save!
         end
@@ -118,6 +122,10 @@ class SubRequestsController < ApplicationController
     rescue
       flash.now[:error] = "Oops! It seems the Sub Request you tried to take has already been taken (or canceled). Next time, try clicking sooner."
     end
+    
+    if Time.now > @sub_request.start
+      flash[:notice] = 'This sub request has already started.  If you take this sub request, your shift will begin immediately.'
+    end
 
   end
 
@@ -139,5 +147,7 @@ class SubRequestsController < ApplicationController
       render :action => "get_take_info"
      end
   end
+
+
 end
 

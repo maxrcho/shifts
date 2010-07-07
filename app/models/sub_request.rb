@@ -2,7 +2,7 @@ class SubRequest < ActiveRecord::Base
   belongs_to :shift
   delegate :user, :to => :shift
   has_and_belongs_to_many :requested_users, :class_name => 'User'
-  
+  before_validation :join_date_and_time
   validates_presence_of :reason, :shift
   validate :start_and_end_are_within_shift,
            :mandatory_start_and_end_are_within_subrequest,
@@ -10,7 +10,15 @@ class SubRequest < ActiveRecord::Base
            :not_in_the_past,
            :user_does_not_have_concurrent_sub_request,
            :requested_users_have_permission 
- 
+  attr_accessor :mandatory_start_date
+  attr_accessor :mandatory_start_time
+  attr_accessor :mandatory_end_date
+  attr_accessor :mandatory_end_time
+  attr_accessor :start_date
+  attr_accessor :start_time
+  attr_accessor :end_date
+  attr_accessor :end_time
+
   #
   # Class methods
   #
@@ -26,7 +34,8 @@ class SubRequest < ActiveRecord::Base
           new_shift.signed_in = false #if you take a sub for a shift, but the requestor has signed in this prevents an error
           new_shift.user = user
           if new_shift.start < Time.now && old_shift.department.department_config.can_take_passed_sub #if the sub request shift has already started, someone else can still sign up for the sub, but the start time will be the time you took the sub, to avoid the "not_in_the_past" validations
-            new_shift.start = Time.now + 1 #not_in_the_past checks for ==
+            new_shift.start = Time.now #
+            new_shift.save_with_validation(false)
           else
             new_shift.start = just_mandatory ? sub_request.mandatory_start : sub_request.start
           end
@@ -66,11 +75,6 @@ class SubRequest < ActiveRecord::Base
     user.can_signup?(self.shift.loc_group)
   end
   
-  def can_take_sub?(sub_request)
-    return false unless sub_request
-    can_signup?(sub_request.loc_group)  && (sub_request.user != self) && (sub_request.users_with_permission.include?(self) || sub_request.users_with_permission.blank?)
-  end
-  
   def potential_takers
     !users_with_permission.empty? ? users_with_permission : roles_with_permission.collect(&:users).flatten.uniq
   end
@@ -95,13 +99,20 @@ class SubRequest < ActiveRecord::Base
 
   def add_errors(e)
     e = e.gsub("Validation failed: ", "")
-    e.split(", ").each do |error|
-      errors.add_to_base(error.gsub(",,", ", "))
-    end
-  end
+    e.split(", ").each do |error|                   #errors.add_to_base is tokenized by comma-space pattern
+      errors.add_to_base(error.gsub(",,", ", "))    #problem: in comma-seperated lists, each item is incorrectly rendered as a seperate error
+    end                                             #work-around: lists are printed as "item,,item,,item" which now swap to "item, item, item"
+  end                                               
 
 
   private
+
+  def join_date_and_time
+    self.start = self.start_date.to_date.to_time + self.start_time.seconds_since_midnight
+    self.end = self.end_date.to_date.to_time + self.end_time.seconds_since_midnight
+    self.mandatory_start = self.mandatory_start_date.to_date.to_time + self.mandatory_start_time.seconds_since_midnight
+    self.mandatory_end = self.mandatory_end_date.to_date.to_time + self.mandatory_end_time.seconds_since_midnight
+  end
 
   def start_and_end_are_within_shift
     unless self.start.between?(self.shift.start, self.shift.end) && self.end.between?(self.shift.start, self.shift.end)
@@ -136,7 +147,7 @@ class SubRequest < ActiveRecord::Base
   def requested_users_have_permission 
     c = self.requested_users.select { |user| !user.can_signup?(self.loc_group) || user==self.user}
       unless c.blank? 
-        errors.add_to_base("The following users do not have permission to work in this location: #{c.map(&:name)* ", "}") 
+        errors.add_to_base("The following users do not have permission to work in this location: #{c.map(&:name)* ",,"}") 
     end
   end
   
