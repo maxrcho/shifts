@@ -1,6 +1,7 @@
-<h1>Editing task</h1>
+<h1>Editing Task</h1>
 
 <% form_for(@task) do |f| %>
+  <%= f.error_messages %>
   <%= f.error_messages %>
 
   <p>
@@ -8,8 +9,16 @@
     <%= f.text_field :name %>
   </p>
   <p>
-    <%= f.label :type %><br />
-    <%= f.text_field :type %>
+    <%= f.label :kind %><br />
+    <%= f.text_field :kind %>
+  </p>
+  <p>
+    <%= f.label :location_id, text = 'Location' %><br />
+    <%= select_tag 'task[location_id]', options_from_collection_for_select(@department.locations.active, :id, :name)%><br />
+  </p>
+  <p>
+    <%= f.label :location_id, text = 'Calendar' %><br />
+    <%= select_tag 'task[calendar_id]', options_from_collection_for_select(@department.calendars.active, :id, :name)%><br />
   </p>
   <p>
     <%= f.label :start %><br />
@@ -20,21 +29,16 @@
     <%= f.datetime_select :end %>
   </p>
   <p>
-    <%= f.label :interval %><br />
+    <%= f.label :interval %> in minutes<br />
     <%= f.text_field :interval %>
-  </p>
-  <p>
-    <%= f.label :interval_completed %><br />
-    <%= f.check_box :interval_completed %>
   </p>
   <p>
     <%= f.label :active %><br />
     <%= f.check_box :active %>
   </p>
   <p>
-    <%= f.submit 'Update' %>
+    <%= f.submit 'Create' %>
   </p>
-<% end %>
 
 <%= link_to 'Show', @task %> |
 <%= link_to 'Back', tasks_path %>

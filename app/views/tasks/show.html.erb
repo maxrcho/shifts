@@ -4,8 +4,18 @@
 </p>
 
 <p>
-  <b>Type:</b>
-  <%=h @task.type %>
+  <b>Kind:</b>
+  <%=h @task.kind %>
+</p>
+
+<p>
+  <b>Location:</b>
+  <%=h @task.location_id %>
+</p>
+
+<p>
+  <b>Calendar:</b>
+  <%=h @task.calendar_id %>
 </p>
 
 <p>
@@ -21,11 +31,6 @@
 <p>
   <b>Interval:</b>
   <%=h @task.interval %>
-</p>
-
-<p>
-  <b>Interval completed:</b>
-  <%=h @task.interval_completed %>
 </p>
 
 <p>
