@@ -35,7 +35,9 @@
 			<legend>Shift Tasks</legend>
 			<% @location = @report.shift.location %>
 			<% tasks = Task.in_location(@location) %>
-			<%= tasks %>
+      <% tasks.each do |thing| %>
+      <%= print thing %>
+      <% end %>
 		</fieldset>
 
   <div id="active_report_area">
