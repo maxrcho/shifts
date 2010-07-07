@@ -35,9 +35,9 @@ class DataFieldsController < ApplicationController
   def update
 		#raise params.to_yaml
     @data_field = DataField.find(params[:id])
-    params[:admin_permissions] ? @data_field.permissions[0,1] = 'T' : @data_field.permissions[0,1] = 'F'
-    params[:private_permissions] ? @data_field.permissions[1,1] = 'T' : @data_field.permissions[1,1] = 'F'
-    params[:public_permissions] ? @data_field.permissions[2,1] = 'T' : @data_field.permissions[2,1] = 'F'
+    if params[:admin_permissions] ? @data_field.permissions[0,1] = 'T' : @data_field.permissions[0,1] = 'F'
+    if params[:private_permissions] ? @data_field.permissions[1,1] = 'T' : @data_field.permissions[1,1] = 'F'
+    if params[:public_permissions] ? @data_field.permissions[2,1] = 'T' : @data_field.permissions[2,1] = 'F'
 		#raise @data_field.to_yaml
     if @data_field.update_attributes(params[:data_field]) && @data_field.save
       flash[:notice] = "Successfully updated data field."
