@@ -10,6 +10,8 @@ class Task < ActiveRecord::Base
   
   named_scope :active, lambda {{:conditions => {:active => true}}}
   named_scope :after_now, lambda {{:conditions => ["#{:end} >= #{Time.now.utc.to_sql}"]}}
+  named_scope :in_locations, lambda {|loc_array| {:conditions => { :location_id => loc_array }}}
+  named_scope :in_location, lambda {|location| {:conditions => { :location_id => location }}}
   
   private
   
