@@ -11,8 +11,8 @@
       <%= f.text_field :name %>
     </p>
 		<p>
-			<%#= f.label :help_text %><br />
-			<%#= f.text_field :help_text %>
+			<%= f.label :help_text %><br />
+			<%= f.text_field :help_text %>
 		</p>
     <p>
       <%= f.label :display_type %><br />
@@ -30,10 +30,10 @@
     </p>
 
 		<p>
-      <%= f.label :permissions %><br/>
-      <%= check_box_tag 'admin_permissions' %> <%= label_tag 'Admin' %><br/>
-	  	<%= check_box_tag 'private_permissions' %> <%= label_tag 'Private' %><br/>
-	  	<%= check_box_tag 'public_permissions' %> <%= label_tag 'Public' %><br/>
+      <%= f.label :permissions, "Accessible by" %><br/>
+      <%= check_box_tag 'admin_permissions' %> <%= label_tag 'Administrators' %><br/>
+	  	<%= check_box_tag 'private_permissions' %> <%= label_tag 'Private users' %><br/>
+	  	<%= check_box_tag 'public_permissions' %> <%= label_tag 'Public users' %><br/>
     </p>
 
 		<p>     

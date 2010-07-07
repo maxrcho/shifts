@@ -12,10 +12,11 @@ class DataEntriesController < ApplicationController
   def create
     @data_entry = DataEntry.new({:data_object_id => params[:data_object_id]})
     #TODO: Fix this bug related to current_user.current_shift /.report
-    unless current_user.current_shift && current_user.current_shift.report.data_objects.include?(@data_entry.data_object)
+    unless current_user.current_shift && current_user.current_shift.report.data_objects.include? (@data_entry.data_object)
       flash[:error] = "You are not signed into a shift."
       redirect_to(access_denied_path) and return false
     end
+
     @data_entry.write_content(params[:data_fields])
 
     if @data_entry.save
@@ -31,6 +32,8 @@ class DataEntriesController < ApplicationController
     else
       flash[:error] = "Could not update #{@data_entry.data_object.name}."
     end
+		raise params.to_yaml
+		@what_page = params[:what_page]
     respond_to do |format|
       format.js
       format.html {redirect_to @report ? @report : @data_entry.data_object}

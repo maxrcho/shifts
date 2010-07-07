@@ -4,6 +4,12 @@ class ReportsController < ApplicationController
 
   def show
     @report = params[:id] ? Report.find(params[:id]) : Report.find_by_shift_id(params[:shift_id])
+		@data_objects_at_location = []
+		@report.shift.location.data_objects.each do |obj|
+	    obj.data_type.data_fields.each do |field|
+	      @data_objects_at_location << obj if field.permissions[1,1] == "T"
+	    end
+	  end
     return unless require_department_membership(@report.shift.department)
     @report_item = ReportItem.new
   end
