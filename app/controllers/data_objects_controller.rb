@@ -104,7 +104,8 @@ class DataObjectsController < ApplicationController
           @data_objects_at_location << obj if field.permissions[2,1] == "T"
         end
       end
-    @data_objects_at_location.uniq!
+   	@data_objects_at_location.uniq! if @data_objects_at_location
+		layout_check
   end
 
 	def update_public_form_first
