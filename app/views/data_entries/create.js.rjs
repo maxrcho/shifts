@@ -8,5 +8,4 @@ page.alert("testing if in report")
 page[:new_report_item].reset
 else
 page.reload
-page.alert("testing if not in report")
 end
