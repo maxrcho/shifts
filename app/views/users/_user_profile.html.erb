@@ -1,37 +1,36 @@
 <% fields_for @user_profile do |f| %>
-  <p>
-    <% if @department.user_profile_fields != [] %>
-      <% @department.user_profile_fields.each do |field| %>
-        <% @user_profile_entries.each do |entry| %> 
-          <% if entry.user_profile_field_id == field.id %>
+  <% if @department.user_profile_fields != [] %>
+    <% @department.user_profile_fields.each do |field| %>
+      <% @user_profile_entries.each do |entry| %> 
+      <% if entry.user_profile_field_id == field.id %>
         <p>
-        <% args = entry.prepare_form_helpers %>
+          <% args = entry.prepare_form_helpers %>
         <p>
-          <%= label "user_profile_entries[#{entry.id}]", "#{entry.field_name}" %><br/>
+        <%= label "user_profile_entries[#{entry.id}]", "#{entry.field_name}" %><br/>
 
-          <% if ["text_field", "select", "text_area"].include? entry.display_type %>
-            <%= send(entry.display_type, *args) %>
-          <% elsif entry.display_type == "picture_link" %>
-            <%= send("text_field", *args) %>
-          <% elsif entry.display_type == "upload_pic" %>  
-            <%= render :partial => "user_profiles/user_profile_pic", :object => UserProfilePics.new %>
-            
-          <% elsif ["radio_button"].include? entry.display_type %>
-            <% args.each do |options| %>
-              <%= send(entry.display_type, *options) %>
-              <%= label "user_profile_entries[#{entry.id}]", "#{options.third}" %>
-            <% end %>
-          <% elsif ["check_box"].include? entry.display_type %>
-            <% args.each do |options| %>
-              <%= send(entry.display_type, *options) %>
-              <%= label "user_profile_entries[#{entry.id}]", "#{options.second}" %>
-            <% end %>
-
+        <% if ["text_field", "select", "text_area"].include? entry.display_type %>
+          <%= send(entry.display_type, *args) %>
+        <% elsif entry.display_type == "picture_link" %>
+          <%= send("text_field", *args) %>
+        <% elsif entry.display_type == "upload_pic" %>  
+          <%= render :partial => "user_profiles/user_profile_pic", :object => UserProfilePics.new %>
+        <% elsif ["radio_button"].include? entry.display_type %>
+          <% args.each do |options| %>
+            <%= send(entry.display_type, *options) %>
+            <%= label "user_profile_entries[#{entry.id}]", "#{options.third}" %>
           <% end %>
-          
-        <% else %>
+
+        <% elsif ["check_box"].include? entry.display_type %>
+          <% args.each do |options| %>
+            <%= send(entry.display_type, *options) %>
+            <%= label "user_profile_entries[#{entry.id}]", "#{options.second}" %>
+          <% end %>
+      
+        <% end %>
+
+      <% elsif false %>
         <p>
-        <% args = field.prepare_form_helpers %>
+          <% args = field.prepare_form_helpers %>
         <p>
           <%= label "user_profile_fields[#{field.id}]", "#{field.name}" %><br/>
 
@@ -41,7 +40,6 @@
             <%= send("text_field", *args) %>
           <% elsif field.display_type == "upload_pic" %>  
             <%= render :partial => "user_profiles/user_profile_pic", :object => UserProfilePics.new %>
-            
           <% elsif ["radio_button"].include? field.display_type %>
             <% args.each do |options| %>
               <%= send(field.display_type, *options) %>
@@ -51,18 +49,17 @@
             <% args.each do |options| %>
               <%= send(field.display_type, *options) %>
               <%= label "user_profile_fields[#{entry.id}]", "#{options.second}" %>
-            <% end %>
-
           <% end %>
 
         <% end %>
-        </p>
-      <% end %>
-    <% end %>
 
-    <% else %>
-    There don't appear to be any profile fields for this department. Want to <%= link_to "add one", new_user_profile_field_path %>?
+      <% end %>
+    
     <% end %>
-  </p>
   <% end %>
+
+  <% else %>
+    There don't appear to be any profile fields for this department. Want to <%= link_to "add one", new_user_profile_field_path %>?
+  <% end %>
+<% end %>
 
