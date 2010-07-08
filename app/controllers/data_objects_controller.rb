@@ -129,8 +129,8 @@ class DataObjectsController < ApplicationController
     @selected_data_object = DataObject.find(params[:value])
     @data_entry = DataEntry.new
     #raise @selected_data_object.to_yaml
-  	@public_fields_for_object = @selected_data_object.data_type.data_fields
-  	
+  	@fields_for_object = @selected_data_object.data_type.data_fields
+  
   	respond_to do |format|
   	  format.js
 	  end

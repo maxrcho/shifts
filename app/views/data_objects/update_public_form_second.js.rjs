@@ -1,2 +1,2 @@
 page.replace_html 'public_fields_for_object', :partial => 'data_objects/public_fields_for_object'
-page.replace_html 'private_fields_for_obect', :partial => 'data_objects/private_fields_for_object'
+page.replace_html 'private_fields_for_object', :partial => 'data_objects/private_fields_for_object'

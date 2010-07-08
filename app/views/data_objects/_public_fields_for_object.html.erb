@@ -3,7 +3,7 @@
 
 <h3><%= label_tag 'Form' %></h3>
 
-<% @public_fields_for_object.each do |field| %>
+<% @fields_for_object.each do |field| %>
 	<% args = field.prepare_form_helpers %>
 	<% if field.permissions[2,1] == "T" %>
     	<p class="indented">
