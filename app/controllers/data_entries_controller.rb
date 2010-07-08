@@ -11,29 +11,21 @@ class DataEntriesController < ApplicationController
 
   def create
     @data_entry = DataEntry.new({:data_object_id => params[:data_object_id]})
-    #TODO: Fix this bug related to current_user.current_shift /.report
-    unless current_user.current_shift && current_user.current_shift.report.data_objects.include? (@data_entry.data_object)
-      flash[:error] = "You are not signed into a shift."
-      redirect_to(access_denied_path) and return false
-    end
 
     @data_entry.write_content(params[:data_fields])
 
     if @data_entry.save
       flash[:notice] = "Successfully updated #{@data_entry.data_object.name}."
-      if @report = current_user.current_shift.report
+      if params[:what_page] == "report"
+        @report = current_user.current_shift.report
         content = []
         @data_entry.data_fields_with_contents.each {|entry| content.push("#{DataField.find(entry.first).name.humanize}: #{entry.second}")}
         @report.report_items << ReportItem.new(:time => Time.now, :content => "Updated #{@data_entry.data_object.name}.  #{content.join(', ')}.", :ip_address => request.remote_ip)
-      else
-        #TODO Remove after fixing #213
-        raise "Error raised in finding current_user.current_shift.report. This is probably related to bug #213. If you see this message, please email a report to adam.bray@yale.edu with your Browser, OS, and Date/Time that you saw this message"
+        #raise content.to_yaml
       end
     else
       flash[:error] = "Could not update #{@data_entry.data_object.name}."
     end
-		raise params.to_yaml
-		@what_page = params[:what_page]
     respond_to do |format|
       format.js
       format.html {redirect_to @report ? @report : @data_entry.data_object}

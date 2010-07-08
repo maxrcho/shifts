@@ -5,7 +5,7 @@
 
 <% @fields_for_object.each do |field| %>
 	<% args = field.prepare_form_helpers %>
-	<% if field.permissions[2,1] == "T" %>
+	<% if field.permissions[1,1] == "T" %>
     	<p class="indented">
       		<%= label "data_fields[#{field.id}]", "#{field.name}" %>:<br />
         	<% if ["text_field", "select", "text_area"].include? field.display_type %>
@@ -19,6 +19,8 @@
     	</p>
 	<% end %>
 <% end %>
+
+<%= hidden_field_tag "what_page", "report"%>
 
 <p class="indented">
 	<%= f.submit "Submit" %>
