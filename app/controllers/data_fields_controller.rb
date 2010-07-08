@@ -45,8 +45,8 @@ class DataFieldsController < ApplicationController
       redirect_to (params[:add_another] ? new_data_type_data_field_path(params[:data_type_id]) : data_type_path(params[:data_type_id]))
     else
       render :action => 'edit'
-  end
-end
+  	end
+	end
   
   def destroy
     @data_field = DataField.find(params[:id])
@@ -76,5 +76,4 @@ end
       redirect_to data_types_path
     end
   end
-  
 end

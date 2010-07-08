@@ -96,7 +96,7 @@ class DataObjectsController < ApplicationController
           @locations << field.data_type.data_objects.collect{|obj| obj.locations}.uniq if field.permissions[2,1] == "T"
         end
       end
-    @locations.flatten!.uniq!
+    @locations.flatten!
             
     @data_objects_at_location = []
       DataObject.all.each do |obj|
