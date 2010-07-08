@@ -19,8 +19,8 @@ before_filter :user_login
 
   def create
     @user_profile = UserProfile.new(params[:user_profile])
-    if @user_profile.save
-      flash[:noticcurrent_user.is_admin_of(@department)] = "Successfully created user profile."
+    if @user_profile.save && current_user.is_admin_of(@department)
+      flash[:notice] = "Successfully created user profile."
       redirect_to @user_profile
     else
       render :action => 'new'
@@ -44,7 +44,6 @@ before_filter :user_login
 
   def update
     @user_profile = UserProfile.find(params[:id])
-
     @user = User.find(@user_profile.user_id)
     begin
       UserProfile.transaction do
@@ -71,8 +70,13 @@ before_filter :user_login
           end
         end
       end
-    rescue
-      flash[:error] = @failed.to_sentence + " all failed to save."
+    rescue Exception => e
+      if !@user_profile_entries
+        flash[:notice] = "You have no entries to edit"
+      else
+        flash[:error] = @failed.to_sentence + " all failed to save." + "#{e} (#{e.class})!" + @user_profile_entries.class.to_s
+      end
+
     end
     redirect_to user_profile_path(@user.login)
   end

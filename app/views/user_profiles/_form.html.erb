@@ -2,33 +2,7 @@
   <%= f.error_messages %>
 
 <%= render :partial => 'user_info' %>
-  <p>
-    <% if @user_profile_entries %>
-      <% @user_profile_entries.each do |entry| %>
-        <% args = entry.prepare_form_helpers %>
-        <p>
-          <%= label "user_profile_entries[#{entry.id}]", "#{entry.field_name}" %><br/>
-
-          <% if ["text_field", "select", "text_area"].include? entry.display_type %>
-            <%= send(entry.display_type, *args) %>
-          <% elsif entry.display_type == "picture_link" %>
-            <%= send("text_field", *args) %>
-          <% elsif ["radio_button"].include? entry.display_type %>
-            <% args.each do |options| %>
-              <%= send(entry.display_type, *options) %>
-              <%= label "user_profile_entries[#{entry.id}]", "#{options.third}" %>
-            <% end %>
-          <% elsif ["check_box"].include? entry.display_type %>
-            <% args.each do |options| %>
-              <%= send(entry.display_type, *options) %>
-              <%= label "user_profile_entries[#{entry.id}]", "#{options.second}" %>
-          <% end %>
-        <% end %>
-
-      <% end %>
-    <% end %>
-  </p>
-
+<%= render :partial => 'users/user_profile' %>
   <p><%= f.submit "Update" %></p>
 
 <% end %>

@@ -1,7 +1,10 @@
 <% fields_for @user_profile do |f| %>
   <p>
-    <% if @user_profile_entries != [] %>
-      <% @user_profile_entries.each do |entry| %>
+    <% if @department.user_profile_fields != [] %>
+      <% @department.user_profile_fields.each do |field| %>
+        <% @user_profile_entries.each do |entry| %> 
+          <% if entry.user_profile_field_id == field.id %>
+        <p>
         <% args = entry.prepare_form_helpers %>
         <p>
           <%= label "user_profile_entries[#{entry.id}]", "#{entry.field_name}" %><br/>
@@ -10,7 +13,6 @@
             <%= send(entry.display_type, *args) %>
           <% elsif entry.display_type == "picture_link" %>
             <%= send("text_field", *args) %>
-            
           <% elsif entry.display_type == "upload_pic" %>  
             <%= render :partial => "user_profiles/user_profile_pic", :object => UserProfilePics.new %>
             
@@ -23,14 +25,44 @@
             <% args.each do |options| %>
               <%= send(entry.display_type, *options) %>
               <%= label "user_profile_entries[#{entry.id}]", "#{options.second}" %>
-          <% end %>
-        <% end %>
+            <% end %>
 
+          <% end %>
+          
+        <% else %>
+        <p>
+        <% args = field.prepare_form_helpers %>
+        <p>
+          <%= label "user_profile_fields[#{field.id}]", "#{field.name}" %><br/>
+
+          <% if ["text_field", "select", "text_area"].include? field.display_type %>
+            <%= send(field.display_type, *args) %>
+          <% elsif field.display_type == "picture_link" %>
+            <%= send("text_field", *args) %>
+          <% elsif field.display_type == "upload_pic" %>  
+            <%= render :partial => "user_profiles/user_profile_pic", :object => UserProfilePics.new %>
+            
+          <% elsif ["radio_button"].include? field.display_type %>
+            <% args.each do |options| %>
+              <%= send(field.display_type, *options) %>
+              <%= label "user_profile_fields[#{entry.id}]", "#{options.third}" %>
+            <% end %>
+          <% elsif ["check_box"].include? field.display_type %>
+            <% args.each do |options| %>
+              <%= send(field.display_type, *options) %>
+              <%= label "user_profile_fields[#{entry.id}]", "#{options.second}" %>
+            <% end %>
+
+          <% end %>
+
+        <% end %>
+        </p>
       <% end %>
+    <% end %>
+
     <% else %>
-      There don't appear to be any profile fields for this department. Want to <%= link_to "add one", new_user_profile_field_path %>?
+    There don't appear to be any profile fields for this department. Want to <%= link_to "add one", new_user_profile_field_path %>?
     <% end %>
   </p>
-
-<% end %>
+  <% end %>
 
