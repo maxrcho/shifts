@@ -31,7 +31,7 @@
 			</ul>
     </fieldset>
 
-		<fieldset class="index" id = "shift_tasks">
+		<fieldset class="index" id = "shifts_tasks">
 			<legend>Shift Tasks</legend>
 			<% @location = @report.shift.location %>
 			<% tasks = Task.in_location(@location) %>
@@ -40,6 +40,8 @@
       <%= task.name %> : 
 	      <% form_for(task) do |f| %>
 		      <%= f.check_box :interval_completed %>
+					<%= [task, @report.shift] %>
+
 		      <%= f.submit "Update" %>
 		      <br />
 	      <% end %>

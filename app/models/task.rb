@@ -1,5 +1,5 @@
 class Task < ActiveRecord::Base
-  #has_and_belongs_to_many :shifts
+  has_and_belongs_to_many :shifts
   belongs_to :location
   
   validates_presence_of :name, :kind
