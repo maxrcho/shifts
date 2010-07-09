@@ -35,13 +35,11 @@
 			<legend>Shift Tasks</legend>
 			<% @location = @report.shift.location %>
 			<% tasks = Task.in_location(@location) %>
-
       <% tasks.each do |task| %>
       <%= task.name %> : 
 	      <% form_for(task) do |f| %>
 		      <%= f.check_box :interval_completed %>
-					<%= [task, @report.shift] %>
-
+					<%= @report.shift %>
 		      <%= f.submit "Update" %>
 		      <br />
 	      <% end %>

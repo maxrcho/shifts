@@ -1,7 +1,6 @@
 class Shift < ActiveRecord::Base
 
   delegate :loc_group, :to => 'location'
-  has_and_belongs_to_many :tasks
   belongs_to :calendar
   belongs_to :repeating_event
   belongs_to :department
@@ -9,6 +8,8 @@ class Shift < ActiveRecord::Base
   belongs_to :location
   has_one :report, :dependent => :destroy
   has_many :sub_requests, :dependent => :destroy
+  has_many :shifts_tasks
+  has_many :tasks, :through => :shift_tasks
   before_update :disassociate_from_repeating_event
  # before_validation :join_date_and_time
 

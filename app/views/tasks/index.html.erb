@@ -9,7 +9,6 @@
     <th>End</th>
     <th>Time of Day</th>
     <th>Day of Week</th>
-    <th>Interval</th>
     <th>Active</th>
   </tr>
 
@@ -22,7 +21,6 @@
     <td><%=h task.end.to_s(:just_date_long) %></td>
     <td><%=h task.time_of_day.to_s(:am_pm) %></td>
     <td><%=h task.day_in_week %></td>
-    <td><%=h task.interval %></td>
     <td><%=h task.active %></td>
     <td><%= link_to 'Show', task %></td>
     <td><%= link_to 'Edit', edit_task_path(task) %></td>
