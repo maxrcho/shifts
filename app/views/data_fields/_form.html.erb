@@ -31,9 +31,9 @@
 
 		<p>
       <%= f.label :permissions, "Accessible by" %><br/>
-      <%= check_box_tag 'admin_permissions', permission_check(0) %> <%= label_tag 'Administrators' %><br/>
-	  	<%= check_box_tag 'private_permissions', permission_check(1) %> <%= label_tag 'Private users' %><br/>
-	  	<%= check_box_tag 'public_permissions', permission_check(2) %> <%= label_tag 'Public users' %><br/>
+      <%= check_box_tag 'admin_permissions', value = "1", permission_check(0) %> <%= label_tag 'Administrators' %><br/>
+	  	<%= check_box_tag 'private_permissions', value = "1", permission_check(1) %> <%= label_tag 'Private users' %><br/>
+	  	<%= check_box_tag 'public_permissions', value = "1", permission_check(2) %> <%= label_tag 'Public users' %><br/>
     </p>
 
 		<p>     

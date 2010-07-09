@@ -53,8 +53,9 @@ class DataFieldsController < ApplicationController
 		else
 			@data_field.permissions[2,1] = 'F'
 		end
-    if @data_field.update_attributes(params[:data_field]) && @data_field.save!
-			puts @data_field.to_yaml
+		puts params.to_yaml
+    if @data_field.update_attributes(params[:data_field])
+			raise @data_field.to_yaml
       flash[:notice] = "Successfully updated data field."
 			#raise @data_field.to_yaml
       redirect_to (params[:add_another] ? new_data_type_data_field_path(params[:data_type_id]) : data_type_path(params[:data_type_id]))

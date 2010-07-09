@@ -3,8 +3,8 @@ class DataObjectsController < ApplicationController
 # Needs views revised for non-ajax degradeability -ben
 # Note: there are good reasons not to do this by merely hiding the group_by divs
   
-  #skip_before_filter CASClient::Frameworks::Rails::Filter, :only => [:public, :update_public_form_first, :update_public_form_second]
-  #skip_before_filter :login_check, :only => [:public, :update_public_form_first, :update_public_form_second]
+  skip_before_filter CASClient::Frameworks::Rails::Filter, :only => [:public, :update_public_form_first, :update_public_form_second]
+  skip_before_filter :login_check, :only => [:public, :update_public_form_first, :update_public_form_second]
   
   def index
     @data_objects = current_department.data_objects
@@ -111,7 +111,7 @@ class DataObjectsController < ApplicationController
         end
       end
    	@data_objects_at_location.uniq! if @data_objects_at_location
-		layout_check
+		render :layout => 'public_form'
   end
 
 	def update_public_form_first
