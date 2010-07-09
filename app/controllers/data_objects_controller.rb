@@ -90,14 +90,9 @@ class DataObjectsController < ApplicationController
   end
 
   def public
-    @locations = []
-      DataType.all.each do |type|
-        type.data_fields.each do |field|
-          @locations << field.data_type.data_objects.collect{|obj| obj.locations}.uniq if field.permissions[2,1] == "T"
-        end
-      end
-    @locations.flatten!.uniq!
-            
+    b = admin
+        lcoations = location_picker (b) + 
+    
     @data_objects_at_location = []
       DataObject.all.each do |obj|
         obj.data_type.data_fields.each do |field|
@@ -107,7 +102,35 @@ class DataObjectsController < ApplicationController
     @data_objects_at_location.uniq!
   end
 
-	def update_public_form_first
+	def location_picker (b)
+	  @locations = []
+      DataType.all.each do |type|
+        type.data_fields.each do |field|
+          @locations << field.data_type.data_objects.collect{|obj| obj.locations}.uniq if field.b == "T"
+        end
+      end
+    @locations.flatten!.uniq!
+  end
+	
+	def private
+	  @locations = []
+      DataType.all.each do |type|
+        type.data_fields.each do |field|
+          @locations << field.data_type.data_objects.collect{|obj| obj.locations}.uniq if field.permissions[2,1] == "T" || field.permission[2,1] == "T"
+        end
+      end
+    @locations.flatten!.uniq!
+	  @data_objects_at_location = []
+      DataObject.all.each do |obj|
+        obj.data_type.data_fields.each do |field|
+          @data_objects_at_location << obj if field.permissions[2,1] == "T"
+        end
+      end
+    @data_objects_at_location.uniq!
+  end
+
+	
+	def update_objects
 		@selected_location = Location.find(params[:value])
 		
 		@data_objects_at_location = []
@@ -125,7 +148,7 @@ class DataObjectsController < ApplicationController
     end
 	end
 	
-  def update_public_form_second
+  def update_form
     @selected_data_object = DataObject.find(params[:value])
     @data_entry = DataEntry.new
     #raise @selected_data_object.to_yaml

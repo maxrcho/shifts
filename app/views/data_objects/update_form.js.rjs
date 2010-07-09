@@ -1,0 +1,1 @@
+page.replace_html 'fields_for_object', :partial => 'data_objects/fields_for_object'
