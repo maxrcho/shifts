@@ -5,9 +5,10 @@
     <th>Name</th>
     <th>Kind</th>
 		<th>Location</th>
-		<th>Calendar</th>
     <th>Start</th>
     <th>End</th>
+    <th>Time of Day</th>
+    <th>Day of Week</th>
     <th>Interval</th>
     <th>Active</th>
   </tr>
@@ -16,10 +17,11 @@
   <tr>
     <td><%=h task.name %></td>
     <td><%=h task.kind %></td>
-    <td><%=h task.location_id %></td> <!-- rewrite to give actual location names w/ named scopes -->
-    <td><%=h task.calendar_id %></td>
-    <td><%=h task.start %></td>
-    <td><%=h task.end %></td>
+    <td><%=h Location.find_by_id(task.location_id).name %></td>
+    <td><%=h task.start.to_s(:just_date_long) %></td>
+    <td><%=h task.end.to_s(:just_date_long) %></td>
+    <td><%=h task.time_of_day.to_s(:am_pm) %></td>
+    <td><%=h task.day_in_week %></td>
     <td><%=h task.interval %></td>
     <td><%=h task.active %></td>
     <td><%= link_to 'Show', task %></td>

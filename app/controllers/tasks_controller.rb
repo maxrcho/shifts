@@ -82,4 +82,9 @@ class TasksController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
+  def make_entry
+    @task = Task.find(params[:id])
+    flash[:notice] = 'Task has been completed.'
+  end
 end

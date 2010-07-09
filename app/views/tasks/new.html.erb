@@ -24,6 +24,14 @@
     <%= f.datetime_select :end %>
   </p>
   <p>
+    <%= f.label :time_of_day %><br />
+    <%= f.time_select :time_of_day %>
+  </p>
+  <p>
+    <%= f.label :day_in_week %><br />
+    <%= select_tag 'task[day_in_week]', options_for_select(["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"], "Mon") %>
+  </p>
+  <p>
     <%= f.label :interval %> in minutes<br />
     <%= f.text_field :interval %>
   </p>

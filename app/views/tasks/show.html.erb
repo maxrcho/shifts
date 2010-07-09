@@ -10,22 +10,27 @@
 
 <p>
   <b>Location:</b>
-  <%=h @task.location_id %>
-</p>
-
-<p>
-  <b>Calendar:</b>
-  <%=h @task.calendar_id %>
+  <%= Location.find_by_id(@task.location_id).name %>
 </p>
 
 <p>
   <b>Start:</b>
-  <%=h @task.start %>
+  <%=h @task.start.to_s(:just_date_long) %>
 </p>
 
 <p>
   <b>End:</b>
-  <%=h @task.end %>
+  <%=h @task.end.to_s(:just_date_long) %>
+</p>
+
+<p>
+  <b>Time of Day:</b>
+  <%=h @task.time_of_day.to_s(:am_pm) %> %>
+</p>
+
+<p>
+  <b>Day in Week:</b>
+  <%=h @task.day_in_week %>
 </p>
 
 <p>
