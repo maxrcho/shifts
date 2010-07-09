@@ -35,18 +35,14 @@
 			<legend>Shift Tasks</legend>
 			<% @location = @report.shift.location %>
 			<% tasks = Task.in_location(@location) %>
-      <!-- <% tasks.each do |single_task| %>
-	      <%= single_task.name %>
-			  <%= check_box_tag("task", "make_entry", { :class => 'task' }) %>
-				<%= button_to( "Done", { :controller => :tasks, :action => 'make_entry' }, :id => single_task.id ) %>
-	      <br /> -->
+
       <% tasks.each do |task| %>
       <%= task.name %> : 
-      <% form_for(task) do |f| %>
-      <%= f.check_box :interval_completed %>
-        <%= f.submit "Update" %>
-      <br />
-      <% end %>
+	      <% form_for(task) do |f| %>
+		      <%= f.check_box :interval_completed %>
+		      <%= f.submit "Update" %>
+		      <br />
+	      <% end %>
       <% end %>
 		</fieldset>
 	
