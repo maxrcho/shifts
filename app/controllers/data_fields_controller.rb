@@ -53,15 +53,17 @@ class DataFieldsController < ApplicationController
 		else
 			@data_field.permissions[2,1] = 'F'
 		end
-		puts params.to_yaml
-    if @data_field.update_attributes(params[:data_field])
-			raise @data_field.to_yaml
-      flash[:notice] = "Successfully updated data field."
+	#	puts params.to_yaml
+    @data_field.update_attributes(params[:data_field])		
+		@data_field.save!
+		puts @data_field.to_yaml
+		puts DataField.find(3).permissions
+    flash[:notice] = "Successfully updated data field."
 			#raise @data_field.to_yaml
       redirect_to (params[:add_another] ? new_data_type_data_field_path(params[:data_type_id]) : data_type_path(params[:data_type_id]))
-    else
-      render :action => 'edit'
-  	end
+    #else
+    #  render :action => 'edit'
+  	#end
 	end
   
   def destroy
