@@ -97,6 +97,12 @@ class DataObjectsController < ApplicationController
         end
       end
     @locations.flatten!
+
+		unless @locations
+			@locations = Location.all
+		end
+		
+		@locations.uniq!
             
     @data_objects_at_location = []
       DataObject.all.each do |obj|

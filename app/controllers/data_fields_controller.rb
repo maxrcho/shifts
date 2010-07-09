@@ -1,6 +1,6 @@
 class DataFieldsController < ApplicationController
   before_filter :require_department_admin
-    before_filter :check_for_data_type, :except => :update_form
+  before_filter :check_for_data_type, :except => :update_form
   
   def index
     @data_fields = DataField.find_all_by_data_type_id(params[:data_type_id])
@@ -33,13 +33,28 @@ class DataFieldsController < ApplicationController
   end
   
   def update
-		#raise params.to_yaml
+	#	raise params.to_yaml
     @data_field = DataField.find(params[:id])
-    if params[:admin_permissions] ? @data_field.permissions[0,1] = 'T' : @data_field.permissions[0,1] = 'F'
-    if params[:private_permissions] ? @data_field.permissions[1,1] = 'T' : @data_field.permissions[1,1] = 'F'
-    if params[:public_permissions] ? @data_field.permissions[2,1] = 'T' : @data_field.permissions[2,1] = 'F'
-		#raise @data_field.to_yaml
-    if @data_field.update_attributes(params[:data_field]) && @data_field.save
+    if params[:admin_permissions]
+			puts "admin"
+			@data_field.permissions[0,1] = 'T'
+		else
+			@data_field.permissions[0,1] = 'F'
+		end
+		if params[:private_permissions]
+			puts "private"
+			@data_field.permissions[1,1] = 'T'
+		else
+			@data_field.permissions[1,1] = 'F'
+		end
+		if params[:public_permissions]
+			puts "public"
+			@data_field.permissions[2,1] = 'T'
+		else
+			@data_field.permissions[2,1] = 'F'
+		end
+    if @data_field.update_attributes(params[:data_field]) && @data_field.save!
+			puts @data_field.to_yaml
       flash[:notice] = "Successfully updated data field."
 			#raise @data_field.to_yaml
       redirect_to (params[:add_another] ? new_data_type_data_field_path(params[:data_type_id]) : data_type_path(params[:data_type_id]))
@@ -76,4 +91,5 @@ class DataFieldsController < ApplicationController
       redirect_to data_types_path
     end
   end
+
 end
