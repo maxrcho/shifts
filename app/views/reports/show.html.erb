@@ -23,7 +23,7 @@
       <legend>Useful Links</legend>
 			<ul id = "useful_links">
       	<div id = "report_useful_links">
-        	<%= render :partial => 'notices/report_useful_links' %>
+        	<%= 	render :partial => 'notices/report_useful_links' %>
       	</div>
 				<% if current_user.is_admin_of?(@report.shift.location.loc_group) %>
     			<li><%#= link_to_post_a_link %></li>
@@ -35,13 +35,24 @@
 			<legend>Shift Tasks</legend>
 			<% @location = @report.shift.location %>
 			<% tasks = Task.in_location(@location) %>
-      <% tasks.each do |single_task| %>
+      <!-- <% tasks.each do |single_task| %>
 	      <%= single_task.name %>
-			  <!-- <%= check_box_tag("task", "make_entry", { :class => 'task' }) %> -->
+			  <%= check_box_tag("task", "make_entry", { :class => 'task' }) %>
 				<%= button_to( "Done", { :controller => :tasks, :action => 'make_entry' }, :id => single_task.id ) %>
-	      <br />
+	      <br /> -->
+      <% tasks.each do |task| %>
+      <%= task.name %> : 
+      <% form_for(task) do |f| %>
+      <%= f.check_box :interval_completed %>
+        <%= f.submit "Update" %>
+      <br />
+      <% end %>
       <% end %>
 		</fieldset>
+	
+
+   <% #<input id="task_id" name="task[task_id]" value="", type="checkbox", class = "check">
+      #<%=link_to task, :action=>'update', :id=>task %> %>
 
 
   <div id="active_report_area">

@@ -87,4 +87,9 @@ class TasksController < ApplicationController
     @task = Task.find(params[:id])
     flash[:notice] = 'Task has been completed.'
   end
+
+  def accomplished
+      @task = Task.find(params[:id])
+      
+  end
 end
