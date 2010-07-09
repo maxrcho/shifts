@@ -90,50 +90,41 @@ class DataObjectsController < ApplicationController
   end
 
   def public
-    b = admin
-        lcoations = location_picker (b) + 
+    render :layout => 'public_form'
+    
+    location_picker(adm, pvt, pbl)
+    object_picker(adm, pvt, pbl)
+  end
+  
+  def private
+    status=private
+	  location_picker(adm, pvt, pbl)
+	  object_picker(adm, pvt, pbl)
+  end
+
+    
+	def location_picker (adm, pvt, pbl)
+	  @locations = []
+      DataType.all.each do |type|
+        type.data_fields.each do |field|
+          @locations << field.data_type.data_objects.collect{|obj| obj.locations}.uniq if adm || pvt || pbl
+        end
+      end
+    @locations.flatten!.uniq!
+  end
+  
+  def object_picker (adm, pvt, pbl)
     
     @data_objects_at_location = []
       DataObject.all.each do |obj|
         obj.data_type.data_fields.each do |field|
-          @data_objects_at_location << obj if field.permissions[2,1] == "T"
+          @data_objects_at_location << obj if adm || pvt || pbl
         end
       end
     @data_objects_at_location.uniq!
   end
 
-	def location_picker (b)
-	  @locations = []
-      DataType.all.each do |type|
-        type.data_fields.each do |field|
-          @locations << field.data_type.data_objects.collect{|obj| obj.locations}.uniq if field.b == "T"
-        end
-      end
-    @locations.flatten!.uniq!
-  end
-	
-	def private
-	  @locations = []
-      DataType.all.each do |type|
-        type.data_fields.each do |field|
-          @locations << field.data_type.data_objects.collect{|obj| obj.locations}.uniq if field.permissions[2,1] == "T" || field.permission[2,1] == "T"
-        end
-      end
-    @locations.flatten!.uniq!
-	  @data_objects_at_location = []
-
-      DataObject.all.each do |obj|
-        obj.data_type.data_fields.each do |field|
-          @data_objects_at_location << obj if field.permissions[2,1] == "T"
-        end
-      end
-   	@data_objects_at_location.uniq! if @data_objects_at_location
-		render :layout => 'public_form'
-  end
-
-	
-
-def update_objects
+  def update_objects
 		@selected_location = Location.find(params[:value])
 		
 		@data_objects_at_location = []
@@ -149,7 +140,7 @@ def update_objects
 		respond_to do |format|
       format.js
     end
-	end
+  end
 	
   def update_form
     @selected_data_object = DataObject.find(params[:value])
