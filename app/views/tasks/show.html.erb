@@ -37,7 +37,11 @@
   <b>Active:</b>
   <%=h @task.active %>
 </p>
-
+	
+<p> 
+  <b>Accomplished:</b>
+  <%=h @task.interval_completed %>
+</p>
 
 <%= link_to 'Edit', edit_task_path(@task) %> |
 <%= link_to 'Back', tasks_path %>

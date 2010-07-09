@@ -23,7 +23,7 @@
       <legend>Useful Links</legend>
 			<ul id = "useful_links">
       	<div id = "report_useful_links">
-        	<%= render :partial => 'notices/report_useful_links' %>
+        	<%= 	render :partial => 'notices/report_useful_links' %>
       	</div>
 				<% if current_user.is_admin_of?(@report.shift.location.loc_group) %>
     			<li><%#= link_to_post_a_link %></li>
@@ -35,20 +35,19 @@
 			<legend>Shift Tasks</legend>
 			<% @location = @report.shift.location %>
 			<% tasks = Task.in_location(@location) %>
-      <% tasks.each do |thing| %>
-      <%= thing.name %>
-      <ul class="checkbox-list">
-      <% tasks.each do |task| -%>
-      <li><%= check_box_tag "task[task_ids][]", task.id, task_done?(task) -%> 
-      <%= task.boxcheck -%></li>
- 
-       <% end -%>
-      </ul>
-      
-
+      <% tasks.each do |task| %>
+      <%= task.name %> : 
+      <% form_for(task) do |f| %>
+      <%= f.check_box :interval_completed %>
+        <%= f.submit "Update" %>
       <br />
       <% end %>
+      <% end %>
 		</fieldset>
+	
+
+   <% #<input id="task_id" name="task[task_id]" value="", type="checkbox", class = "check">
+      #<%=link_to task, :action=>'update', :id=>task %> %>
 
 
   <div id="active_report_area">

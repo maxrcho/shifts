@@ -82,4 +82,10 @@ class TasksController < ApplicationController
       format.xml  { head :ok }
     end
   end
+
+  def accomplished
+      @task = Task.find(params[:id])
+      
+  end
+
 end
