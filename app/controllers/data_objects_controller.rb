@@ -90,10 +90,12 @@ class DataObjectsController < ApplicationController
   end
 
   def public
+		@locations = Location.all
+
+    @data_objects_at_location = DataObject.all
+    location_picker
+    object_picker
     render :layout => 'public_form'
-    
-    location_picker(adm, pvt, pbl)
-    object_picker(adm, pvt, pbl)
   end
   
   def private
@@ -103,25 +105,27 @@ class DataObjectsController < ApplicationController
   end
 
     
-	def location_picker (adm, pvt, pbl)
+	def location_picker 
 	  @locations = []
       DataType.all.each do |type|
         type.data_fields.each do |field|
-          @locations << field.data_type.data_objects.collect{|obj| obj.locations}.uniq if adm || pvt || pbl
+          @locations << field.data_type.data_objects.collect{|obj| obj.locations}.uniq 
         end
       end
     @locations.flatten!.uniq!
   end
   
-  def object_picker (adm, pvt, pbl)
+  def object_picker 
     
     @data_objects_at_location = []
       DataObject.all.each do |obj|
         obj.data_type.data_fields.each do |field|
-          @data_objects_at_location << obj if adm || pvt || pbl
+          @data_objects_at_location << obj 
         end
       end
+		raise @data_objects_at_location.to_yaml
     @data_objects_at_location.uniq!
+
   end
 
   def update_objects

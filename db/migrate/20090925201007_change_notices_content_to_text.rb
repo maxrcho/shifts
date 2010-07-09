@@ -4,6 +4,6 @@ class ChangeNoticesContentToText < ActiveRecord::Migration
   end
 
   def self.down
-        change_column :notices, :content, :string
+		change_column :notices, :content, :string
   end
 end

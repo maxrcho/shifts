@@ -17,9 +17,9 @@ class DataFieldsController < ApplicationController
   def create
     @data_field = DataField.new(params[:data_field])
     @data_field.data_type_id = params[:data_type_id]
-    @data_field.permissions[0,1] = 'T' if params[:admin_permissions]
-    @data_field.permissions[1,1] = 'T' if params[:private_permissions]
-    @data_field.permissions[2,1] = 'T' if params[:public_permissions]
+    params[:data_field][:admin] == "1" ? @data_field.admin = true : @data_field.admin = false
+    params[:data_field][:public] == "1" ? @data_field.public = true : @data_field.public = false
+    params[:data_field][:private] == "1" ? @data_field.private = true : @data_field.private = false
     if @data_field.save
       flash[:notice] = "Successfully created data field."
       redirect_to (params[:add_another] ? new_data_type_data_field_path(params[:data_type_id]) : (data_type_path(params[:data_type_id]) ))
@@ -33,37 +33,17 @@ class DataFieldsController < ApplicationController
   end
   
   def update
-	#	raise params.to_yaml
     @data_field = DataField.find(params[:id])
-    if params[:admin_permissions]
-			puts "admin"
-			@data_field.permissions[0,1] = 'T'
-		else
-			@data_field.permissions[0,1] = 'F'
-		end
-		if params[:private_permissions]
-			puts "private"
-			@data_field.permissions[1,1] = 'T'
-		else
-			@data_field.permissions[1,1] = 'F'
-		end
-		if params[:public_permissions]
-			puts "public"
-			@data_field.permissions[2,1] = 'T'
-		else
-			@data_field.permissions[2,1] = 'F'
-		end
-	#	puts params.to_yaml
-    @data_field.update_attributes(params[:data_field])		
-		@data_field.save!
-		puts @data_field.to_yaml
-		puts DataField.find(3).permissions
-    flash[:notice] = "Successfully updated data field."
-			#raise @data_field.to_yaml
+		@data_field.update_attributes(params[:data_field])	
+    params[:data_field][:admin] == "1" ? @data_field.admin = true : @data_field.admin = false
+    params[:data_field][:public] == "1" ? @data_field.public = true : @data_field.public = false
+    params[:data_field][:private] == "1" ? @data_field.private = true : @data_field.private = false
+		if @data_field.save
+    	flash[:notice] = "Successfully updated data field."
       redirect_to (params[:add_another] ? new_data_type_data_field_path(params[:data_type_id]) : data_type_path(params[:data_type_id]))
-    #else
-    #  render :action => 'edit'
-  	#end
+    else
+      render :action => 'edit'
+  	end
 	end
   
   def destroy

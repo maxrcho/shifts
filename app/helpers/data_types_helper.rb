@@ -12,11 +12,11 @@ module DataTypesHelper
     end
   end
 
-	def display_data_field_permissions(permissions)
+	def display_data_field_permissions(field)
 		display = []
-		display << "Admin" if permissions[0,1] == 'T'
-		display << "Private" if permissions[1,1] == 'T'
-		display << "Public" if permissions[2,2] == 'T'
+		display << "Admin" if field.admin
+		display << "Private" if field.private
+		display << "Public" if field.public
 		return display.to_sentence
 	end
 end
