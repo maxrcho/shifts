@@ -1,0 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title><%= h(yield(:title) || 'Shifts') %></title>
+    <%= stylesheet_link_tag 'reset', 'application', 'nav' %>
+    <%= javascript_include_tag 'application', 'jquery','jquery-ui','jquery.tablesorter', 'jrails', 'jquery.tokeninput' %>
+    <%= yield(:head) %>
+    <link rel="icon" href="/favicon.ico" type="image/ico" />
+  </head>
+  <body>
+    <!-- Start pagebox container -->
+    <div id="pagebox">
+      <div id="page_header">
+        <h2 class="page_header">
+          <a title="Shifts by Yale Unversity" href="http://github.com/YaleSTC/shifts">Shifts by Yale University</a>
+        </h2>
+      </div>
+      <div id="main_banner">
+      </div>
+     
+
