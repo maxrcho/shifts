@@ -1,6 +1,7 @@
 class TasksController < ApplicationController
   # GET /tasks
   # GET /tasks.xml
+
   def index
     @tasks = Task.all
 
