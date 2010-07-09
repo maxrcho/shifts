@@ -9,4 +9,9 @@ module DataFieldsHelper
     prefix = data_field.new_record? ? 'new' : 'existing'
     fields_for("data_type[#{prefix}_data_field_attributes][]", data_field, &block)
   end
+
+	def permission_check(place)
+		return true if @data_field.permissions[place,1] == 'T'
+		false
+	end
 end

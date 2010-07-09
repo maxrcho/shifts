@@ -1,7 +1,7 @@
 <% remote_form_for [@selected_data_object, @data_entry] do |f| %>
 	  <%= f.error_messages %>
 
-<h3><%= label_tag 'Form' %></h3>
+<h3><%= label_tag 'Problem' %></h3>
 
 <% @fields_for_object.each do |field| %>
 	<% args = field.prepare_form_helpers %>

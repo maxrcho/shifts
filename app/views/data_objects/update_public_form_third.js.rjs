@@ -1,1 +1,0 @@
-page.replace_html "public_fields_for_object", :partial => "public_fields_for_data_object"
