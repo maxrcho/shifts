@@ -109,25 +109,13 @@ class DataObjectsController < ApplicationController
       DataType.all.each do |type|
         type.data_fields.each do |field|
           @locations << field.data_type.data_objects.collect{|obj| obj.locations}.uniq 
-          
-          if adm
-            a = field.admin
-          end
-          if pvt
-            b = field.private
-          end
-          if pbl
-            c = field.public
-          end
-           
+          a = field.admin if adm
+          b = field.private if pvt
+          c = field.public if pbl
           @locations << field.data_type.data_objects.collect{|obj| obj.locations}.uniq if a || b || c
         end
       end
-    if @locations 
-      @locations.flatten!.uniq!
-    else 
-      @locations = Location.all
-    end
+    @locations.nil? ? @locations.flatten!.uniq! : @locations = Location.all
   end
   
   def object_picker(adm, pvt, pbl)
@@ -136,23 +124,13 @@ class DataObjectsController < ApplicationController
       DataObject.all.each do |obj|
         obj.data_type.data_fields.each do |field|
           @data_objects_at_location << obj 
-          
-          if adm
-            a = field.admin
-          end
-          if pvt
-            b = field.private
-          end
-          if pbl
-            c = field.public
-          end
-          
+          a = field.admin if adm
+          b = field.private if pvt
+          c = field.public if pbl
           @data_objects_at_location << obj if a || b || c
         end
       end
-		raise @data_objects_at_location.to_yaml
     @data_objects_at_location.uniq!
-
   end
 
   def update_objects(adm, pvt, pbl)
@@ -162,18 +140,10 @@ class DataObjectsController < ApplicationController
 		
 		@selected_location.data_objects.each do |obj|
 	    obj.data_type.data_fields.each do |field|
-	      
-	      if adm
-          a = field.admin
-        end
-        if pvt
-          b = field.private
-        end
-        if pbl
-          c = field.public
-        end
-	      
-	      @data_objects_at_location << obj if a || b || c
+			 	a = field.admin if adm
+		    b = field.private if pvt
+		    c = field.public if pbl
+			  @data_objects_at_location << obj if a || b || c
 	    end
     end
 
