@@ -90,13 +90,8 @@ class DataObjectsController < ApplicationController
   end
 
   def public
-		@locations = Location.all
-
-    @data_objects_at_location = DataObject.all
-    location_picker
-    object_picker
-    #location_picker (false, false, true)
-    #object_picker(false, false, true)
+		location_picker(false, false, true)
+    object_picker(false, false, true)
     @locations = Location.all
     @data_objects_at_location = DataObject.all
     render :layout => 'public_form'
@@ -109,7 +104,7 @@ class DataObjectsController < ApplicationController
   end
 
     
-	def location_picker 
+	def location_picker(adm, pvt, pbl)
 	  @locations = []
       DataType.all.each do |type|
         type.data_fields.each do |field|
@@ -135,7 +130,7 @@ class DataObjectsController < ApplicationController
     end
   end
   
-  def object_picker 
+  def object_picker(adm, pvt, pbl)
     
     @data_objects_at_location = []
       DataObject.all.each do |obj|
@@ -160,7 +155,7 @@ class DataObjectsController < ApplicationController
 
   end
 
-  def update_objects
+  def update_objects(adm, pvt, pbl)
 		@selected_location = Location.find(params[:value])
 		
 		@data_objects_at_location = []
