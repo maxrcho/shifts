@@ -4,7 +4,7 @@
 <% @fields_for_object.each do |field| %>
 	<% args = field.prepare_form_helpers %>
     	<p class="indented">
-      		<%= label "data_fields[#{field.id}]", "#{field.name}" %>:<br />
+      		<%= label "data_fields[#{field.id}]", "#{field.name}" %><br />
         	<% if ["text_field", "select", "text_area"].include? field.display_type %>
         		<%= send(field.display_type, *args) %>
       		<% elsif ["check_box", "radio_button"].include? field.display_type %>
@@ -16,7 +16,7 @@
     	</p>
 <% end %>
 
-<% if current_user.current_shift %>
+<% if @report_page %>
 	<%= hidden_field_tag "what_page", "report"%>
 <% end %>
 

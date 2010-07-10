@@ -1,26 +1,22 @@
 <% title "Update Data Objects"%>
 
 <body>
-	<p>
-		<h3><%= label_tag 'Location' %></h3>
- 		<%= collection_select(:location, :id, @locations, :id, :name, options ={:prompt => "Select a location"}) %><br/>
-	</p>
-
-	<%= observe_field('location_id',
-	:url => {:controller => :data_objects,
-         	:action => :update_objects, 
-         	:layout => false},
-	:with => :value,          
-	:on => "change")%>
 	
+	<div id = 'object_location'>
+		<p>
+			<h3><%= render :partial => 'object_location'%>
+		</p>
+	</div>
 	
 	<div id = 'data_objects_at_location'>
 		<p>
+			<h3><%= label_tag 'Item' %></h3>
 			<%= render :partial => 'data_objects_at_location' %>
 		</p>
 	</div>
-		<p>	
-			<div id = 'fields_for_object'></div>
-		</p>
+		
+	<p>	
+		<div id = 'fields_for_object'></div>
+	</p>
 
 </body>

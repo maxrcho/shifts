@@ -3,8 +3,8 @@ class DataObjectsController < ApplicationController
 # Needs views revised for non-ajax degradeability -ben
 # Note: there are good reasons not to do this by merely hiding the group_by divs
   
-  skip_before_filter CASClient::Frameworks::Rails::Filter, :only => [:public, :update_public_form_first, :update_public_form_second]
-  skip_before_filter :login_check, :only => [:public, :update_public_form_first, :update_public_form_second]
+  skip_before_filter CASClient::Frameworks::Rails::Filter, :only => [:public, :update_objects, :update_form]
+  skip_before_filter :login_check, :only => [:public, :update_objects, :update_form]
   
   def index
     @data_objects = current_department.data_objects
@@ -90,16 +90,17 @@ class DataObjectsController < ApplicationController
   end
 
   def public
+    #location_picker (false, false, true)
+    #object_picker(false, false, true)
+    @locations = Location.all
+    @data_objects_at_location = DataObject.all
     render :layout => 'public_form'
-    
-    location_picker(adm, pvt, pbl)
-    object_picker(adm, pvt, pbl)
   end
   
   def private
-    status=private
-	  location_picker(adm, pvt, pbl)
-	  object_picker(adm, pvt, pbl)
+    adm = current_user.is_admin_of?(current_department)
+	  location_picker(adm, true, true)
+	  object_picker(adm, true, true)
   end
 
     
@@ -107,10 +108,25 @@ class DataObjectsController < ApplicationController
 	  @locations = []
       DataType.all.each do |type|
         type.data_fields.each do |field|
-          @locations << field.data_type.data_objects.collect{|obj| obj.locations}.uniq if adm || pvt || pbl
+          
+          if adm
+            a = field.admin
+          end
+          if pvt
+            b = field.private
+          end
+          if pbl
+            c = field.public
+          end
+           
+          @locations << field.data_type.data_objects.collect{|obj| obj.locations}.uniq if a || b || c
         end
       end
-    @locations.flatten!.uniq!
+    if @locations 
+      @locations.flatten!.uniq!
+    else 
+      @locations = Location.all
+    end
   end
   
   def object_picker (adm, pvt, pbl)
@@ -118,7 +134,18 @@ class DataObjectsController < ApplicationController
     @data_objects_at_location = []
       DataObject.all.each do |obj|
         obj.data_type.data_fields.each do |field|
-          @data_objects_at_location << obj if adm || pvt || pbl
+          
+          if adm
+            a = field.admin
+          end
+          if pvt
+            b = field.private
+          end
+          if pbl
+            c = field.public
+          end
+          
+          @data_objects_at_location << obj if a || b || c
         end
       end
     @data_objects_at_location.uniq!
@@ -131,7 +158,18 @@ class DataObjectsController < ApplicationController
 		
 		@selected_location.data_objects.each do |obj|
 	    obj.data_type.data_fields.each do |field|
-	      @data_objects_at_location << obj if field.permissions[2,1] == "T"
+	      
+	      if adm
+          a = field.admin
+        end
+        if pvt
+          b = field.private
+        end
+        if pbl
+          c = field.public
+        end
+	      
+	      @data_objects_at_location << obj if a || b || c
 	    end
     end
 
