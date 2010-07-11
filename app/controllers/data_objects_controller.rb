@@ -90,7 +90,7 @@ class DataObjectsController < ApplicationController
   end
 
   def public
-		@adinm = false
+		@admin = false
 		@private = false
 		@public = true
 		location_picker(@admin, @private, @public)

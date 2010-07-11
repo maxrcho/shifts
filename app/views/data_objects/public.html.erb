@@ -3,20 +3,16 @@
 <body>
 	
 	<div id = 'object_location'>
-		<p>
-			<h3><%= render :partial => 'object_location'%>
-		</p>
+		<p><h3><%= render :partial => 'object_location'%></p>
 	</div>
 	
+	<p>
+	<h3><%= label_tag 'Item' %></h3>
 	<div id = 'data_objects_at_location'>
-		<p>
-			<h3><%= label_tag 'Item' %></h3>
-			<%= render :partial => 'data_objects_at_location'%>
-		</p>
+		<%= render :partial => 'data_objects_at_location'%>
 	</div>
-		
-	<p>	
-		<div id = 'fields_for_object'></div>
 	</p>
+		
+	<p><div id = 'fields_for_object'></div></p>
 
 </body>
