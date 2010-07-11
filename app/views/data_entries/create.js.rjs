@@ -1,11 +1,9 @@
 #This is almost a line-for-line copy of report_items/create.js.rjs
 #Should be improved at a later date -ben
 if @on_report_page
-page.alert "On report page"
 page.replace_html "all_report_items", :partial => 'reports/report_item', :collection => @report.report_items
 page.visual_effect :highlight, "current_report_item", :color => '#3bcc77', :duration => 2.0
 page[:new_report_item].reset
 else
-page.alert "Not on report page"
 page.reload
 end
