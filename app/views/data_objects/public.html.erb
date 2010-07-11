@@ -1,7 +1,11 @@
 <% title "Report a problem"%>
 
 <body>
-	
+	<p>
+		<h3><%= label_tag 'E-mail' %><h3>
+		<%= text_field_tag 'email'%>
+	</p>
+		
 	<div id = 'object_location'>
 		<p><h3><%= render :partial => 'object_location'%></p>
 	</div>

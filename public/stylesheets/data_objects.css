@@ -1,3 +1,15 @@
 p.indented {
 	padding-left: 20px;
 }
+#email {
+	width:124px;
+}
+#location_id {
+	width:130px;
+}
+#data_object_id {
+	width:130px;
+}
+#location_id option {
+	width:300px;
+}
