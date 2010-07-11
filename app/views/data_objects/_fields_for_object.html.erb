@@ -1,7 +1,7 @@
 <% remote_form_for [@selected_data_object, @data_entry] do |f| %>
 	  <%= f.error_messages %>
 
-<% @fields_for_object.each do |field| %>
+<% @allowed_fields_for_object.each do |field| %>
 	<% args = field.prepare_form_helpers %>
     	<p class="indented">
       		<%= label "data_fields[#{field.id}]", "#{field.name}" %><br />

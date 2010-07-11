@@ -90,17 +90,20 @@ class DataObjectsController < ApplicationController
   end
 
   def public
-		location_picker(false, false, true)
-    object_picker(false, false, true)
-    @locations = Location.all
-    @data_objects_at_location = DataObject.all
+		adm = false
+		pvt = false
+		pbl = true
+		location_picker(adm, pvt, pbl)
+    object_picker(adm, pvt, pbl)
     render :layout => 'public_form'
   end
   
   def private
     adm = current_user.is_admin_of?(current_department)
-	  location_picker(adm, true, true)
-	  object_picker(adm, true, true)
+    pvt = true
+    pbl = true
+	  location_picker(adm, pvt, pbl)
+	  object_picker(adm, pvt, pbl)
   end
 
     
@@ -115,7 +118,7 @@ class DataObjectsController < ApplicationController
           @locations << field.data_type.data_objects.collect{|obj| obj.locations}.uniq if a || b || c
         end
       end
-    @locations.nil? ? @locations.flatten!.uniq! : @locations = Location.all
+      @locations.nil? ?  @locations = Location.all : @locations.flatten!.uniq!
   end
   
   def object_picker(adm, pvt, pbl)
@@ -123,7 +126,6 @@ class DataObjectsController < ApplicationController
     @data_objects_at_location = []
       DataObject.all.each do |obj|
         obj.data_type.data_fields.each do |field|
-          @data_objects_at_location << obj 
           a = field.admin if adm
           b = field.private if pvt
           c = field.public if pbl
@@ -133,16 +135,19 @@ class DataObjectsController < ApplicationController
     @data_objects_at_location.uniq!
   end
 
-  def update_objects(adm, pvt, pbl)
+  def update_objects
+    raise params.to_yaml
 		@selected_location = Location.find(params[:value])
 		
 		@data_objects_at_location = []
 		
 		@selected_location.data_objects.each do |obj|
 	    obj.data_type.data_fields.each do |field|
-			 	a = field.admin if adm
-		    b = field.private if pvt
-		    c = field.public if pbl
+			 	
+			 	a = field.admin if current_user.is_admin_of?(current_department) if params[:pvt]
+		    b = field.private if current_user if params[:pvt]
+	      c = field.public
+			  
 			  @data_objects_at_location << obj if a || b || c
 	    end
     end
@@ -155,10 +160,20 @@ class DataObjectsController < ApplicationController
   end
 	
   def update_form
+    #raise params.to_yaml
     @selected_data_object = DataObject.find(params[:value])
     @data_entry = DataEntry.new
-    #raise @selected_data_object.to_yaml
-  	@fields_for_object = @selected_data_object.data_type.data_fields
+    @allowed_fields_for_object = []
+  
+  	@selected_data_object.data_type.data_fields.each do |field|
+  	  
+  	  a = field.admin if current_user.is_admin_of?(current_department) if params[:pvt]
+	    b = field.private if current_user if params[:pvt]
+      c = field.public
+		  
+		  @allowed_fields_for_object << field if a || b || c
+		  
+		end
   
   	respond_to do |format|
   	  format.js

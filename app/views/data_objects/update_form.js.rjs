@@ -1,1 +1,1 @@
-page.replace_html 'fields_for_object', :partial => 'data_objects/fields_for_object'
+page.replace_html 'fields_for_object', :partial => 'data_objects/fields_for_object', :locals => { :adm => :adm, :pvt => :pvt, :pbl => :pbl }
