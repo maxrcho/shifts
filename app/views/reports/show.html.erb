@@ -41,6 +41,7 @@ w<% title "Shift Report: #{@report.shift.location.name}"%>
 	      <% form_for(task) do |f| %>
 		      <%= f.check_box :interval_completed %>
 					<%= @report.shift %>
+					<% @shifts_task = ShiftsTask.new %>
 		      <%= f.submit "Update" %>
 		      <br />
 	      <% end %>

@@ -9,7 +9,7 @@ class Shift < ActiveRecord::Base
   has_one :report, :dependent => :destroy
   has_many :sub_requests, :dependent => :destroy
   has_many :shifts_tasks
-  has_many :tasks, :through => :shift_tasks
+  has_many :tasks, :through => :shifts_tasks
   before_update :disassociate_from_repeating_event
   before_validation :join_date_and_time
 
@@ -433,7 +433,7 @@ class Shift < ActiveRecord::Base
   end
 
   def start_less_than_end
-    errors.add(:start, "must be earlier than end time") if (self.end <= self.start)
+    errors.add(:start, "must be earlier than end time") if (self.end <= start)
   end
 
   def shift_is_within_time_slot

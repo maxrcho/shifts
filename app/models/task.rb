@@ -1,6 +1,6 @@
 class Task < ActiveRecord::Base
   has_many :shifts_tasks
-  has_many :shifts, :through => :shift_tasks
+  has_many :shifts, :through => :shifts_tasks
   belongs_to :location
   
   validates_presence_of :name, :kind
