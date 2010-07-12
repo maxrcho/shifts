@@ -124,7 +124,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.rt_add_job '/rt', :controller => 'hooks', :action => 'add_job'
 
-	map.public_view '/public/shifts/:cluster/:date', :controller => 'public_view', :action => 'index'
+	map.public_view '/public/shifts/:location/:date', :controller => 'public_view', :action => 'index'
 
   # The priority is based upon order of creation: first created -> highest priority.
 

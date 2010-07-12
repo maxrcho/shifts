@@ -1,1 +1,16 @@
-<%= @cluster.short_name %>
+<ul>
+<li>Location:  <%= @location.short_name -%></li>
+<li>Date:  <%= @date %></li>               
+<li>Start  <%= @start %></li>               
+<li>End:  <%= @end %></li>               
+<% for shift in @shifts %>
+  <li><%= shift.name_and_time %></li>
+<% end %>
+<% for time in @time_array %>
+  <li><%= time[0] %></li>
+  <ul>
+    <% for shift in time[1]%>
+      <li><%= shift.name_and_time %></li>  
+    <% end %>
+  </ul>
+<% end %>
