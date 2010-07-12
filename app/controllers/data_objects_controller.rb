@@ -91,7 +91,7 @@ class DataObjectsController < ApplicationController
 
   def public
 		@admin = false
-		@private = false
+		@private = true if current_user
 		@public = true
 		location_picker(@admin, @private, @public)
     object_picker(@admin, @private, @public)
