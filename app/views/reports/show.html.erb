@@ -40,8 +40,9 @@
       <%= task.name %> : 
 	      <% form_for(task) do |f| %>
 		      <%= f.check_box :interval_completed %>
-					<%= @report.shift %>
+					<%= @report.shift.user.name %>
 					<% @shifts_task = ShiftsTask.new %>
+					<% @shifts_task.save %>
 		      <%= f.submit "Update" %>
 		      <br />
 	      <% end %>
