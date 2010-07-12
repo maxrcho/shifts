@@ -26,20 +26,22 @@
         	<%= 	render :partial => 'notices/report_useful_links' %>
       	</div>
 				<% if current_user.is_admin_of?(@report.shift.location.loc_group) %>
-    			<li><%#= link_to_post_a_link %></li>
+    				<li><%= link_to_post_a_link %></li>
 				<% end %>
+
 			</ul>
     </fieldset>
 
-		<fieldset class="index" id = "shift_tasks">
+		<fieldset class="index" id = "shifts_tasks">
 			<legend>Shift Tasks</legend>
 			<% @location = @report.shift.location %>
 			<% tasks = Task.in_location(@location) %>
-
       <% tasks.each do |task| %>
       <%= task.name %> : 
 	      <% form_for(task) do |f| %>
 		      <%= f.check_box :interval_completed %>
+					<%= @report.shift %>
+					<% @shifts_task = ShiftsTask.new %>
 		      <%= f.submit "Update" %>
 		      <br />
 	      <% end %>

@@ -27,7 +27,7 @@
 
 <p>
   <b>Time of Day:</b>
-  <%=h @task.time_of_day.to_s(:am_pm) %> %>
+  <%=h @task.time_of_day.to_s(:am_pm) %>
 </p>
 
 <p>
@@ -36,18 +36,8 @@
 </p>
 
 <p>
-  <b>Interval:</b>
-  <%=h @task.interval %>
-</p>
-
-<p>
   <b>Active:</b>
   <%=h @task.active %>
-</p>
-	
-<p> 
-  <b>Accomplished:</b>
-  <%=h @task.interval_completed %>
 </p>
 
 <%= link_to 'Edit', edit_task_path(@task) %> |

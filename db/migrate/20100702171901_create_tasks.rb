@@ -6,7 +6,6 @@ class CreateTasks < ActiveRecord::Migration
       t.string :kind
       t.datetime :start
       t.datetime :end
-      t.integer :interval
       t.boolean :interval_completed, :default => false
       t.time :time_of_day
       t.string :day_in_week

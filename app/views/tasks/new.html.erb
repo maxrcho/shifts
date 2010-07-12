@@ -32,10 +32,6 @@
     <%= select_tag 'task[day_in_week]', options_for_select(["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"], "Mon") %>
   </p>
   <p>
-    <%= f.label :interval %> in minutes<br />
-    <%= f.text_field :interval %>
-  </p>
-  <p>
     <%= f.label :active %><br />
     <%= f.check_box :active %>
   </p>

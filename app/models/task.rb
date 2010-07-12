@@ -1,9 +1,9 @@
 class Task < ActiveRecord::Base
-  #has_and_belongs_to_many :shifts
+  has_many :shifts_tasks
+  has_many :shifts, :through => :shifts_tasks
   belongs_to :location
   
   validates_presence_of :name, :kind
-  validates_numericality_of :interval, :greater_than => 0
   validate :start_less_than_end
   
   named_scope :active, lambda {{:conditions => {:active => true}}}
