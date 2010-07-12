@@ -1,6 +1,7 @@
 class Payform < ActiveRecord::Base
 
   has_many :payform_items
+  has_and_belongs_to_many :item_sets, :class_name => PayformItem, :join_table => 'payform_items_payforms'
   belongs_to :payform_set
   belongs_to :department
   belongs_to :user

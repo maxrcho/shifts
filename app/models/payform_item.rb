@@ -10,6 +10,8 @@ class PayformItem < ActiveRecord::Base
   #  /______\
   #    |__|
 
+  has_and_belongs_to_many :added_payforms, :join_table => 'payform_items_payforms', :class_name => "Payform"
+
   belongs_to :payform
   belongs_to :payform_item_set
   belongs_to :category
