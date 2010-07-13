@@ -1,0 +1,16 @@
+<strong>Data fields:</strong>
+    <ul>
+      <% for field in data_type.data_fields %>
+        <li>
+          <strong><%= field.name %></strong>
+          <%= link_to "[edit]", edit_data_type_data_field_path(data_type, field) %>
+          <%= link_to "[x]", data_type_data_field_path(data_type, field), :confirm => 'Delete this data field?', :method => :delete %>
+        </li>
+        <ul style="margin-left: 1em">
+          <li>Type: <%= field.display_type.humanize %>
+					<li>Help text: <%= field.help_text %>
+          <li>Values: <%= (field.values.nil? or field.values.empty?) ? "none" : field.values %>
+					<li>Permissions: <%= display_data_field_permissions(field) %>        
+				</ul>
+      <% end %>
+    </ul>

@@ -1,45 +1,205 @@
 --- 
 data_fields_001: 
-  created_at: 2009-07-02 22:11:53
-  data_type_id: "2"
-  display_type: radio_button
-  exact_alert: 
-  id: "1"
-  lower_bound: 
-  name: Orientation
-  updated_at: 2009-07-02 22:11:53
-  upper_bound: 
-  values: Good, Evil
-data_fields_002: 
-  created_at: 2009-07-02 22:11:53
-  data_type_id: "2"
-  display_type: select
-  exact_alert: 
-  id: "2"
-  lower_bound: 
-  name: Model
-  updated_at: 2009-07-02 22:11:53
-  upper_bound: 
-  values: YT-1300 light freighter, Death Star, Firefly
-data_fields_003: 
-  created_at: 2009-07-02 22:11:53
-  data_type_id: "1"
-  display_type: check_box
-  exact_alert: 
-  id: "3"
-  lower_bound: 
-  name: fur color
-  updated_at: 2009-07-02 22:11:53
-  upper_bound: 
-  values: tabby, brown, orange, white
-data_fields_004: 
-  created_at: 2009-07-02 22:11:53
+  active: "1"
+  created_at: 2009-09-15 16:00:31
   data_type_id: "1"
   display_type: text_field
   exact_alert: 
+  id: "1"
+  lower_bound: 
+  name: Page Count
+  updated_at: 2010-04-02 15:18:43
+  upper_bound: 
+  values: 
+data_fields_002: 
+  active: "1"
+  created_at: 2009-09-15 16:01:07
+  data_type_id: "1"
+  display_type: select
+  exact_alert: ""
+  id: "2"
+  lower_bound: 
+  name: Is there a spare toner?
+  updated_at: 2010-04-02 15:18:23
+  upper_bound: 
+  values: Yes, No
+data_fields_003: 
+  active: "1"
+  created_at: 2009-09-15 16:01:16
+  data_type_id: "1"
+  display_type: text_field
+  exact_alert: 
+  id: "3"
+  lower_bound: 
+  name: Reams Added
+  updated_at: 2010-04-02 15:18:18
+  upper_bound: 
+  values: 
+data_fields_004: 
+  active: "1"
+  created_at: 2009-09-21 01:55:49
+  data_type_id: "2"
+  display_type: text_field
+  exact_alert: 
   id: "4"
-  lower_bound: "0.0"
-  name: number of lives
-  updated_at: 2009-07-02 22:11:53
-  upper_bound: "9.0"
+  lower_bound: 
+  name: "Boxes of Paper (ex: for 6 reams enter \".6\")"
+  updated_at: 2010-04-05 15:24:59
+  upper_bound: 
+  values: 
+data_fields_005: 
+  active: "1"
+  created_at: 2009-09-28 20:40:47
+  data_type_id: "3"
+  display_type: text_field
+  exact_alert: 
+  id: "5"
+  lower_bound: 
+  name: Reams Added
+  updated_at: 2010-04-02 15:17:46
+  upper_bound: 
+  values: 
+data_fields_006: 
+  active: "1"
+  created_at: 2009-09-28 20:41:07
+  data_type_id: "3"
+  display_type: text_field
+  exact_alert: 
+  id: "7"
+  lower_bound: 
+  name: B&W Page Count
+  updated_at: 2010-04-02 15:17:40
+  upper_bound: 
+  values: 
+data_fields_007: 
+  active: "1"
+  created_at: 2009-09-28 20:41:24
+  data_type_id: "3"
+  display_type: text_field
+  exact_alert: 
+  id: "8"
+  lower_bound: 
+  name: Color Page Count
+  updated_at: 2010-04-02 15:17:32
+  upper_bound: 
+  values: 
+data_fields_008: 
+  active: "1"
+  created_at: 2009-09-28 20:41:42
+  data_type_id: "3"
+  display_type: select
+  exact_alert: ""
+  id: "9"
+  lower_bound: 
+  name: Is there a spare toner?
+  updated_at: 2010-04-02 15:17:25
+  upper_bound: 
+  values: Yes, No
+data_fields_009: 
+  active: "1"
+  created_at: 2009-10-12 15:35:04
+  data_type_id: "4"
+  display_type: select
+  exact_alert: ""
+  id: "10"
+  lower_bound: 
+  name: What Cluster?
+  updated_at: 2009-10-12 15:35:04
+  upper_bound: 
+  values: TTO, Bass Cluster, Dunham, CT Hall
+data_fields_010: 
+  active: "1"
+  created_at: 2009-10-12 15:35:16
+  data_type_id: "4"
+  display_type: text_field
+  exact_alert: 
+  id: "11"
+  lower_bound: 
+  name: Supplies Requested
+  updated_at: 2009-10-12 15:35:16
+  upper_bound: 
+  values: 
+data_fields_011: 
+  active: "1"
+  created_at: 2010-01-27 20:50:00
+  data_type_id: "5"
+  display_type: text_area
+  exact_alert: 
+  id: "12"
+  lower_bound: 
+  name: Description
+  updated_at: 2010-02-11 01:28:24
+  upper_bound: 
+  values: 
+data_fields_012: 
+  active: "0"
+  created_at: 2010-01-27 20:50:31
+  data_type_id: "5"
+  display_type: select
+  exact_alert: ""
+  id: "13"
+  lower_bound: 
+  name: Did you file an RT Ticket?
+  updated_at: 2010-01-27 20:50:31
+  upper_bound: 
+  values: Yes, No
+data_fields_013: 
+  active: "1"
+  created_at: 2010-02-22 18:28:32
+  data_type_id: "5"
+  display_type: text_field
+  exact_alert: 
+  id: "14"
+  lower_bound: 
+  name: NetID
+  updated_at: 2010-02-22 18:28:32
+  upper_bound: 
+  values: 
+data_fields_014: 
+  active: "1"
+  created_at: 2010-03-30 20:50:39
+  data_type_id: "6"
+  display_type: text_field
+  exact_alert: 
+  id: "15"
+  lower_bound: 
+  name: Caller's NetID
+  updated_at: 2010-04-02 15:17:08
+  upper_bound: 
+  values: 
+data_fields_015: 
+  active: "1"
+  created_at: 2010-03-30 20:51:04
+  data_type_id: "6"
+  display_type: text_field
+  exact_alert: 
+  id: "16"
+  lower_bound: 
+  name: "Call-back #"
+  updated_at: 2010-03-30 20:51:04
+  upper_bound: 
+  values: 
+data_fields_016: 
+  active: "1"
+  created_at: 2010-03-30 20:51:27
+  data_type_id: "6"
+  display_type: text_area
+  exact_alert: 
+  id: "17"
+  lower_bound: 
+  name: Description of problem
+  updated_at: 2010-03-30 20:51:27
+  upper_bound: 
+  values: 
+data_fields_017: 
+  active: "1"
+  created_at: 2010-03-30 20:51:51
+  data_type_id: "6"
+  display_type: text_field
+  exact_alert: 
+  id: "18"
+  lower_bound: 
+  name: "RT # (if filed):"
+  updated_at: 2010-03-30 20:51:51
+  upper_bound: 
   values: 

@@ -111,5 +111,12 @@ module ApplicationHelper
       url_string == request_uri
     end
   end
-
+	
+	def display_data_field_permissions(field)
+		display = []
+		display << "Admin" if field.admin
+		display << "Private" if field.private
+		display << "Public" if field.public
+		return display.to_sentence
+	end
 end

@@ -1,6 +1,6 @@
 <p>
 	<h3><%= label_tag 'Location' %></h3>
-	<%= collection_select(:location, :id, @locations, :id, :name, {:prompt => "Select a Location"}) %><br/>
+	<%= collection_select(:location, :id, @locations, :id, :name, {:include_blank => true}) %><br/>
 </p>
 
 <%= observe_field('location_id',

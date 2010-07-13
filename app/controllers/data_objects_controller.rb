@@ -90,11 +90,9 @@ class DataObjectsController < ApplicationController
   end
 
   def public
-		if current_user
-		redirect_to :action => 'private'
-		end		
-@admin = false
-		@private = true if current_user
+		redirect_to :action => 'private' and return if current_user
+		@admin = false
+		@private = false
 		@public = true
 		location_picker(@admin, @private, @public)
     object_picker(@admin, @private, @public)
