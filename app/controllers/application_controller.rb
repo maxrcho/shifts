@@ -284,38 +284,34 @@ class ApplicationController < ActionController::Base
             form_output["#{field_name}_date"] = Date.parse( form_output["#{field_name}_date"] )
           end
 
-          ## Date Input - Select (Rails default)
-          unless (form_output["#{field_name}_date(1i)"].blank? || form_output["#{field_name}_date(2i)"].blank? || form_output["#{field_name}_date(3i)"].blank?)
-          join_date = [ form_output["#{field_name}_date(1i)"], form_output["#{field_name}_date(2i)"], form_output["#{field_name}_date(3i)"] ].join('-')
-          form_output["#{field_name}_date"] = Date.parse( join_date )
-          end
-      end
-
-
-      #when there is no end_date (such as shifts, time_slots, and sub_requests)
-      form_output["end_date"] ||= form_output["start_date"] if form_output["start_date"]
-      form_output["mandatory_end_date"] ||= form_output["mandatory_start_date"] if form_output["mandatory_start_date"]
-
-
-  #Midnight? and cleanup
-      %w{start end mandatory_start mandatory_end}.each do |field_name|
-          unless form_output["#{field_name}_time(5i)"].nil?
-            unless form_output["#{field_name}_time(5i)"].scan(/\+$/).empty?
-              form_output["#{field_name}_date"] += 1.day
-            end
-          end
-          form_output.delete("#{field_name}_date(1i)")
-          form_output.delete("#{field_name}_date(2i)")
-          form_output.delete("#{field_name}_date(3i)")
-          form_output.delete("#{field_name}_time(5i)") if form_output["#{field_name}_time(4i)"].blank?
-      end
-
-
-      form_output
+        ## Date Input - Select (Rails default)
+        unless (form_output["#{field_name}_date(1i)"].blank? || form_output["#{field_name}_date(2i)"].blank? || form_output["#{field_name}_date(3i)"].blank?)
+        join_date = [ form_output["#{field_name}_date(1i)"], form_output["#{field_name}_date(2i)"], form_output["#{field_name}_date(3i)"] ].join('-')
+        form_output["#{field_name}_date"] = Date.parse( join_date )
+        end
     end
 
 
+    #when there is no end_date (such as shifts, time_slots, and sub_requests)
+    form_output["end_date"] ||= form_output["start_date"] if form_output["start_date"]
+    form_output["mandatory_end_date"] ||= form_output["mandatory_start_date"] if form_output["mandatory_start_date"]
 
+
+    #Midnight? and cleanup
+    %w{start end mandatory_start mandatory_end}.each do |field_name|
+        unless form_output["#{field_name}_time(5i)"].nil?
+          unless form_output["#{field_name}_time(5i)"].scan(/\+$/).empty?
+            form_output["#{field_name}_date"] += 1.day
+          end
+        end
+        form_output.delete("#{field_name}_date(1i)")
+        form_output.delete("#{field_name}_date(2i)")
+        form_output.delete("#{field_name}_date(3i)")
+        form_output.delete("#{field_name}_time(5i)") if form_output["#{field_name}_time(4i)"].blank?
+    end
+
+    form_output
+  end
 
   private
 
