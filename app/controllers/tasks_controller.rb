@@ -85,12 +85,12 @@ class TasksController < ApplicationController
   end
   
   def make_entry
-    @task = Task.find(params[:id])
+    #raise params.to_yaml
+    @task = Task.find(params[:task_id])
+    @shift = current_user.current_shift
+    @shifts_task = ShiftsTask.new(:task_id => @task.id, :shift_id => @shift.id )
+		@shifts_task.save
+    
     flash[:notice] = 'Task has been completed.'
-  end
-
-  def accomplished
-      @task = Task.find(params[:id])
-      
   end
 end
