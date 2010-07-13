@@ -1,0 +1,14 @@
+
+<% @tasks.each do |task| %>
+	<% form_remote_tag :url => { :controller => 'tasks', :action => 'make_entry' } do %>
+		<%= hidden_field_tag "task_id", task.id %>
+		<li>
+			<% if task.done %>
+	  		<%= submit_tag task.name, :class => 'make_entry', :disabled => 'disabled' %>
+			<% else %>
+				<%= submit_tag task.name, :class => 'make_entry' %>
+			<% end %>
+		</li>
+		<br />
+	<% end %>
+<% end %>

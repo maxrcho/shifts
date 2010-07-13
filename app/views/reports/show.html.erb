@@ -13,6 +13,7 @@
   </fieldset>
 
   <%= periodically_call_remote :url => { :controller => "notices", :action => "update_message_center"}, :frequency => 5*60 -%>
+  <%= periodically_call_remote :url => { :controller => "tasks", :action => "update_tasks"}, :frequency => 5*60 -%>
 
     <fieldset id = "report_data_objects" class = "index">
       <legend>Data Objects</legend>
@@ -22,29 +23,20 @@
     <fieldset class="index" id = "useful_links">
       <legend>Useful Links</legend>
 			<ul id = "useful_links">
-
       	<div id = "report_links">
-        	<%= render :partial => 'links/report_links' %>
-
+        <%= render :partial => 'links/report_links' %>
       	</div>
     		<li><%= link_to_post_a_link %></li>
-
-
 			</ul>
     </fieldset>
 
-		<fieldset class="index" id = "shifts_tasks">
+		<fieldset class="index" >
 			<legend>Shift Tasks</legend>
-			<% @location = @report.shift.location %>
-			<% tasks2 = Task.in_location(@location) %>
-      <% tasks2.each do |task| %>
-			<% @task = task.name %>
-				<% form_remote_tag :url => { :controller => 'tasks', :action => 'make_entry' } do %>
-				<%= hidden_field_tag "task_id", task.id %>
-			  <%= submit_tag task.name, :class => 'make_entry' %>
-				<br />
-				<% end %>
-      <% end %>
+			<ul id = "useful_links">
+				<div id = "shift_tasks">
+				<%= render :partial => 'tasks' %>
+				</div>
+			</ul>
 		</fieldset>
 	
 
