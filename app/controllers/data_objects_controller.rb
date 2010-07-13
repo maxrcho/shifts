@@ -90,7 +90,10 @@ class DataObjectsController < ApplicationController
   end
 
   def public
-		@admin = false
+		if current_user
+		redirect_to :action => 'private'
+		end		
+@admin = false
 		@private = true if current_user
 		@public = true
 		location_picker(@admin, @private, @public)
@@ -117,12 +120,12 @@ class DataObjectsController < ApplicationController
           @locations << field.data_type.data_objects.collect{|obj| obj.locations}.uniq if a || b || c
         end
       end
-      @locations.nil? ?  @locations = Location.all : @locations.flatten!.uniq!
+      @locations.flatten! if @locations
+			@locations.uniq! if @locations
   end
   
   def object_picker(adm, pvt, pbl)
     @data_objects_at_location = []
-      
       DataObject.all.each do |obj|
         obj.data_type.data_fields.each do |field|
           a = field.admin if adm
@@ -130,10 +133,8 @@ class DataObjectsController < ApplicationController
           c = field.public if pbl
           @data_objects_at_location << obj if a || b || c
         end
-      end
-    
+      end    
     @data_objects_at_location.uniq!
-  
   end
 
   def update_objects

@@ -1,6 +1,8 @@
 <% title "Report a problem"%>
-
 <body>
+<% if @locations.empty? %>
+Sorry, no problems are able to be submitted at this time.
+<% else %>  
 	<p>
 		<h3><%= label_tag 'E-mail' %><h3>
 		<%= text_field_tag 'email'%>
@@ -18,5 +20,5 @@
 	</p>
 		
 	<p><div id = 'fields_for_object'></div></p>
-
+<%end%>
 </body>
