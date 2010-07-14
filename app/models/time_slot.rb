@@ -4,20 +4,24 @@ class TimeSlot < ActiveRecord::Base
   belongs_to :repeating_event
   has_many :shifts, :through => :location
   before_save :set_active
-  before_validation :adjust_for_multi_day
+  before_validation :join_date_and_time, :adjust_for_multi_day
   before_update :disassociate_from_repeating_event
 
   validates_presence_of :start, :end, :location_id
   validate :start_less_than_end
   validate :is_within_calendar
   validate :no_concurrent_timeslots
+  attr_accessor :start_date
+  attr_accessor :start_time
+  attr_accessor :end_date
+  attr_accessor :end_time
 
   named_scope :active, lambda {{:conditions => {:active => true}}}
   named_scope :in_locations, lambda {|loc_array| {:conditions => { :location_id => loc_array }}}
   named_scope :in_location, lambda {|location| {:conditions => { :location_id => location }}}
   named_scope :in_calendars, lambda {|calendar_array| {:conditions => { :calendar_id => calendar_array }}}
   named_scope :on_days, lambda {|start_day, end_day| { :conditions => ["#{:start.to_sql_column} >= #{start_day.beginning_of_day.utc.to_sql} and #{:start.to_sql_column} < #{end_day.end_of_day.utc.to_sql}"]}}
-  named_scope :on_day, lambda {|day| { :conditions => ["#{:start.to_sql_column} >= #{day.beginning_of_day.utc.to_sql} AND #{:start.to_sql_column} < #{day.end_of_day.utc.to_sql}"]}}
+  named_scope :on_day, lambda {|day| { :conditions => ["#{:end.to_sql_column} >= #{day.beginning_of_day.utc.to_sql} AND #{:start.to_sql_column} < #{day.end_of_day.utc.to_sql}"]}}
   named_scope :overlaps, lambda {|start, stop| { :conditions => ["#{:end.to_sql_column} > #{start.utc.to_sql} and #{:start.to_sql_column} < #{stop.utc.to_sql}"]}}
   named_scope :after_now, lambda {{:conditions => ["#{:end} >= #{Time.now.utc.to_sql}"]}}
 
@@ -38,7 +42,7 @@ class TimeSlot < ActiveRecord::Base
       days.each do |day|
         seed_start_time = (start_time.wday == day ? start_time : start_time.next(day))
         seed_end_time = seed_start_time+diff
-        while seed_end_time <= end_date
+        while seed_end_time <= (end_date + 1.day)
           if active
             inner_test.push "(#{:location_id.to_sql_column} = #{loc_id.to_sql} AND #{:active.to_sql_column} = #{true.to_sql} AND #{:start.to_sql_column} <= #{seed_end_time.utc.to_sql} AND #{:end.to_sql_column} >= #{seed_start_time.utc.to_sql})"
           else
@@ -126,6 +130,12 @@ class TimeSlot < ActiveRecord::Base
     "in "+self.location.short_name + ' from ' + self.start.to_s(:am_pm_long_no_comma) + " to " + self.end.to_s(:am_pm_long_no_comma) + " on " + self.calendar.name
   end
 
+  def join_date_and_time
+    self.start ||= self.start_date.to_date.to_time + self.start_time.seconds_since_midnight
+    self.end ||= self.end_date.to_date.to_time + self.end_time.seconds_since_midnight
+  end
+
+
   private
 
   def set_active
@@ -170,3 +180,4 @@ class TimeSlot < ActiveRecord::Base
     end
   end
 end
+

@@ -3,6 +3,7 @@ li#notice_li {
     padding-left: 1em;
 }
 
+a#toggle_link {text-decoration:underline;}
 
 fieldset.sticky {
   width: 97%;
@@ -41,3 +42,4 @@ fieldset.announcement .grayleft, fieldset.announcement .grayright {
   font-size: 90%;
 }
 
+.gray_url {float:right; overflow:hidden; white-space:none; text-align:right; color:gray;}

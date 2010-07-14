@@ -1,3 +1,5 @@
+<% #TODO This is not DRY - the popup form should share a partial with the html one%>
+
 <div class="close_link">
   	  <a onclick="$('#tooltip').fadeOut(function (){ $(this).remove() }); return false;" href="#">[esc]</a>
 </div>
@@ -12,22 +14,7 @@
   <% else %>
     <h2>Edit Timeslot</h2>
     <% remote_form_for @time_slot do |f| %>
-      <p>
-        <%= f.label :start %><br />
-        <%= f.time_select :start, :twelve_hour => true %>
-      </p>
-      <p>
-        <%= f.label :end %><br />
-        <%= f.time_select :end, :twelve_hour => true %>
-      </p>
-      <p>
-        <%= f.label :location %><br />
-        <%= select_tag 'time_slot[location_id]', option_groups_from_collection_for_select(@department.loc_groups, :locations, :name, :id, :name, @time_slot.location_id)%><br />
-      </p>
-      <p>
-        <%= f.label :calendar %><br />
-        <%= f.collection_select(:calendar_id, current_department.calendars, :id, :name) %>
-      </p>
+      <%= render :partial => 'time_slots/form', :locals => {:f => f}  %>
       <p><%= submit_to_remote "edit_button", "Save Changes", :url => { :controller => 'time_slots', :action => 'update', :calendar => (params[:calendar] || true) } %></p>
     <% end %>
     <p>
