@@ -14,15 +14,37 @@ class Task < ActiveRecord::Base
   named_scope :daily, lambda {{:conditions => {:kind => "Daily"}}}
   named_scope :weekly, lambda {{:conditions => {:kind => "Weekly"}}}
   
+  #done shifts are crossed out in their locations
   def done
     @last_completion = ShiftsTask.all.select{|st| st.task_id == self.id}.last
     if @last_completion
       hours_since = (Time.now - @last_completion.created_at)/3600
-      if (self.kind == "Hourly") && (hours_since <= 1)
+      if (self.kind == "Hourly") && (hours_since < 1)
         return true
-      elsif (self.kind == "Daily") && (hours_since <= 24)
+      elsif (self.kind == "Daily") && (hours_since < 24)
         return true
-      elsif (self.kind == "Weekly") && (hours_since <= 168)
+      elsif (self.kind == "Weekly") && (hours_since < 168)
+        return true
+      else
+        return false
+      end
+    else
+      return false
+    end
+  end
+  
+  #delayed tasks show up as bold in their locations
+  #not completed
+  def delayed
+    @last_completion = ShiftsTask.all.select{|st| st.task_id == self.id}.last
+    if @last_completion
+      hours_since = (Time.now - @last_completion.created_at)/3600
+      hours_since_scheduled = (Time.now)
+      if (self.kind == "Hourly") && (hours_since > 1.25)
+        return true
+      elsif (self.kind == "Daily") && (  24)
+        return true
+      elsif (self.kind == "Weekly") && (hours_since < 168)
         return true
       else
         return false

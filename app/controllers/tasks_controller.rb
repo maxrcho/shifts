@@ -99,6 +99,7 @@ class TasksController < ApplicationController
   end
   
   def update_tasks
+    @tasks = Task.in_location(current_user.current_shift.location).after_now
     respond_to do |format|
       format.js
     end

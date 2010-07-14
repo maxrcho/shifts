@@ -6,6 +6,7 @@
 			<% if task.done %>
 	  		<%= submit_tag task.name, :class => 'make_entry', :disabled => 'disabled' %>
 			<% else %>
+				<!-- <%= link_to task.name, :class => 'make_entry', :method => :post %> -->
 				<%= submit_tag task.name, :class => 'make_entry' %>
 			<% end %>
 		</li>

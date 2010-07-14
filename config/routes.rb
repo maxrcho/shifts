@@ -1,7 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
   map.resources :shifts_tasks
 
-  map.resources :tasks
+  map.resources :tasks, :member => {:make_entry => :post}
 
   map.resources :stickies
 
