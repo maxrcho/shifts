@@ -1,2 +1,4 @@
-page.replace_html("#all_report_items", :partial => "report_items", :collection => @report_items)
-page.replace_html("#report_item_form", :partial => "update_form")
+page.replace_html("all_report_items", :partial => "report_items", :collection => @report_items)
+
+
+$("#report_item_form").html("replace inner <b>HTML</b>");

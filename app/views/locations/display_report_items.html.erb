@@ -13,6 +13,6 @@
 	  <%= render :partial => "report_items", :collection => @report_items %>
     </tbody>
   </table>
-<div id="report_item_form">
-	  <%= render :partial => "update_form" %>
-</div>
+<% form_remote_tag :url => { :action => 'display_report_items', :start_time => @start_time.to_s }, :html => {:id => "report_item_form"} do %>
+ <%= submit_tag "view more", :class => "view_more" %>
+<% end %>
