@@ -3,9 +3,10 @@ li#notice_li {
     padding-left: 1em;
 }
 
+a#toggle_link {text-decoration:underline;}
 
 fieldset.sticky {
-  width: 48%;
+  width: 97%;
   padding: 5px;
   margin: 0 0 0 0;
   border:1px solid gray;
@@ -13,10 +14,9 @@ fieldset.sticky {
 }
 
 fieldset.announcement {
-  width: 48%;
+  width: 97%;
   padding: 5px;
   margin:0 0 0 0;
-  float: right;
   clear: right;
   border:1px solid gray;
   background-color:#ADD8E6;
@@ -42,3 +42,4 @@ fieldset.announcement .grayleft, fieldset.announcement .grayright {
   font-size: 90%;
 }
 
+.gray_url {float:right; overflow:hidden; white-space:none; text-align:right; color:gray;}

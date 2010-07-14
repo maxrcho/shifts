@@ -2,6 +2,11 @@ class Location < ActiveRecord::Base
   belongs_to :loc_group
 
   named_scope :active, :conditions => {:active => true}
+  named_scope :in_group, 
+    lambda {|loc_group,*order| {
+      :conditions => {:loc_group_id => loc_group.id},
+      :order => order.flatten.first || 'priority ASC'                                  
+  }}
 
   has_many :time_slots
   has_many :shifts
@@ -30,27 +35,60 @@ class Location < ActiveRecord::Base
   end
 
   def current_notices
-    Notice.active.select {|n| n.locations.include?(self)}
+    ActiveRecord::Base.transaction do
+       a = LocationSinksLocationSource.find(:all, :conditions => ["location_sink_type = 'Notice' AND location_source_type = 'Location' AND location_source_id = #{self.id.to_sql}"]).collect(&:location_sink_id)
+       b = Sticky.active.collect(&:id)
+       c = Announcement.active.collect(&:id)
+       Notice.find(a & (b + c))
+     end
   end
 
-  def current_links
-    Notice.active_links.select {|n| n.locations.include?(self)}
-  end
-
-  def stickys
-    self.notices.select {|n| n.sticky}
+  def stickies
+     ActiveRecord::Base.transaction do
+        a = LocationSinksLocationSource.find(:all, :conditions => ["location_sink_type = 'Notice' AND location_source_type = 'Location' AND location_source_id = #{self.id.to_sql}"]).collect(&:location_sink_id)
+        b = Sticky.active.collect(&:id)
+        Sticky.find(a & b)
+      end
   end
 
   def announcements
-    self.notices.select {|n| n.announcement}
+     ActiveRecord::Base.transaction do
+        a = LocationSinksLocationSource.find(:all, :conditions => ["location_sink_type = 'Notice' AND location_source_type = 'Location' AND location_source_id = #{self.id.to_sql}"]).collect(&:location_sink_id)
+        b = Announcement.active.collect(&:id)
+        Announcement.find(a & b)
+      end
   end
 
   def links
-    self.current_links.select {|n| n.useful_link}
+     ActiveRecord::Base.transaction do
+        a = LocationSinksLocationSource.find(:all, :conditions => ["location_sink_type = 'Notice' AND location_source_type = 'Location' AND location_source_id = #{self.id.to_sql}"]).collect(&:location_sink_id)
+        b = Link.active.collect(&:id)
+        Link.find(a & b) 
+      end
   end
 
   def restrictions #TODO: this could probalby be optimized
     Restriction.current.select{|r| r.locations.include?(self)}
+  end
+  
+  def deactivate
+    self.active = false
+    self.save!
+    #Location activation must be set prior to individual shift activation; Shift class before_save
+    shifts.after_date(Time.now.utc).update_all :active => false
+  end
+  
+  def activate
+    self.active = true
+    self.save!
+    #Location activation must be set prior to individual shift activation; Shift class before_save
+    @shifts = shifts.after_date(Time.now.utc)
+    @shifts.each do |shift|
+      if shift.user.is_active?(shift.department) && shift.calendar.active
+        shift.active = true
+      end
+      shift.save
+    end    
   end
 
   def count_people_for(shift_list, min_block)
@@ -73,6 +111,6 @@ class Location < ActiveRecord::Base
   def max_staff_greater_than_min_staff
     errors.add("The minimum number of staff cannot be larger than the maximum.", "") if (self.min_staff and self.max_staff and self.min_staff > self.max_staff)
   end
-
+  
 end
 

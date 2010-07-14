@@ -20,10 +20,12 @@ class ReportItemsController < ApplicationController
     respond_to do |format|
       @report = Report.find(@report_item.report_id)
       if current_user==@report_item.user && @report_item.save
+        @report.shift.stale_shifts_unsent = true
+        @report.shift.save
         format.html {redirect_to @report}
         format.js
       else
-        flash[:notice] = "You can't add things to someone else's report!" if @report_item.user != current_user
+        flash[:notice] = "You can't add things to someone else's report." if @report_item.user != current_user
         format.html {redirect_to @report}
         format.js {redirect_to @report}
       end
