@@ -10,9 +10,7 @@
       </th>
     </tr></thead>
     <tbody id = "all_report_items">
-	  <%= render :partial => "report_items", :collection => @report_items %>
+	  <%= render :partial => "report_item", :collection => @report_items %>
     </tbody>
   </table>
-<% form_remote_tag :url => { :action => 'display_report_items', :start_time => @start_time.to_s }, :html => {:id => "report_item_form"} do %>
- <%= submit_tag "view more", :class => "view_more" %>
-<% end %>
+<%= render :partial => "report_item_form" %>

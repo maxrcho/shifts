@@ -73,7 +73,7 @@ class LocationsController < ApplicationController
     @location = Location.find(params[:id])
     @start_time = (params[:start_time].nil? ? 3.hours.ago.utc : Time.parse(params[:start_time]))
     respond_to do |format|
-      format.js { @start_time = params[:start_time] - 5.hours }
+      format.js {  }
       format.html { } #this is necessary!
     end
     @report_items = ReportItem.in_location(@location).after_time(@start_time)
