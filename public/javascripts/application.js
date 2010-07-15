@@ -3,6 +3,16 @@
 
 //Don't load anything before the document is ready. (This should work okay, but if not ask Nathan for some workarounds)
 $(document).ready(function() {
+    // jQuery AJAX helper method:
+    $(document).ajaxSend(function(event, request, settings) {
+      if (settings.type == 'GET' || settings.type == 'get' || typeof(AUTH_TOKEN) == "undefined") return;
+      // settings.data is a serialized string like "foo=bar&baz=boink" (or null)
+      settings.data = settings.data || "";
+      settings.data += (settings.data ? "&" : "") + "authenticity_token=" + encodeURIComponent(AUTH_TOKEN);
+      request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    });
+
+
     // If javascript is enabled, anything with the class 'no_js' will be hidden
     $('.no_js').hide();
 
@@ -13,7 +23,6 @@ $(document).ready(function() {
     $('.onchange_submit').change(function() { $
         (this).submit();
     });
-
 
     //Anything of class "trigger" will cause the next thing to be toggled. (Use if you have a header directly above the thing it toggles)
     //Also, the trigger will gain the class "triggered" in case any styling needs to be changed on the trigger
