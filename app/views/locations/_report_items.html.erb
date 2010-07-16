@@ -3,7 +3,7 @@
 		<td class="user_name"><%=h report_item.user.name%>
 		<td class="timestamp"><%=h report_item.time.getlocal.to_s(:am_pm) %></td>
 		<td class="report_item_content"> <%= report_item.content_with_formatting %></td>
-    <td> <%= @start_time.to_s %> </td>
+
 	</tr>
 <% end %>
 
