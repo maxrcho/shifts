@@ -86,12 +86,14 @@ class TasksController < ApplicationController
   
   def make_entry
     #raise params.to_yaml
-    @task = Task.find(params[:task_id])
     @tasks = Task.in_location(current_user.current_shift.location).after_now
-    
     @shift = current_user.current_shift
-    @shifts_task = ShiftsTask.new(:task_id => @task.id, :shift_id => @shift.id )
-		@shifts_task.save
+    
+    params[:task_ids].each do |task_id|
+      @shifts_task = ShiftsTask.new(:task_id => task_id, :shift_id => @shift.id )
+  		@shifts_task.save
+		end
+		
     respond_to do |format|
       format.js
     end
