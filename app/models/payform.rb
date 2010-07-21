@@ -1,8 +1,9 @@
 class Payform < ActiveRecord::Base
 
-  has_many :payform_items
-  has_and_belongs_to_many :item_sets, :class_name => PayformItem, :join_table => 'payform_items_payforms'
-  belongs_to :payform_set
+  #has_many :payform_items
+  has_and_belongs_to_many :payform_items
+
+  belongs_to :payform_set #group of printed payforms
   belongs_to :department
   belongs_to :user
   belongs_to :approved_by, :class_name => "User", :foreign_key => "approved_by_id"

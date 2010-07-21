@@ -10,18 +10,17 @@ class PayformItem < ActiveRecord::Base
   #  /______\
   #    |__|
 
-  has_and_belongs_to_many :added_payforms, :join_table => 'payform_items_payforms', :class_name => "Payform"
-
-  belongs_to :payform
-  belongs_to :payform_item_set
+  has_and_belongs_to_many :payforms
+  #belongs_to :payform
+  #belongs_to :payform_item_set
   belongs_to :category
 
   delegate :department, :to => :payform
   delegate :user, :to => :payform
   
-  before_validation :unsubmit_payform
+  before_validation :unsubmit_payform #note -- perhaps this is not the best place to unsubmit
   
-  validates_presence_of :date, :category_id, :payform_id
+  validates_presence_of :date, :category_id
   validates_numericality_of :hours, :greater_than => 0
   validates_presence_of :reason, :on => :update
   validate :length_of_description
