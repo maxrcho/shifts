@@ -52,8 +52,8 @@ before_filter :user_login
   def update
     @user_profile = UserProfile.find(params[:id])
     user_profile_entries = params[:user_profile_entries]
-    user_profile_fields = params[:user_profile_fields]
-    @user_profile.update(user_profile_entries, user_profile_fields)
+    new_user_profile_entries = params[:user_profile_fields]
+    @user_profile.update(user_profile_entries, new_user_profile_entries)
 #    raise params.to_yaml
     redirect_to user_profile_path(current_user.login)
   end

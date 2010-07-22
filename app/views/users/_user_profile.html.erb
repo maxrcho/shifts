@@ -6,7 +6,7 @@
         <p>
           <% args = entry.prepare_form_helpers %>
         <p>
-        <%= label "user_profile_entries[#{entry.id}]", "#{entry.field_name}" %><br/>
+        <%= label "user_profile_entries[#{entry.id}_#{field.id}]", "#{entry.field_name}" %><br/>
 
         <% if ["text_field", "select", "text_area"].include? entry.display_type %>
           <%= send(entry.display_type, *args) %>
