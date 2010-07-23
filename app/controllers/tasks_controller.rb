@@ -93,9 +93,12 @@ class TasksController < ApplicationController
       @shifts_task = ShiftsTask.new(:task_id => task_id, :shift_id => @shift.id )
   		@shifts_task.save
 		end
-		
+		  if @report = current_user.current_shift.report
+        @report.report_items << ReportItem.new(:time => Time.now, :content => "Completed  #{Task.find(@shifts_task.task_id).name} task.", :ip_address => request.remote_ip)
+      end
     respond_to do |format|
       format.js
+      format.html {redirect_to @report ? @report : @shift_task.data_object}
     end
     # flash[:notice] = 'Task has been completed.'
   end
@@ -106,5 +109,27 @@ class TasksController < ApplicationController
       format.js
     end
   end
+
+
+  def show_done_tasks
+    @tasks = ShiftsTask.find_by_task_id(params[:id])
+    @start_time = 3.hours.ago.utc	
+    respond_to do |format|
+      format.js { @start_time = @start_time - 5.hours }
+      format.html { } #this is necessary!
+    end
+     @ShiftsTasks = ShiftsTask.after_time(@start_time).find(:all, :conditions => {:task_id => Task.find(@tasks.task_id)})
+
+  end
+  
+  def missed_tasks
+    @tasks = ShiftsTask.find_by_task_id(params[:id])
+    @start_time = 10.hours.ago.utc
+    respond_to do |format|
+      format.js {}
+      format.html { }      
+    end    
+  end
+
   
 end

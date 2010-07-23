@@ -1,12 +1,13 @@
 <% form_remote_tag :url => { :controller => 'tasks', :action => 'make_entry' } do %>
 	<% @tasks.each do |task| %>
 		<li>
-  		<%= check_box_tag "task_ids[]", task.id %>
-			<%= task.name %>
-			<%= " --- Needs Doing!" if task.needs_doing %>
-			<%= " --- Done by " if task.done %>
-		</li>
+  		<%= check_box_tag "task_ids[]", task.id -%>
+			<%= task.name if (!(task.needs_doing) && !(task.done)) %>
+			<h4><%= task.name if task.needs_doing -%><%= " Needs Doing!" if task.needs_doing -%></h4>
+			<del><%= task.name if task.done -%></del> <%= "Completed!" if task.done -%>
+
+</li>
 		<br />
 	<% end %>
 	<%= submit_tag "Update", :class => 'make_entry' %>
-<% end %>
+<% end %>   

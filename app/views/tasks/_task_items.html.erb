@@ -1,0 +1,7 @@
+<% @ShiftsTasks.each do |shifts_task| %>
+	<tr class=<%= cycle('list_task_item_odd', 'list_task_item_even')%> > 
+		<td class="user_name"><%=h shifts_task.shift.user.name%> </td>
+		<td class="timestamp"><%=h shifts_task.created_at %></td>
+    <td class="location"><%=h shifts_task.shift.location.name %> </td>
+	</tr>
+<% end %>	

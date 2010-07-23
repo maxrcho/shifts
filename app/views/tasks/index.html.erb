@@ -10,6 +10,10 @@
     <th>Time of Day</th>
     <th>Day in Week</th>
     <th>Active</th>
+    <th>Show</th>
+    <th>Edit</th>
+    <th>Destroy</th>
+    <th>Show Completed</th>
   </tr>
 
 <% @tasks.each do |task| %>
@@ -25,6 +29,8 @@
     <td><%= link_to 'Show', task %></td>
     <td><%= link_to 'Edit', edit_task_path(task) %></td>
     <td><%= link_to 'Destroy', task, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to 'Show Completed', :action => :show_done_tasks, :id => task %></td>  
+
   </tr>
 <% end %>
 </table>
