@@ -11,7 +11,7 @@ class PayformItem < ActiveRecord::Base
   #    |__|
 
   has_and_belongs_to_many :payforms
-  #belongs_to :payform
+  belongs_to :payform
   #belongs_to :payform_item_set
   belongs_to :category
 
@@ -22,10 +22,12 @@ class PayformItem < ActiveRecord::Base
   
   validates_presence_of :date, :category_id
   validates_numericality_of :hours, :greater_than => 0
-  validates_presence_of :reason, :on => :update
+  validates_presence_of :description
   validate :length_of_description
-  validate_on_update :length_of_reason
+  validates_presence_of :reason, :on => :update
+  validate :length_of_reason, :on => :update
 
+  named_scope :group, :conditions => {:group =>  true}
   named_scope :active, :conditions => {:active =>  true}
   named_scope :in_category, lambda { |category| { :conditions => {:category_id => category.id}}}
   
@@ -39,22 +41,34 @@ class PayformItem < ActiveRecord::Base
   protected
   
   def unsubmit_payform
-    self.payform.submitted = nil
-    unless self.payform.save
-      errors.add(:payform, "failed to allow for new payform items.")
+    failed = []
+    if self.group
+      for p_id in self.payforms.map{|pf| pf.id}
+        p = Payform.find(p_id)
+        p.submitted = nil
+        unless p.save
+          failed << p
+        end
+      end
+    else
+      self.payform.submitted = nil
+      unless self.payform.save
+        failed << self.payform
+      end
     end
+    failed #return an array of failed payform items
   end
 
   def length_of_description
     min = self.department.department_config.description_min.to_i 
     errors.add(:description, "must be at least #{min} characters long.") if self.description.length < min
-  end   
+  end 
   
   def length_of_reason
-    min = self.department.department_config.reason_min.to_i
+    min = self.department.department_config.reason_min.to_i 
     errors.add(:reason, "must be at least #{min} characters long.") if self.reason.length < min
-  end   
-
+  end 
+  
   def validate
     errors.add(:date, "cannot be in the future") if date > Date.today
   end

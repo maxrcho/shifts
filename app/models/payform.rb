@@ -1,7 +1,7 @@
 class Payform < ActiveRecord::Base
 
-  #has_many :payform_items
-  has_and_belongs_to_many :payform_items
+  has_many :payform_items
+  #has_and_belongs_to_many :payform_items
 
   belongs_to :payform_set #group of printed payforms
   belongs_to :department

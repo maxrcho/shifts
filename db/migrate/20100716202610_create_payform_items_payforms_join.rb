@@ -3,11 +3,11 @@ class CreatePayformItemsPayformsJoin < ActiveRecord::Migration
     create_table :payform_items_payforms, :id => false do |t|
       t.references :payform_item
       t.references :payform
-      t.boolean :active, :default => true
+      t.boolean :active, :default => true #may not need this
     end
   end
 
   def self.down
-    drop_table :departments_users
+    drop_table :payform_items_payforms
   end
 end
