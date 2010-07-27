@@ -124,18 +124,28 @@ class TasksController < ApplicationController
   
   def missed_tasks
     @tasks = ShiftsTask.find_by_task_id(params[:id])
-    @start_time = 5.hours.ago.utc
-    @done_tasks = ShiftsTask.after_time(@start_time).find(:all, :conditions => {:task_id => Task.find(@tasks.task_id)}) 
-    for f in (1..@done_tasks.size)      
-      @done_tasks[f]
-    #compare f to f+1 
-    #d
+    @start_time = (params[:start_time].nil? ? 5.hours.ago.utc : Time.parse(params[:start_time]))
+    @finish_tasks = ShiftsTask.after_time(@start_time).find(:all, :conditions => {:task_id => Task.find(@tasks.task_id)}) 
+    @bad_tasks = []
+    @timeinterval = 
+    for f in (1..@finish_tasks.size)      
+      if  (@finish_tasks[f].created_at - @finish_tasks[f+1] < -3600)
+       @bad_tasks << @finish_tasks[f]
+      @finish_tasks[f]
+      # Shift.find(:all, :conditions => { :created_at => (
+
+
+        #
+      end     
     end
     respond_to do |format|
       format.js {}
       format.html { }      
     end    
-    @ShiftsTasks = @done_tasks  .all.find(:all, :conditions => {:task_id => Task.find(:all).each})
+    #User.find(Shift.find(@finish_tasks[f].shift_id).user_id).name, 
+#Task.find(@finish_tasks[f].task_id).name,
+#  @finish_tasks[f].created_at]
+   # @ShiftsTasks = @done_tasks.all.find(:all, :conditions => {:task_id => Task.find(:all).each})
   end
 
   
