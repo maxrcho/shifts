@@ -113,9 +113,9 @@ class TasksController < ApplicationController
 
   def show_done_tasks
     @tasks = ShiftsTask.find_by_task_id(params[:id])
-    @start_time = 3.hours.ago.utc	
+    @start_time = (params[:start_time].nil? ? 3.hours.ago.utc : Time.parse(params[:start_time]))
     respond_to do |format|
-      format.js { @start_time = @start_time - 5.hours }
+      format.js { }
       format.html { } #this is necessary!
     end
      @ShiftsTasks = ShiftsTask.after_time(@start_time).find(:all, :conditions => {:task_id => Task.find(@tasks.task_id)})
@@ -124,11 +124,18 @@ class TasksController < ApplicationController
   
   def missed_tasks
     @tasks = ShiftsTask.find_by_task_id(params[:id])
-    @start_time = 10.hours.ago.utc
+    @start_time = 5.hours.ago.utc
+    @done_tasks = ShiftsTask.after_time(@start_time).find(:all, :conditions => {:task_id => Task.find(@tasks.task_id)}) 
+    for f in (1..@done_tasks.size)      
+      @done_tasks[f]
+    #compare f to f+1 
+    #d
+    end
     respond_to do |format|
       format.js {}
       format.html { }      
     end    
+    @ShiftsTasks = @done_tasks  .all.find(:all, :conditions => {:task_id => Task.find(:all).each})
   end
 
   
