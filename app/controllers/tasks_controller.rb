@@ -93,9 +93,12 @@ class TasksController < ApplicationController
       @shifts_task = ShiftsTask.new(:task_id => task_id, :shift_id => @shift.id )
   		@shifts_task.save
 		end
-		
+		  if @report = current_user.current_shift.report
+        @report.report_items << ReportItem.new(:time => Time.now, :content => "Completed  #{Task.find(@shifts_task.task_id).name} task.", :ip_address => request.remote_ip)
+      end
     respond_to do |format|
       format.js
+      format.html {redirect_to @report ? @report : @shift_task.data_object}
     end
     # flash[:notice] = 'Task has been completed.'
   end
@@ -106,5 +109,44 @@ class TasksController < ApplicationController
       format.js
     end
   end
+
+
+  def show_done_tasks
+    @tasks = ShiftsTask.find_by_task_id(params[:id])
+    @start_time = (params[:start_time].nil? ? 3.hours.ago.utc : Time.parse(params[:start_time]))
+    respond_to do |format|
+      format.js { }
+      format.html { } #this is necessary!
+    end
+     @ShiftsTasks = ShiftsTask.after_time(@start_time).find(:all, :conditions => {:task_id => Task.find(@tasks.task_id)})
+
+  end
+  
+  def missed_tasks
+    @tasks = ShiftsTask.find_by_task_id(params[:id])
+    @start_time = (params[:start_time].nil? ? 5.hours.ago.utc : Time.parse(params[:start_time]))
+    @finish_tasks = ShiftsTask.after_time(@start_time).find(:all, :conditions => {:task_id => Task.find(@tasks.task_id)}) 
+    @bad_tasks = []
+    @timeinterval = 
+    for f in (1..@finish_tasks.size)      
+      if  (@finish_tasks[f].created_at - @finish_tasks[f+1] < -3600)
+       @bad_tasks << @finish_tasks[f]
+      @finish_tasks[f]
+      # Shift.find(:all, :conditions => { :created_at => (
+
+
+        #
+      end     
+    end
+    respond_to do |format|
+      format.js {}
+      format.html { }      
+    end    
+    #User.find(Shift.find(@finish_tasks[f].shift_id).user_id).name, 
+#Task.find(@finish_tasks[f].task_id).name,
+#  @finish_tasks[f].created_at]
+   # @ShiftsTasks = @done_tasks.all.find(:all, :conditions => {:task_id => Task.find(:all).each})
+  end
+
   
 end

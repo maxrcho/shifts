@@ -11,8 +11,6 @@ class Shift < ActiveRecord::Base
   has_many :shifts_tasks
   has_many :tasks, :through => :shifts_tasks
   before_update :disassociate_from_repeating_event
-  before_validation :join_date_and_time
-
 
   validates_presence_of :location
   validates_presence_of :start

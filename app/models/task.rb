@@ -13,7 +13,7 @@ class Task < ActiveRecord::Base
   named_scope :hourly, lambda {{:conditions => {:kind => "Hourly"}}}
   named_scope :daily, lambda {{:conditions => {:kind => "Daily"}}}
   named_scope :weekly, lambda {{:conditions => {:kind => "Weekly"}}}
-  
+  named_scope :after_time, lambda { |time| {:conditions => ["time > ?", time]}}
   #done shifts are crossed out in their locations
   def done
     @last_completion = ShiftsTask.all.select{|st| st.task_id == self.id}.last
