@@ -4,7 +4,7 @@
   		<%= check_box_tag "task_ids[]", task.id %>
 			<%= task.name %>
 			<%= " --- Needs Doing!" if task.needs_doing %>
-			<%= " --- Done by " if task.done %>
+			<%= " --- Done!" if task.done %>
 		</li>
 		<br />
 	<% end %>
