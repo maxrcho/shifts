@@ -127,21 +127,39 @@ class TasksController < ApplicationController
     @start_time = (params[:start_time].nil? ? 5.hours.ago.utc : Time.parse(params[:start_time]))
     @finish_tasks = ShiftsTask.after_time(@start_time).find(:all, :conditions => {:task_id => Task.find(@tasks.task_id)}) 
     @bad_tasks = []
-    @timeinterval = 
-    for f in (1..@finish_tasks.size)      
-      if  (@finish_tasks[f].created_at - @finish_tasks[f+1] < -3600)
-       @bad_tasks << @finish_tasks[f]
-      @finish_tasks[f]
-      # Shift.find(:all, :conditions => { :created_at => (
+    if  (Task.find(@finish_tasks.first.task_id).kind == "Hourly") 
+       @timeinterval = 1
+   else
+     if(Task.find(@finish_tasks.first.task_id).kind == "Daily")
+       @timeinterval = 24
+    else
+      @timeinterval = 168
+     end
+   end
+    for f in (1..@finish_tasks.size)    
+      if  ( (@finish_tasks[f+1].created_at.hour - @finish_tasks[f].created_at.hour) > @timeinterval)
 
+      blame_start_time = Time.utc(@finish_tasks[f].created_at.year, @finish_tasks[f].created_at.mon, @finish_tasks[f].created_at.day, (@finish_tasks[f].created_at.hour + 1), 00, 00)
 
-        #
+      blame_end_time =   Time.utc(@finish_tasks[f+1].created_at.year, @finish_tasks[f+1].created_at.mon, @finish_tasks[f+1].created_at.day, @finish_tasks[f+1].created_at.hour, 00, 00)       
+     
+      @bad_tasks = Shift.find(:all, :conditions => [ 'start < ? OR end < ? OR start > ? OR end > ?', blame_start_time, blame_start_time,  blame_end_time, blame_end_time])
       end     
     end
+     
+
     respond_to do |format|
       format.js {}
       format.html { }      
     end    
+
+        # Shift.find(:all, :conditions => { :created_at => (
+      #ShiftsTask.find().created_at.hour - anotherone > 1
+     #mon, min, day, hour, 
+      #Time.utc(samehere, smaemonth, sameday, hour+1, 00, 00)
+      #Time.utc(endshift stuff, same, same, same, 00, 00) 
+      #Find all shifts within these two times
+       #Shift.find(:all, :conditions => [ 'start > ? OR end > ?', blame_end_time, blame_end_time] )        #
     #User.find(Shift.find(@finish_tasks[f].shift_id).user_id).name, 
 #Task.find(@finish_tasks[f].task_id).name,
 #  @finish_tasks[f].created_at]
