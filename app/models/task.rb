@@ -18,12 +18,11 @@ class Task < ActiveRecord::Base
   def done
     @last_completion = ShiftsTask.all.select{|st| st.task_id == self.id}.last
     if @last_completion
-      hours_since = (Time.now - @last_completion.created_at)/3600
-      if (self.kind == "Hourly") && (hours_since < 1)
+      if (self.kind == "Hourly") && completed_this_hour?(@last_completion)
         return true
-      elsif (self.kind == "Daily") && (hours_since < 24)
+      elsif (self.kind == "Daily") && completed_today?(@last_completion)
         return true
-      elsif (self.kind == "Weekly") && (hours_since < 168)
+      elsif (self.kind == "Weekly") && completed_this_week?(@last_completion)
         return true
       else
         return false
@@ -43,7 +42,7 @@ class Task < ActiveRecord::Base
         return false
       elsif (self.kind == "Hourly") && (hours_since >= 1)
         return true
-      elsif (self.kind == "Daily") && (self.right_time)
+      elsif (self.kind == "Daily") && (self.right_time) 
         return true
       elsif (self.kind == "Weekly") && ((self.right_time && self.right_day) || self.delayed_day)
         return true
@@ -92,6 +91,30 @@ class Task < ActiveRecord::Base
     yesterday = abbreviation_array[index_yesterday]
     if yesterday == self.day_in_week
       return true
+    else
+      return false
+    end
+  end
+  
+  #following three "completed" methods take a join table entry and return boolean answering title question
+  def completed_this_hour?(shifts_task)
+    if Time.now.hour == shifts_task.created_at.hour
+      return true
+    else
+      return false
+    end
+  end
+  
+  def completed_today?(shifts_task)
+    if Time.now.day == shifts_task.created_at.day
+      return true
+    else
+      return false
+    end
+  end
+  
+  def completed_this_week?(shifts_task)
+    if Time.now.strftime("%U") == shifts_task.created_at.strftime("%U")
     else
       return false
     end
