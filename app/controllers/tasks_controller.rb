@@ -136,6 +136,17 @@ class TasksController < ApplicationController
       @timeinterval = 168
      end
    end
+
+#Task.between(time beginnin gof interval, and then time after that said interval)
+#So basically from hour 0 which is the time at which the first amount of time is done you take that time and then go from there.
+#5.hours.ago.utc.hour. You start then.
+#@time 
+#for f < time.now.utc.hour 
+#you increment f and
+#task.between(f, f + 1)
+#
+end
+
     for f in (1..@finish_tasks.size)    
       if  ( (@finish_tasks[f+1].created_at.hour - @finish_tasks[f].created_at.hour) > @timeinterval)
 
@@ -147,7 +158,7 @@ class TasksController < ApplicationController
       end     
     end
      
-
+#bracket, time comparisons in sql, do like created at > ? created < ? values that get added would be hour 1 and hour 2. 
     respond_to do |format|
       format.js {}
       format.html { }      
