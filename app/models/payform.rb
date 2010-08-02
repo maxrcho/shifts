@@ -1,7 +1,8 @@
 class Payform < ActiveRecord::Base
 
-  has_many :payform_items
-  #has_and_belongs_to_many :payform_items
+  
+  has_and_belongs_to_many :payform_item_sets, :association_foreign_key => :payform_item_id, :foreign_key => :payform_id, :join_table => 'payform_items_payforms'
+  has_many :single_payform_items, :foreign_key => :payform_id, :source => :payform_items, :class_name => "PayformItem"
 
   belongs_to :payform_set #group of printed payforms
   belongs_to :department
@@ -21,6 +22,16 @@ class Payform < ActiveRecord::Base
 
   before_create :set_payrate
 
+
+
+  def payform_items
+    self.payform_item_sets && self.single_payform_items
+  end
+  
+  def <<(payform_item)
+    self.single_payform_items << payform_item
+    self.payform_items
+  end
 
   def status
     self.printed ? 'printed' : self.approved ? 'approved' : self.submitted ? 'submitted' : 'unsubmitted'

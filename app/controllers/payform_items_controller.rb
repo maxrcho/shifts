@@ -11,6 +11,7 @@ class PayformItemsController < ApplicationController
   end
 
   def create
+    #raise params[:payform_item].to_yaml
     get_hours
     @payform_item = PayformItem.new(params[:payform_item])
     @payform_item.payform = Payform.find(params[:payform_id])
