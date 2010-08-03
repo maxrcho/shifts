@@ -145,7 +145,6 @@ class TasksController < ApplicationController
 #you increment f and
 #task.between(f, f + 1)
 #
-end
 
     for f in (1..@finish_tasks.size)    
       if  ( (@finish_tasks[f+1].created_at.hour - @finish_tasks[f].created_at.hour) > @timeinterval)
