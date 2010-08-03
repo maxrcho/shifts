@@ -394,7 +394,7 @@ class Shift < ActiveRecord::Base
   end
 
   private
-  
+
   def restrictions
     unless self.power_signed_up
       errors.add(:user, "is required") and return if self.user.nil?
@@ -424,7 +424,7 @@ class Shift < ActiveRecord::Base
   def start_less_than_end
     errors.add(:start, "must be earlier than end time") if (self.end <= start)
   end
-  
+
   #TODO: Fix this to check timeslots by time_increment
   def shift_is_within_time_slot
     unless self.power_signed_up
@@ -439,6 +439,7 @@ class Shift < ActiveRecord::Base
     else
       c = Shift.find(:all, :conditions => ["#{:user_id.to_sql_column} = #{self.user_id.to_sql} AND #{:start.to_sql_column} < #{self.end.to_sql} AND #{:end.to_sql_column} > #{self.start.to_sql} AND #{:department_id.to_sql_column} = #{self.department.to_sql} AND #{:calendar_id.to_sql_column} = #{self.calendar.to_sql}"])
     end
+##shifts found go into 'c'. Give an error if any shift is found, except in one special case: If only one shift was found and it happens to be its old instance
     unless c.empty?
       errors.add_to_base("#{self.user.name} has an overlapping shift in that period.") unless (c.length == 1  and  self.id == c.first.id)
     end
