@@ -3,16 +3,21 @@
 <% end %>
 
 <table id="task_view_table">
-    <tr>
+    <thead><tr>
       <th class="list_header" colspan="3">
         <h2>Recent completions of task: <%= Task.find(@tasks.task_id).name %></h2>
       </th>
-    </tr>
+    </tr></thead>
     <tbody id = "all_task_items">
-  
 		<%= render :partial => "task_items", :collection => @ShiftsTasks %>
     </tbody>
   </table>
-<% form_remote_tag :url => { :action => 'display_task_items' } do %>
- <%= submit_tag "view more", :class => "view_more" %>
-<% end %>
+<%= render :partial => "task_item_form" %>
+
+
+
+
+<%# form_remote_tag :url => { :action => 'display_task_items' } do %>
+ <%#= submit_tag "view more", :class => "view_more" %>
+<%# end %>
+

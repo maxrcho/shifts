@@ -111,7 +111,7 @@ class TasksController < ApplicationController
   end
 
 
-  def show_done_tasks
+  def display_task_items
     @tasks = ShiftsTask.find_by_task_id(params[:id])
     @start_time = (params[:start_time].nil? ? 3.hours.ago.utc : Time.parse(params[:start_time]))
     respond_to do |format|
