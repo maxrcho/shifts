@@ -127,7 +127,7 @@ class TasksController < ApplicationController
     @start_time = (params[:start_time].nil? ? 100.hours.ago.utc : Time.parse(params[:start_time]))
     @finish_tasks = ShiftsTask.after_time(@start_time).find(:all, :conditions => {:task_id => Task.find(@tasks.task_id)}) 
     @bad_tasks = []
-  if  (@finish_tasks != []) 
+   if  (@finish_tasks != []) 
     if  (Task.find(@finish_tasks.first.task_id).kind == "Hourly") 
          @timeinterval = 1
      else
