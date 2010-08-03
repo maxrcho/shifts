@@ -1,5 +1,5 @@
 <div class="close_link">
-  <a onclick="$('#tooltip').fadeOut(function (){ $(this).remove() }); return false;" href="#">[esc]</a>
+  <a onclick="$('#tooltip').fadeOut(function (){ $('.datePicker*').remove(); $(this).remove() }); return false;" href="#">[esc]</a>
 </div>
 <script type="text/javascript">
 // don't retrigger the action when clicking the tooltip :P
@@ -9,6 +9,7 @@ $('#tooltip').click(function(e){
 //close window when pressing [esc]
 $(this).keyup(function(event) {
   if (event.keyCode == 27) {
+	 $('.datePicker*').remove();
      $('#tooltip').fadeOut(function (){ $(this).remove() });
 	 return false;
    }
@@ -16,6 +17,7 @@ $(this).keyup(function(event) {
 //close window when clicking on the page
 $(this).click(function(event) {
 	if ($('#tooltip').length == 1) {
+	$('.datePicker*').remove();
      $('#tooltip').fadeOut(function (){ $(this).remove() });
 		return(false);
 	}
