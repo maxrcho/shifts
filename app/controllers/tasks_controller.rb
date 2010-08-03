@@ -122,20 +122,24 @@ class TasksController < ApplicationController
 
   end
   
-  def missed_tasks
+  def display_missed_task_items
     @tasks = ShiftsTask.find_by_task_id(params[:id])
-    @start_time = (params[:start_time].nil? ? 5.hours.ago.utc : Time.parse(params[:start_time]))
+    @start_time = (params[:start_time].nil? ? 100.hours.ago.utc : Time.parse(params[:start_time]))
     @finish_tasks = ShiftsTask.after_time(@start_time).find(:all, :conditions => {:task_id => Task.find(@tasks.task_id)}) 
     @bad_tasks = []
-    if  (Task.find(@finish_tasks.first.task_id).kind == "Hourly") 
-       @timeinterval = 1
-   else
-     if(Task.find(@finish_tasks.first.task_id).kind == "Daily")
-       @timeinterval = 24
-    else
-      @timeinterval = 168
-     end
-   end
+  if  (@finish_tasks != []) 
+    if  (Task.find(@finish_tasks.firsttask_id).kind == "Hourly") 
+         @timeinterval = 1
+     else
+       if(Task.find(@finish_tasks.first.task_id).kind == "Daily")
+         @timeinterval = 24
+       else
+        @timeinterval = 168
+       end
+    end
+  else
+    @time_interval = 1
+  end
 
 #Task.between(time beginnin gof interval, and then time after that said interval)
 #So basically from hour 0 which is the time at which the first amount of time is done you take that time and then go from there.
