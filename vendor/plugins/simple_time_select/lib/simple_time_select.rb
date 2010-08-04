@@ -16,16 +16,16 @@ module ActionView::Helpers
         end
 
 
-        if @options[:start_time]
-          start_minute = @options[:start_time].hour * 60 + @options[:start_time].min
+        if @options[:range_start_time]
+          start_minute = @options[:range_start_time].hour * 60 + @options[:range_start_time].min
         else
           start_minute = 0
         end
         start_minute = start_minute + 1 unless @options[:include_start_time]
 
-        if @options[:end_time]
-          end_minute = @options[:end_time].hour * 60 + @options[:end_time].min
-          end_minute += 1440    if (@options[:end_time].day == (@options[:start_time].day + 1))
+        if @options[:range_end_time]
+          end_minute = @options[:range_end_time].hour * 60 + @options[:range_end_time].min
+          end_minute += 1440    if (@options[:range_end_time].day == (@options[:range_start_time].day + 1))
         else
           end_minute = 1439
         end
@@ -37,8 +37,8 @@ module ActionView::Helpers
         if @options[:default]
           val_minutes = @options[:default].min + @options[:default].hour*60
           #if start/end time is specified, they might be on different days
-          if  @options[:start_time] && @options[:end_time]
-            if (@options[:end_time].to_date == (@options[:start_time].to_date + 1.day)) && (val_minutes < start_minute)
+          if  @options[:range_start_time] && @options[:range_end_time]
+            if (@options[:range_end_time].to_date == (@options[:range_start_time].to_date + 1.day)) && (val_minutes < start_minute)
               val_minutes += 1440
             end
           end
@@ -50,6 +50,10 @@ module ActionView::Helpers
         end
 
 
+
+        ## This is where everything happens
+        ## minute_options are created according to everything set above
+        ## the product is sent to build_select (a rails function)
         if @options[:use_hidden] || @options[:discard_minute]
           build_hidden(:minute, val)
         else

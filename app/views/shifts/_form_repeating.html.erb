@@ -25,28 +25,22 @@
   <p>
     <%= f.label :start_time %><br />
     <%= f.time_select :start_time, {
-                :simple_time_select => true,
-                :time_separator => "",
+                :simple_time_select => true, :time_separator => "",
                 :minute_interval => current_department.department_config.time_increment,
-
-                :start_time => @range_start_time,
-                :end_time => @range_end_time,
-                :include_start_time => true,
-                :include_end_time => false,
+                :include_start_time => true, :include_end_time => false,
+                :range_start_time => @range_start_time,
+                :range_end_time => @range_end_time,
                 :default => @shift.start,
                                           } %>
   </p>
   <p>
     <%= f.label :end_time %><br />
     <%= f.time_select :end_time, {
-                :simple_time_select => true,
-                :time_separator => "",
+                :simple_time_select => true, :time_separator => "",
                 :minute_interval => current_department.department_config.time_increment,
-
-                :start_time => @range_start_time,
-                :end_time => @range_end_time,
-                :include_start_time => false,
-                :include_end_time => true,
+                :include_start_time => false, :include_end_time => true,
+                :range_start_time => @range_start_time,
+                :range_end_time => @range_end_time,
                 :default => @shift.end,
                                           } %>
   </p>
