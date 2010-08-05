@@ -12,8 +12,8 @@
 
   <td>
     <strong>Users:</strong>
-    <% for payform_item in payform_item_set.payform_items %>
-      <%= link_to payform_item.user.name, payform_item.payform %> <%= "(deleted from payform)" if !payform_item.active %>, 
+    <% for payform in payform_item_set.payforms&&[payform_item_set.payform] %> <%# TODO: p_i_s.payform is not needed ideally %>
+      <%= link_to payform.user.name, payform %> <%= "(deleted from payform)" if false %>, 
     <% end %>
   </td>
 </tr>

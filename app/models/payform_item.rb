@@ -15,7 +15,6 @@ class PayformItem < ActiveRecord::Base
   #belongs_to :payform_item_set
   belongs_to :category
 
-  delegate :department, :to => :payform
   delegate :user, :to => :payform
   
   before_validation :unsubmit_payform #note -- perhaps this is not the best place to unsubmit
@@ -27,7 +26,7 @@ class PayformItem < ActiveRecord::Base
   validates_presence_of :reason, :on => :update
   validate :length_of_reason, :on => :update
 
-  named_scope :group, :conditions => {:group =>  true}
+  named_scope :group, :conditions => {:group =>  false}
   named_scope :active, :conditions => {:active =>  true}
   named_scope :in_category, lambda { |category| { :conditions => {:category_id => category.id}}}
   
@@ -36,6 +35,18 @@ class PayformItem < ActiveRecord::Base
     e.split(", ").each do |error| 
       errors.add_to_base(error)
     end
+  end
+  
+  def department
+    if self.group
+      self.payforms.first.department
+    else
+      self.payform.department
+    end
+  end
+
+  def users
+    self.payforms.map{|p| p.user }
   end
   
   protected

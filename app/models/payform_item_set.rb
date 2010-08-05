@@ -1,5 +1,12 @@
 class PayformItemSet < ActiveRecord::Base
 
+
+  #NOTE: THIS MODEL IS NOW DEFUNCT
+  #      IT REMAINS SOLELY FOR MIGRATION PURPOSES
+  #      ONCE THE STC PRODUCTION APP IS UP-TO-DATE,
+  #      REMOVE THIS MODEL AND ITS CORRESPONDING TABLE AND TESTS.
+  #      DO NOT REMOVE THE CORRESPONDING CONTROLLER, HOWERVER!!!!!
+
   has_many :payform_items
   belongs_to :category
   delegate :department, :to => :category
