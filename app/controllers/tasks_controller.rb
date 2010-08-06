@@ -122,6 +122,7 @@ class TasksController < ApplicationController
 
   end
   
+#TODO: Currently Display Missed Task breaks when given time intervals between tasks larger than a certain amount. The instructions to refactor are below -SP
   def display_missed_task_items
     @tasks = ShiftsTask.find_by_task_id(params[:id])
     @start_time = (params[:start_time].nil? ? 100.hours.ago.utc : Time.parse(params[:start_time]))
@@ -141,14 +142,6 @@ class TasksController < ApplicationController
     @time_interval = 1
   end
 
-#Task.between(time beginnin gof interval, and then time after that said interval)
-#So basically from hour 0 which is the time at which the first amount of time is done you take that time and then go from there.
-#5.hours.ago.utc.hour. You start then.
-#@time 
-#for f < time.now.utc.hour 
-#you increment f and
-#task.between(f, f + 1)
-#
 
     for f in (1..@finish_tasks.size)    
       if  ( (@finish_tasks[f+1].created_at.hour - @finish_tasks[f].created_at.hour) > @timeinterval)
@@ -167,8 +160,19 @@ class TasksController < ApplicationController
       format.html { }      
     end    
 
-        # Shift.find(:all, :conditions => { :created_at => (
-      #ShiftsTask.find().created_at.hour - anotherone > 1
+#Other ways to implement this
+##Task.between(time beginnin gof interval, and then time after that said interval)
+#So basically from hour 0 which is the time at which the first amount of time is done you take that time and then go from there.
+#5.hours.ago.utc.hour. You start then.
+#@time 
+#for f < time.now.utc.hour 
+#you increment f and
+#task.between(f, f + 1)
+#
+
+#and
+# Shift.find(:all, :conditions => { :created_at => (
+ #ShiftsTask.find().created_at.hour - anotherone > 1
      #mon, min, day, hour, 
       #Time.utc(samehere, smaemonth, sameday, hour+1, 00, 00)
       #Time.utc(endshift stuff, same, same, same, 00, 00) 
