@@ -7,7 +7,8 @@ class DataObject < ActiveRecord::Base
 
   validates_presence_of   :name
   validates_presence_of   :data_type_id
-  validates_presence_of   :locations
+  validates_presence_of   :location_ids
+  validates_presence_of   :description
   validates_uniqueness_of :name, :scope => :data_type_id
 
   def self.by_location_group(loc_group)

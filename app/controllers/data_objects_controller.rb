@@ -53,9 +53,9 @@ class DataObjectsController < ApplicationController
     check_data_object_admin_permission(@data_object)
     if @data_object.save
       flash[:notice] = "Successfully created data object."
-      redirect_to (params[:add_another] ? new_data_type_data_object_path(@data_object.data_type) : data_objects_path)
+      redirect_to (params[:add_another] ? new_data_type_data_object_path(@data_object.data_type) : data_objects_path) and return
     else
-      @locations_select = options_for_location_select
+      @locations_select = options_for_location_select and return
       render :action => 'new'
     end
   end
