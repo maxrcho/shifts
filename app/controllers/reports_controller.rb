@@ -36,7 +36,7 @@ class ReportsController < ApplicationController
   #Submitting a shift
   def update
     @report = Report.find(params[:id])
-    return unless user_is_owner_or_admin_of(@report.shift, @report.shift.department)
+    return unless user_is_owner_or_admin_of(@report.shift, @report.shift.department, @report.shift.location)
     
     if (params[:sign_out] and @report.departed.nil?) #don't allow duplicate signout messages
       @report.departed = Time.now
