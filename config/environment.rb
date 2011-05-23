@@ -30,7 +30,25 @@ Rails::Initializer.run do |config|
   }
 #  config.action_mailer.raise_delivery_errors = true
   config.action_mailer.default_charset = "utf-8"
+<<<<<<< HEAD
   
+=======
+
+  # Specify gems that this application depends on.
+  # They can then be installed with "rake gems:install" on new installations.
+  # You have to specify the :lib option for libraries, where the Gem name (sqlite3-ruby) differs from the file itself (sqlite3)
+  config.gem "ruby-net-ldap", :lib => 'net/ldap'
+  config.gem "fastercsv", :lib => false
+  config.gem "icalendar", :lib  => false
+  config.gem "prawn"
+  config.gem "chronic"
+  config.gem "has_many_polymorphs"
+  config.gem "authlogic"
+  config.gem 'ar_mailer', :lib => 'action_mailer/ar_mailer'
+  config.gem "whenever", :lib => false
+  config.gem 'hoptoad_notifier'
+  config.gem 'icalendar'
+>>>>>>> development
   # Only load the plugins named here, in the order given. By default, all plugins
   # in vendor/plugins are loaded in alphabetical order.
   # :all can be used as a placeholder for all plugins not explicitly named
