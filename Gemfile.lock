@@ -61,4 +61,5 @@ DEPENDENCIES
   prawn
   rails (= 2.3.11)
   ruby-net-ldap
+  vestal_versions
   whenever

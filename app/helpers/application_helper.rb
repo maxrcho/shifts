@@ -1,22 +1,27 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
 
-  def link_to_post_a_new_notice(report = false)
-    report == true ? height = 200 : height = 445
-    height = 540 if current_user.is_admin_of?(current_department)
-    link_to_unless_current('Post a New Notice', new_notice_path(:height => "#{height}", :width => 515), :title => "Post a new notice", :class => "thickbox")
-  end
-
-  def link_to_post_a_link
-    link_to_unless_current('Post a new link', new_link_path(:height => "330", :width => 515, :type => "link"), :title => "Post a new link", :class => "thickbox", :id => "post_link" )
-  end
-
-  # deprecated! use nathan's toggle methods in application.js instead (need only give objects classes)
   def link_toggle(id, name, speed = "slow")
     # "<a href='#' onclick=\"Element.toggle('%s'); return false;\">%s</a>" % [id, name]
     link_to_function name, "$('##{id}').slideToggle('#{speed}')"
     # link_to_function name, "Effect.toggle('#{id}', 'appear', { duration: 0.3 });"
   end
+
+	def link_to_post_a_link
+		if current_user.is_loc_group_admin?(current_department) || current_user.is_admin_of?(current_department)
+    	link_to_unless_current('Post a new link', new_link_path(:height => 225, :width => 515, :type => "Link"), :title => "Post a new link", :class => "thickbox", :id => "post_link" )
+		end
+  end
+
+	def link_to_post_a_sticky()
+		link_to_unless_current('Post a new sticky', new_sticky_path(:height => 200, :width => 515, :type => "Sticky"), :title => "Post a new sticky", :class => "thickbox", :id => "post_link" )
+  end
+
+	def link_to_post_an_announcement
+		if current_user.is_loc_group_admin?(current_department) || current_user.is_admin_of?(current_department)
+			link_to_unless_current('Post a new announcement', new_announcement_path(:height => 345, :width => 515), :title => "Post a new announcement", :class => "thickbox", :id => "announcement_link")
+		end
+	end
 
   def early_late_info(start)
     now = Time.now
@@ -33,9 +38,11 @@ module ApplicationHelper
     options.reverse_merge!({
       :id => "list_of_logins",
       :hint_text => "Type a name, NetID, role or department",
-      :style => "vertical" #default to vertical style -- seems more appropriate
+      :style => "vertical", #default to vertical style -- seems more appropriate
+      :classes => ["User","Role","Department"],
+      :include_headers => true
     })
-    
+
 
     if (options[:style] == "facebook")
       style = 'tokenList: "token-input-list-facebook",
@@ -53,18 +60,18 @@ module ApplicationHelper
       style = ''
       css_file = 'token-input'
     end
-    
+
     json_string = ""
     unless object.nil? or field.nil?
       object.send(field).each do |user_source|
         json_string += "{name: '#{user_source.name}', id: '#{user_source.class}||#{user_source.id}'},\n"
       end
     end
-    
+
     #Tell the app to put javascript info at top and bottom of pages (Unobtrusive Javascript - style)
-    content_for :javascript, 
+    content_for :javascript,
       '$(document).ready(function() {
-        $("#'+options[:id]+'").tokenInput("'+autocomplete_department_users_path(current_department)+'", {
+        $("#'+options[:id]+'").tokenInput("'+autocomplete_department_users_path(current_department, :classes => options[:classes])+'", {
             prePopulate: ['+json_string+'],
             hintText: "'+options[:hint_text]+'",
             classes: {
@@ -72,8 +79,10 @@ module ApplicationHelper
             }
           });
         });'
-    content_for :head, javascript_include_tag('jquery.tokeninput')
-    content_for :head, stylesheet_link_tag(css_file)
+    if options[:include_headers]
+      content_for :head, javascript_include_tag('jquery.tokeninput')
+      content_for :head, stylesheet_link_tag(css_file)
+    end
     text_field_tag(options[:id])
   end
 
@@ -90,15 +99,6 @@ module ApplicationHelper
     output + "</select>"
   end
 
-  #TODO: clean up datepicker references, since datepicker.js has been removed (for license reasons, I think)
-  def unobtrusive_datepicker_includes
-    #javascript 'datepicker'
-    #stylesheet 'datepicker'
-  end
-
-  def unobtrusive_datepicker_include_tags
-    #(javascript_include_tag 'datepicker') + (stylesheet_link_tag 'datepicker')
-  end
 
   def time_format
     '%I:%M%p'
@@ -126,5 +126,21 @@ module ApplicationHelper
     page[rand].visual_effect :highlight
   end
 
+	def observe_fields(fields)
+		#prepare a value of the :with parameter
+		with = "'"
+		for field in fields
+			with += field + "=’$(’#" + field + "’).is(':checked')"
+			with += " + " if field != fields.last
+		end
+ 		with += "'"
+		#generate a call of the observer_field helper for each field
+		ret = "";
+		for field in fields
+			puts field
+			ret += observe_field(field.to_s, :url => {:controller => :templates, :action => "update_locations"}, :with => with, :on => "change")
+    end
+    return ret
+	end
 end
 

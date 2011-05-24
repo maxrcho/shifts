@@ -1,9 +1,8 @@
 class LinksController < NoticesController
-
-  def index
-  end
+	before_filter :require_any_loc_group_admin, :except => [:index, :show, :destroy]
 
   def new
+		@current_shift_location = current_user.current_shift.location if current_user.current_shift
     @link = Link.new
 		layout_check
   end
@@ -15,9 +14,11 @@ class LinksController < NoticesController
   def create
     @link = Link.new(params[:link])
 		@link.author = current_user		
-		@link.url = "http://" << params[:link][:url] if @link.url[0,7] != "http://" || @link.url[0,8] != "https://"
-		@link.start_time = Time.now
-    @link.end_time = nil
+		@link.department = current_department
+		@link.url = "http://" << params[:link][:url] if @link.url[0,7] != "http://" && @link.url[0,8] != "https://"
+		@link.url.strip!
+		@link.start = Time.now
+    @link.end = nil
     @link.indefinite = true
 		begin
       Link.transaction do
@@ -25,15 +26,15 @@ class LinksController < NoticesController
         set_sources(@link)
         @link.save!
     	end
-		rescue Exception
+		rescue ActiveRecord::RecordInvalid
       respond_to do |format|
         format.html { render :action => "new" }
         format.js  #create.js.rjs
       end
     else
       respond_to do |format|
-        format.html {
         flash[:notice] = 'Link was successfully created.'
+        format.html {
         redirect_to links_path
         }
         format.js  #create.js.rjs
@@ -41,7 +42,33 @@ class LinksController < NoticesController
     end
   end
 
-  def destroy
-		redirect_to :controller => 'notice', :action => 'destroy'
+	def update
+    @link = Link.find_by_id(params[:id]) || Link.new
+    @link.update_attributes(params[:link])
+		@link.author = current_user		
+		@link.department = current_department
+		@link.url = "http://" << params[:link][:url] if @link.url[0,7] != "http://" && @link.url[0,8] != "https://"
+		@link.url.strip!
+		@link.start = Time.now
+    @link.end = nil
+    @link.indefinite = true
+		begin
+      Link.transaction do
+        @link.save(false)
+        set_sources(@link)
+        @link.save!
+    	end
+		rescue ActiveRecord::RecordInvalid
+      respond_to do |format|
+        format.html { render :action => "new" }
+      end
+    else
+      respond_to do |format|
+        format.html {
+        flash[:notice] = 'Link was successfully created.'
+        redirect_to links_path
+        }
+      end
+    end
   end
 end

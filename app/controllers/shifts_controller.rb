@@ -4,7 +4,7 @@ class ShiftsController < ApplicationController
   def index
     @period_start = params[:date] ? Date.parse(params[:date]).previous_sunday : Date.today.previous_sunday
     @upcoming_shifts = Shift.find(:all, :conditions => ["#{:user_id} = ? and #{:end} > ? and #{:department_id} = ? and #{:scheduled} = ? and #{:active} = ?", current_user, Time.now.utc, current_department.id, true, true], :order => :start, :limit => 5)
-    
+
     # for user view preferences partial
     @loc_group_select = {}
     current_user.departments.each do |dept|
@@ -113,14 +113,13 @@ class ShiftsController < ApplicationController
   end
 
   def create
-
-# needed when simple_time_select is implemented
     parse_date_and_time_output(params[:shift])
-
+    join_date_and_time(params[:shift])
     @shift = Shift.new(params[:shift])
+#    @shift.join_date_and_time
     @shift.department = @shift.location.department
     return unless require_department_membership(@shift.department)
-    @shift.start = Time.now unless @shift.start
+#    @shift.start = Time.now unless @shift.start
     @shift.calendar = @department.calendars.default unless @shift.calendar
     unless current_user.is_admin_of?(@department) && @shift.scheduled?
       @shift.power_signed_up = false
@@ -165,7 +164,11 @@ class ShiftsController < ApplicationController
 
   def edit
     @shift = Shift.find(params[:id])
-    @report = @shift.report
+#why did we need the report? when there is none yet, @shift gets overwritten by nil ~Casey
+#    @report = @shift.report
+#
+#we could add - if @shift.report
+
 # TODO - unecessary? they never seem to be called ~Casey
 #    return unless user_is_owner_or_admin_of(@shift, @shift.department)
 #    (render :partial => 'shifts/tooltips/edit', :layout => 'none') if params[:tooltip]
@@ -173,7 +176,9 @@ class ShiftsController < ApplicationController
 
   def update
     parse_date_and_time_output(params[:shift])
+    join_date_and_time(params[:shift])
     @shift = Shift.find(params[:id])
+#    @shift.join_date_and_time
     return unless user_is_owner_or_admin_of(@shift, @shift.department)
     if @shift.update_attributes(params[:shift])
       #combine with any compatible shifts

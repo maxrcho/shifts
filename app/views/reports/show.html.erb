@@ -7,12 +7,12 @@
       <%= render :partial => 'notices/notice', :collection => @report.get_notices %>
     </div>
     <div id="new_notice">
-      <%#= link_to_post_a_sticky(true) %>
-			<%#= link_to_post_an_announcement %>
+      <%= link_to_post_a_sticky() %>
+			<%= link_to_post_an_announcement %>
     </div>
   </fieldset>
 
-  <%= periodically_call_remote :url => { :controller => "notices", :action => "update_message_center"}, :frequency => 5*60 -%>
+  <%= periodically_call_remote :url => { :controller => "notices", :action => "update_message_center"}, :frequency => 10 -%>
 
     <fieldset id = "report_data_objects" class = "index">
       <legend>Data Objects</legend>
@@ -22,12 +22,12 @@
     <fieldset class="index" id = "useful_links">
       <legend>Useful Links</legend>
 			<ul id = "useful_links">
-      	<div id = "report_useful_links">
-        	<%= render :partial => 'notices/report_useful_links' %>
+      	<div id = "report_links">
+        	<%= render :partial => 'links/report_links' %>
       	</div>
-				<% if current_user.is_admin_of?(@report.shift.location.loc_group) %>
-    			<li><%#= link_to_post_a_link %></li>
-				<% end %>
+    		<li><%= link_to_post_a_link %></li>
+
+
 			</ul>
     </fieldset>
 
@@ -51,7 +51,7 @@
 
       </div> <%# close report_relative_size %>
 
-      <%= button_to "Submit your shift report", {:action => :update, :id => @report, :sign_out => true, :method => :put}, {:id => 'submit_button'} %>
+      <%= button_to "Submit your shift report", {:action => :update, :id => @report, :sign_out => true, :method => :put}, :confirm => 'Are you sure you wish to sign out of this shift?' %>
 
       <div class='clear'></div>
     </div> <%# close active_report_area %>

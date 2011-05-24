@@ -18,6 +18,8 @@ class User < ActiveRecord::Base
   has_many :notices, :as => :remover
   has_one  :punch_clock
   has_many :sub_requests, :through => :shifts #the sub reqeusts this user owns
+	has_many :shift_preferences
+	has_many :requested_shifts
 
 
 # New user configs are created by a user observer, after create
@@ -102,7 +104,7 @@ class User < ActiveRecord::Base
   # check if a user can see locations and shifts under this loc group
   def can_view?(loc_group)
     return false unless loc_group
-    (permission_list.include?(loc_group.view_permission) || permission_list.include?(loc_group.department.admin_permission)) && self.is_active?(loc_group.department)
+    (self.is_superuser? || permission_list.include?(loc_group.view_permission) || permission_list.include?(loc_group.department.admin_permission)) && self.is_active?(loc_group.department)
   end
 
   # check if a user can sign up for a shift in this loc group
@@ -148,6 +150,16 @@ class User < ActiveRecord::Base
   # Given a department, check to see if the user can admin any loc groups in it
   def is_loc_group_admin?(dept)
     dept.loc_groups.any?{|lg| self.is_admin_of?(lg)}
+  end
+  
+  # given an object with roles, checks to see if the user belongs to one of those roles
+  def has_proper_role_for?(thing)
+    self.roles.each do |role|
+      if thing.roles.include?(role)
+        return true
+      end
+    end
+    return false
   end
 
   # Given a department, return any location groups within that department that the user can admin
@@ -244,15 +256,6 @@ class User < ActiveRecord::Base
     (superuser? && supermode?) ? Department.all : departments
   end
 
-  def current_notices
-    Notice.active.select {|n| n.users.include?(self)}
-  end
-
-  def other_notices
-    Notice.active.select {|n| !n.users.include?(self) && n.locations.empty?}
-  end
-
-
   def payrate(department)
     DepartmentsUser.find(:first, :conditions => { :user_id => self, :department_id => department }).payrate
   end
@@ -266,6 +269,48 @@ class User < ActiveRecord::Base
     new_entry.save
   end
 
+  def detailed_stats(start_date, end_date)
+    shifts_set = shifts.on_days(start_date, end_date).active
+    shift_stats = {}
+  
+    shifts_set.each do |s|
+       stat_entry = {}
+       stat_entry[:id] = s.id
+       stat_entry[:shift] = s.short_display
+       stat_entry[:in] = s.created_at
+       stat_entry[:out] = s.updated_at
+       # if s.missed
+       #   stat_entry[:notes] = "Missed"
+       # elsif s.late && s.left_early
+       #   stat_entry[:notes] = "Late " + (s.created_at - s.start)/60 + " minutes, and left early " + (s.end - s.updated_at)/60 + " minutes"
+       # elsif s.late
+       #   stat_entry[:notes] = "Late " + (s.created_at - s.start)/60 + " minutes"
+       # elsif s.left_early
+       #   stat_entry[:notes] = "Left early " + (s.end - s.updated_at)/60 + " minutes"
+       # else
+       #   stat_entry[:notes]
+       # end
+       if s.missed
+         stat_entry[:notes] = "Missed"
+       elsif s.late && s.left_early
+         stat_entry[:notes] = "Late and left early"
+       elsif s.late
+         stat_entry[:notes] = "Late"
+       elsif s.left_early
+         stat_entry[:notes] = "Left early"
+       else
+         stat_entry[:notes]
+       end
+       stat_entry[:missed] = s.missed
+       stat_entry[:late] = s.late
+       stat_entry[:left_early] = s.left_early
+       stat_entry[:updates_hour] = s.updates_hour
+       shift_stats[s.id] = stat_entry
+    end
+    
+    return shift_stats
+  end
+  
   private
 
   def departments_not_empty
