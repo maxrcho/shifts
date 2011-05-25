@@ -89,7 +89,7 @@ class ApplicationController < ActionController::Base
       respond_to do |format|
         format.html do
           flash[:error] = error_message
-          redirect_to index
+          redirect_to indexa
         end
         format.js do
           render :update do |page|
