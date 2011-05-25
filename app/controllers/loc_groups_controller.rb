@@ -48,7 +48,7 @@ private
   
   def find_loc_group_and_check_admin
     @loc_group = LocGroup.find(params[:id])
-    require_loc_group_admin(@loc_group)
+    return unless user_is_loc_group_admin_of(@loc_group)
   end
   
 end

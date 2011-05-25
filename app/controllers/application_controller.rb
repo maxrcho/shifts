@@ -103,25 +103,6 @@ class ApplicationController < ActionController::Base
     return true
   end
 
-  def require_loc_group_admin(current_loc_group)
-    unless current_user.is_admin_of?(current_loc_group)
-      error_message = "That action is restricted to location group administrators."
-      respond_to do |format|
-        format.html do
-          flash[:error] = error_message
-          redirect_to access_denied_path
-        end
-        format.js do
-          render :update do |page|
-            # display alert
-            ajax_alert(page, "<strong>error:</strong> "+error_message);
-          end
-          return false
-        end
-      end
-    end
-    return true
-  end
 
 	def require_any_loc_group_admin
     unless current_user.is_loc_group_admin?(current_department)
@@ -218,10 +199,30 @@ class ApplicationController < ActionController::Base
     return true
   end
 
+  def user_is_loc_group_admin_of(current_loc_group)
+    unless current_user.is_admin_of?(current_loc_group)
+      error_message = "That action is restricted to location group administrators."
+      respond_to do |format|
+        format.html do
+          flash[:error] = error_message
+          redirect_to access_denied_path
+        end
+        format.js do
+          render :update do |page|
+            # display alert
+            ajax_alert(page, "<strong>error:</strong> "+error_message);
+          end
+          return false
+        end
+      end
+    end
+    return true
+  end
+  
   # Takes any object that has a user method and its department
   #TODO: This is mixing model logic!!!
   def user_is_owner_or_admin_of(thing, dept)
-    unless current_user.is_owner_of?(thing) || current_user.is_admin_of?(dept)
+    unless current_user.is_owner_of?(thing) || current_user.is_admin_of?(dept) || ((thing.respond_to?(:loc_group)) && current_user.is_admin_of?(thing.loc_group))
       error_message = "You are not the owner of this #{thing.class.name.decamelize}, nor are you the department administrator."
       respond_to do |format|
         format.html do

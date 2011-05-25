@@ -1,5 +1,6 @@
 class Report < ActiveRecord::Base
   belongs_to :shift
+  delegate :loc_group, :to => 'shift'
   delegate :user, :to => :shift
   has_many :report_items, :dependent => :destroy
 
