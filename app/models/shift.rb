@@ -218,7 +218,7 @@ class Shift < ActiveRecord::Base
     end
     if missed?
       css_class += "_missed"
-    elsif (self.report.nil? ? Time.now : self.report.arrived) > start + department.department_config.grace_period*60 #seconds
+    elsif (self.report.nil? ? Time.now : self.report.arrived) > start + department.department_config.grace_period.minutes #seconds
       css_class += "_late"
     end
     css_class
@@ -238,11 +238,11 @@ class Shift < ActiveRecord::Base
   end
 
   def late?
-    self.report.nil? ? false : (self.report.arrived - self.start > self.department.department_config.grace_period*60)
+    self.report.nil? ? false : (self.report.arrived - self.start > self.department.department_config.grace_period.minutes)
   end
 
   def left_early?
-    (self.report.nil? or self.report.departed.nil?) ? false : (self.end - self.report.departed > self.department.department_config.grace_period*60)
+    (self.report.nil? or self.report.departed.nil?) ? false : (self.end - self.report.departed > self.department.department_config.grace_period.minutes)
   end
 
   def updates_per_hour
