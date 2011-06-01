@@ -9,8 +9,14 @@ class Location < ActiveRecord::Base
   }}
 
   has_many :time_slots
+	has_many :template_time_slots
   has_many :shifts
+	has_many :locations_requested_shifts
+	has_many :requested_shifts, :through => :locations_requested_shifts
+  has_many :locations_shift_preferences
+	has_many :shift_preferences, :through => :locations_shift_preferences
   has_and_belongs_to_many :data_objects
+	has_and_belongs_to_many :requested_shifts
 
   validates_presence_of :loc_group
   validates_presence_of :name
@@ -35,19 +41,21 @@ class Location < ActiveRecord::Base
   end
 
   def current_notices
-    ActiveRecord::Base.transaction do
-       a = LocationSinksLocationSource.find(:all, :conditions => ["location_sink_type = 'Notice' AND location_source_type = 'Location' AND location_source_id = #{self.id.to_sql}"]).collect(&:location_sink_id)
-       b = Sticky.active.collect(&:id)
-       c = Announcement.active.collect(&:id)
-       Notice.find(a & (b + c))
-     end
+		return self.announcements + self.stickies
+#   ActiveRecord::Base.transaction do
+#       a = LocationSinksLocationSource.find(:all, :conditions => ["location_sink_type = 'Notice' AND location_source_type = 'Location' AND location_source_id = #{self.id.to_sql}"]).collect(&:location_sink_id)
+#       b = Sticky.active.collect(&:id)
+#       c = Announcement.active.collect(&:id)
+#       Notice.find(a & (b + c))
+#     end
+
   end
 
   def stickies
      ActiveRecord::Base.transaction do
         a = LocationSinksLocationSource.find(:all, :conditions => ["location_sink_type = 'Notice' AND location_source_type = 'Location' AND location_source_id = #{self.id.to_sql}"]).collect(&:location_sink_id)
         b = Sticky.active.collect(&:id)
-        Sticky.find(a & b)
+        Sticky.find(a & b).sort_by{|s| s.start}
       end
   end
 
@@ -55,7 +63,7 @@ class Location < ActiveRecord::Base
      ActiveRecord::Base.transaction do
         a = LocationSinksLocationSource.find(:all, :conditions => ["location_sink_type = 'Notice' AND location_source_type = 'Location' AND location_source_id = #{self.id.to_sql}"]).collect(&:location_sink_id)
         b = Announcement.active.collect(&:id)
-        Announcement.find(a & b)
+        Announcement.find(a & b).sort_by{|a| a.start}
       end
   end
 

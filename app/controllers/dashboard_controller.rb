@@ -8,10 +8,10 @@ class DashboardController < ApplicationController
     @upcoming_shifts = Shift.find(:all, :conditions => ["#{:user_id} = ? and #{:end} > ? and #{:department_id} = ? and #{:scheduled} = ? and #{:active} = ?", current_user, Time.now.utc, current_department.id, true, true], :order => :start, :limit => 5)
 
     @subs_you_requested = SubRequest.find(:all, :conditions => ["end > ? AND user_id = ?", Time.now.utc, current_user.id]).sort_by(&:start)
-    @subs_you_can_take = current_user.available_sub_requests(@department)
+    @subs_you_can_take = current_user.available_sub_requests(@department).sort_by{|sub| sub.start}
 
     @watched_objects = DataObject.find(current_user.user_config.watched_data_objects.split(', ')).group_by(&:data_type)
-    @current_notices = current_department.current_notices + current_user.current_notices
+    @current_notices = current_department.current_notices
     
     @dept_start_hour = current_department.department_config.schedule_start / 60
     @dept_end_hour = current_department.department_config.schedule_end / 60

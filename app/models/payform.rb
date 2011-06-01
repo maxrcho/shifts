@@ -1,7 +1,8 @@
 class Payform < ActiveRecord::Base
 
   has_many :payform_items
-  belongs_to :payform_set
+  #has_and_belongs_to_many :payform_items
+  belongs_to :payform_set #group of printed payforms
   belongs_to :department
   belongs_to :user
   belongs_to :approved_by, :class_name => "User", :foreign_key => "approved_by_id"
@@ -52,9 +53,11 @@ class Payform < ActiveRecord::Base
     end
     (given_date - given_date_day.days + dept.department_config.day.days).to_date
   end
-
+  
+  # Total payform hours rounded according to department rounding option.
   def hours
-    ((payform_items.select{|p| p.active}.map{|i| i.hours}.sum) * 4).round / 4
+    hours = payform_items.select{|p| p.active}.map{|i| i.hours}.sum
+    (hours.to_f * 60 / department.department_config.admin_round_option.to_f).round * (department.department_config.admin_round_option.to_f / 60)
   end
 
   def start_date

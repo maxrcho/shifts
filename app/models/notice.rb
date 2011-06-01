@@ -3,6 +3,8 @@ class Notice < ActiveRecord::Base
   belongs_to :author, :class_name => "User"
   belongs_to :remover, :class_name => "User"
   belongs_to :department
+	
+  validate :content_or_label, :presence_of_locations_and_viewers, :proper_time	 	
 
   #before_destroy :destroy_user_sinks_user_sources    TODO:  this validation fails, but also is never called as we never delete notices.
   named_scope :in_department, lambda { |dept| {:conditions => {:department_id => dept}}}
@@ -15,12 +17,8 @@ class Notice < ActiveRecord::Base
      Link.active
   end
 
-  def active?
-    true
-  end
-  
   def self.active_notices
-    Sticky.active + Announcement.active
+    Announcement.active.ordered_by_start + Sticky.active.ordered_by_start
   end
 
   def display_for
@@ -63,7 +61,6 @@ class Notice < ActiveRecord::Base
 			errors.add_to_base "Your #{self.class.name.downcase} must display somewhere"
   	end
 	end
-
 
   def proper_time
     errors.add_to_base "Start/end time combination is invalid." if self.end && self.start >= self.end

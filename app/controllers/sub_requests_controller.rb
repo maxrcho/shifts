@@ -7,7 +7,7 @@ class SubRequestsController < ApplicationController
       @title_add=" for " + @shift.user.name + "'s shift in " + @shift.location.name + " on " + @shift.start.to_s(:gg)
       @index_link = true
     else
-      @subs = SubRequest.find(:all, :conditions => ["end >= ?", Time.now])
+      @subs = SubRequest.find(:all, :conditions => ["end >= ?", Time.now], :order => 'start')
       @title_add=" Index"
       @index_link=false
     end
@@ -42,6 +42,7 @@ class SubRequestsController < ApplicationController
 
   def create
     parse_date_and_time_output(params[:sub_request])
+    join_date_and_time(params[:sub_request])
     @sub_request = SubRequest.new(params[:sub_request])
 #    @sub_request.join_date_and_time
     @sub_request.shift = Shift.find(params[:shift_id])
@@ -87,6 +88,7 @@ class SubRequestsController < ApplicationController
              end
            end
           parse_date_and_time_output(params[:sub_request])
+          join_date_and_time(params[:sub_request])
           @sub_request.update_attributes(params[:sub_request])
           @sub_request.save!
         end

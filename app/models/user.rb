@@ -18,6 +18,8 @@ class User < ActiveRecord::Base
   has_many :notices, :as => :remover
   has_one  :punch_clock
   has_many :sub_requests, :through => :shifts #the sub reqeusts this user owns
+	has_many :shift_preferences
+	has_many :requested_shifts
 
 
 # New user configs are created by a user observer, after create
@@ -102,7 +104,7 @@ class User < ActiveRecord::Base
   # check if a user can see locations and shifts under this loc group
   def can_view?(loc_group)
     return false unless loc_group
-    (permission_list.include?(loc_group.view_permission) || permission_list.include?(loc_group.department.admin_permission)) && self.is_active?(loc_group.department)
+    (self.is_superuser? || permission_list.include?(loc_group.view_permission) || permission_list.include?(loc_group.department.admin_permission)) && self.is_active?(loc_group.department)
   end
 
   # check if a user can sign up for a shift in this loc group
@@ -149,6 +151,16 @@ class User < ActiveRecord::Base
   def is_loc_group_admin?(dept)
     dept.loc_groups.any?{|lg| self.is_admin_of?(lg)}
   end
+  
+  # given an object with roles, checks to see if the user belongs to one of those roles
+  def has_proper_role_for?(thing)
+    self.roles.each do |role|
+      if thing.roles.include?(role)
+        return true
+      end
+    end
+    return false
+  end
 
   # Given a department, return any location groups within that department that the user can admin
   def loc_groups_to_admin(dept)
@@ -164,6 +176,11 @@ class User < ActiveRecord::Base
     [first_name, last_name].join(" ")
   end
 
+  # Useful for alphabetical sorting of lists containing duplicate last names
+  def reverse_name
+    [last_name, first_name].join(" ")
+  end
+  
   def full_name_with_nick
     if nick_name && !nick_name.blank?
       [first_name, "'#{nick_name}'" , last_name].join(" ")
@@ -242,24 +259,6 @@ class User < ActiveRecord::Base
 
   def accessible_departments
     (superuser? && supermode?) ? Department.all : departments
-  end
-
-  def current_notices
-    ActiveRecord::Base.transaction do
-      a = UserSinksUserSource.find(:all, :conditions => ["user_sink_type = 'Notice' AND user_source_type = 'User' AND user_source_id = #{self.id.to_sql}"]).collect(&:user_sink_id)
-      x = Sticky.active.collect(&:id)
-      y = Announcement.active.collect(&:id)
-      Notice.find(a & (x + y))
-    end
-  end
-
-  def other_notices
-    ActiveRecord::Base.transaction do
-      a = UserSinksUserSource.find(:all, :conditions => ["user_sink_type = 'Notice' AND user_source_type = 'User' AND user_source_id != #{self.id.to_sql}"]).collect(&:user_sink_id)
-      b = Sticky.active.collect(&:id)
-      c = Announcement.active.collect(&:id)
-      Notice.find(a & (b + c))
-    end 
   end
 
   def payrate(department)
