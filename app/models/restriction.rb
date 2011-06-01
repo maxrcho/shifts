@@ -26,7 +26,7 @@ class Restriction < ActiveRecord::Base
   end
 
   def start_less_than_end
-    if self.end_date<= self.start_date || self.end_time <= self.start_time
+    if self.end_date < self.start_date || self.end_time <= self.start_time
       errors.add_to_base("All start times must be before end times.")
     end
   end
