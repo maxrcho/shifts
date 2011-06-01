@@ -14,14 +14,26 @@
 		<legend>Start time:</legend>
 		<%= radio_button_tag 'start_time_choice', 'now', start_time_check(true) %> Now <br/>
 		<%= radio_button_tag 'start_time_choice', 'date', start_time_check(false) %>
-		<%= f.datetime_select :start, :minute_step => current_department.department_config.time_increment, :twelve_hour => true %>
+    <%= f.date_select :start_date, :default => Date.today %>
+    <%= f.time_select :start_time, {
+                :simple_time_select => true,
+                :time_separator => "",
+                :minute_interval => @department.department_config.time_increment,
+                :default => Date.today + current_department.department_config.schedule_start.minutes,
+                                    } %>
 	</fieldset>
 
 	<fieldset class = "index">
 		<legend>End time:</legend>
 		<%= radio_button_tag 'end_time_choice', 'indefinite', end_time_check(true) %> Indefinite <br/>
 		<%= radio_button_tag 'end_time_choice', 'date', end_time_check(false) %>
-		<%= f.datetime_select :end, :minute_step => current_department.department_config.time_increment, :twelve_hour => true %>
+    <%= f.date_select :end_date, :default => Date.today + 7.days %>
+    <%= f.time_select :end_time, {
+                :simple_time_select => true,
+                :time_separator => "",
+                :minute_interval => @department.department_config.time_increment,
+                :default => Date.today + current_department.department_config.schedule_end.minutes,
+                                    } %>
 	</fieldset>
 
   </div>
@@ -38,4 +50,26 @@
 
 <%= javascript_include_tag 'notices' %>
 <%=  stylesheet_link_tag 'notice' %>
+
+<script type="text/javascript">
+var opts = {
+                formElements:{"announcement_start_date_3i":"j",
+                              "announcement_start_date_1i":"Y",
+                              "announcement_start_date_2i":"n"
+                },
+                statusFormat:"l-cc-sp-d-sp-F-sp-Y",
+                noFadeEffect:true,
+                       };
+datePickerController.createDatePicker(opts);
+
+var opts = {
+                formElements:{"announcement_end_date_3i":"j",
+                              "announcement_end_date_1i":"Y",
+                              "announcement_end_date_2i":"n"
+                },
+                statusFormat:"l-cc-sp-d-sp-F-sp-Y",
+                noFadeEffect:true,
+                       };
+datePickerController.createDatePicker(opts);
+</script>
 
