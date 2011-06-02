@@ -502,7 +502,12 @@ ul#dashboard_right {
     margin-left: 0px;
 }
 ul#dashboard_right li a {
+    list-style-type: none;
     display: inline !important;
+    float: left;
+    text-align: left;
+    list-style-position: outside;
+    margin-left: 0px;
 }
 
 /* = Progress bar
