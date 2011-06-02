@@ -31,7 +31,8 @@ class RestrictionsController < ApplicationController
       flash[:notice] = "Successfully created restriction."
       redirect_to restrictions_path
     end
-  end
+end
+
 
   def edit
     @restriction = Restriction.find(params[:id])

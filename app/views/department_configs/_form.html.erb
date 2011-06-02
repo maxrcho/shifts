@@ -19,9 +19,12 @@
       <%= f.label :grace_period, text = "Late sign-in grace period:" %>
       <%= f.text_field :grace_period, :size => 6 %>
     </p>
-	<p>
-		<%= f.label :admin_round_option, text = "Department payform rounding: "%>
-		<%= f.select :admin_round_option, @rounding_choices %>
+		<p>
+			<%= f.label :admin_round_option, text = "Department payform rounding: "%>
+			<%= f.select :admin_round_option, @rounding_choices %>
+		</p>
+		  <%= f.label :sign_in_limit, text = "The earliest a user can sign into a shift without getting a notice:" %>
+		<%= f.text_field :sign_in_limit, :size => 6 %>
 		</p>
       <p>
         <%= f.label :schedule_start, text = "Display weekends on shift schedule:" %>
