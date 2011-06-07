@@ -62,6 +62,7 @@ class PayformItemSetsController < ApplicationController
     @new_users = params[:user_ids].collect {|id| User.find(id) }
     @old_users = @payform_item_set.users
     @old_payform_items = @payform_item_set.payform_items.dup # .dup is crucial here!
+                                                             #  it returns a copy of the object.  
                                                              # otherwise the loop below
                                                              # will go totally bonkers
    
@@ -71,7 +72,7 @@ class PayformItemSetsController < ApplicationController
     begin 
       PayformItemSet.transaction do
         @old_payform_items.each do |old_payform_item|
-          if @delete_users.include?(old_payform_item.user) #get rid of it
+          if @delete_users.include?(old_payform_item.user) #gets rid of a user 
             old_payform_item.active = false
             old_payform_item.source = current_user.name 
             old_payform_item.reason = "#{current_user.name} removed you from this group job."
@@ -81,14 +82,17 @@ class PayformItemSetsController < ApplicationController
             new_item = PayformItem.new(params[:payform_item_set])
             new_item.payform = Payform.build(current_department, old_payform_item.user, date)
             new_item.source = current_user.name 
-            #new_item.parent = old_payform_item 
+            new_item.parent = old_payform_item 
 
-            new_payform_item.reason = "#{current_user.name} changed this group job."
-            new_payform_item.payform = nil 
+              #@payform_item = PayformItem.find(params[:id])
+              #return unless user_is_owner_or_admin_of(@payform_item.payform, @payform_item.department)
+              #@payform_item.attributes = params[:payform_item]
+            old_payform_item.reason = "#{current_user.name} changed this group job."
+            old_payform_item.payform = nil 
       
             new_item.save(false)
-            #old_payform_item.save! 
-            new_payform_item.save!
+            old_payform_item.save! 
+            new_item.save!
             @payform_item_set.payform_items.delete(old_payform_item)
             @payform_item_set.payform_items << new_item
           end
