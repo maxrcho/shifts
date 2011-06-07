@@ -28,10 +28,10 @@ class ApplicationController < ActionController::Base
 
   # We should improve this page, probably on the actual template -ben
   def access_denied
-    text = "Access denied"
-    text += "<br>Maybe you want to <a href=\"#{login_path}\">try logging in with built-in authentication</a>?" if @appconfig.login_options.include?('built-in')
-    text += "<br>Maybe you want to go <a href=\"#{department_path(current_user.departments.first)}/users\">here</a>?" if current_user && current_user.departments
-    render :text => text, :layout => true
+    @text = "Access denied"
+    @text += "<br>Maybe you want to <a href=\"#{login_path}\">try logging in with built-in authentication</a>?" if @appconfig.login_options.include?('built-in')
+    @text += "<br>Maybe you want to go <a href=\"#{department_path(current_user.departments.first)}/users\">here</a>?" if current_user && current_user.departments
+    render 'layouts/access_denied', :layout => true
   end
 
   def using_CAS?
@@ -41,7 +41,9 @@ class ApplicationController < ActionController::Base
   protected
   def current_user
     @current_user ||= (
-    if @user_session
+    if session[:fake_user] && ENV['RAILS_ENV']=='development'
+      User.find_by_login(session[:fake_user])
+    elsif @user_session
       @user_session.user
     elsif session[:cas_user]
       User.find_by_login(session[:cas_user])
