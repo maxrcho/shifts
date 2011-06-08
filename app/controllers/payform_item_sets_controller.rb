@@ -58,7 +58,7 @@ class PayformItemSetsController < ApplicationController
   def update
     @payform_item_set = PayformItemSet.find(params[:id])
     params[:user_ids].delete("")
-    date = build_date_from_params(:date, params[:payform_item_set])
+    date = build_date_from_params(:date, params[:payform_item_set])    
     @new_users = params[:user_ids].collect {|id| User.find(id) }
     @old_users = @payform_item_set.users
     @old_payform_items = @payform_item_set.payform_items.dup # .dup is crucial here!
