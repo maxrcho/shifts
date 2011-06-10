@@ -217,17 +217,19 @@ class User < ActiveRecord::Base
   #returns  upcoming sub_requests user has permission to take.  Default is for all departments
   def available_sub_requests(source)
     @all_subs = []
-   @all_subs = SubRequest.find(:all, :conditions => ["end >= ?", Time.now]).select { |sub| self.can_take_sub?(sub) }
-   if !source.blank?
-       case 
-       when source.class.name == "Department"
-         @all_subs.select {|sub| source == sub.shift.department }
-       when source.class.name == "LocGroup"
-         @all_subs.select {|sub| source == sub.loc_group }
-       when source.class.name == "Location"
-         @all_subs.select {|sub| source == sub.shift.location }
-       end 
+    @all_subs = SubRequest.find(:all, :conditions => ["end >= ?", Time.now]).select { |sub| self.can_take_sub?(sub) }.select{ |sub| !sub.shift.missed?}
+    
+    if !source.blank?
+      case 
+      when source.class.name == "Department"
+        @all_subs.select {|sub| source == sub.shift.department }
+      when source.class.name == "LocGroup"
+        @all_subs.select {|sub| source == sub.loc_group }
+      when source.class.name == "Location"
+        @all_subs.select {|sub| source == sub.shift.location }
+      end 
     end
+    
     return @all_subs
   end
   
