@@ -2,6 +2,13 @@ class ShiftsController < ApplicationController
   helper :shifts
 
   def index
+  	if params[:loc_link] == "Show all locations"
+  		@location_link = "Hide empty locations"
+  		@show_empty = 1
+  	else
+  		@location_link = "Show all locations"
+  		@show_empty = 0
+  	end
     @period_start = params[:date] ? Date.parse(params[:date]).previous_sunday : Date.today.previous_sunday
     @upcoming_shifts = Shift.find(:all, :conditions => ["#{:user_id} = ? and #{:end} > ? and #{:department_id} = ? and #{:scheduled} = ? and #{:active} = ?", current_user, Time.now.utc, current_department.id, true, true], :order => :start, :limit => 5)
 

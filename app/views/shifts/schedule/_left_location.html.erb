@@ -1,7 +1,12 @@
+<% left_location_preprocessing(left_location, day) %>
+
+<%if @has_shifts == 1 or @show_empty == 1%>
+<%@loc_link%>
 <div class="day" style="height: <%= @table_pixels / (@table_height) * (@location_rows[left_location].length) + @location_rows[left_location].length - 1 %>px;">
   <div class="center_container click_to_add_new" id="location<%=left_location.id%>_<%=day%>_label">
     <div class="center_content">
       <%= left_location.short_name %>
+      
     </div>
   </div>
 </div>
@@ -14,4 +19,4 @@
     </div>
   </div>
 <% end %>
-
+<%end%>

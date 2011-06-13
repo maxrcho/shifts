@@ -5,6 +5,7 @@
 
 <!-- #TODO: this whole section needs to be cleaned up... we should standardize ids, classes, etc... -->
 <div id="<%= day.to_s %>" class="day_partial">
+	<%= link_to @location_link, :loc_link => @location_link%>
   <h2 class="trigger"><%= day.to_s(:just_date_long) %></h2>
   <div class="timeline" id="day_<%=day.to_s %>">
     <div class="days">

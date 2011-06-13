@@ -1,6 +1,6 @@
 module ShiftsHelper
-
-  #WILL BE CHANGED TO SHIFTS:
+	
+	#WILL BE CHANGED TO SHIFTS:
   def shift_style(shift, after = nil)
     @right_overflow = @left_overflow = false
 
@@ -16,8 +16,7 @@ module ShiftsHelper
     if left < 0
       width += left
       left = 0
-      @left_overflow = true
-    end
+      end
     if left + width > 100
       width -= (left+width)-100
       @right_overflow = true
@@ -30,9 +29,24 @@ module ShiftsHelper
     @unfilled_priority.default = false
   end
 
+  def left_location_preprocessing(left_location, day)
+  	shifts = @location_rows[left_location].flatten
+  	if shifts.empty?
+      		@has_shifts = 0
+      	else
+      		@has_shifts = 1
+      	end
+  end
+  
   def location_preprocessing(location, day)
-    timeslots = @location_rows_timeslots[location]
+
+  	timeslots = @location_rows_timeslots[location]
     shifts = @location_rows[location].flatten
+    if shifts.empty?
+      		@has_shifts = 0
+      	else
+      		@has_shifts = 1
+      	end
 
     #what times is this location open?
     @open_at = {}
@@ -92,6 +106,15 @@ module ShiftsHelper
       end
     end
   end
+  
+  def location_row_preprocessing(location, day)
+  	shifts = @location_rows[location].flatten
+  	if shifts.empty?
+      		@has_shifts = 0
+      	else
+      		@has_shifts = 1
+      	end
+  end
 
   def min_staff_not_met?(time, location)
     @open_at[time.to_s(:am_pm)] && people_count[time.to_s(:am_pm)] < location.min_staff
@@ -140,6 +163,13 @@ end
   def day_preprocessing(day)
     @location_rows = {}
 
+    @visible_locations ||= current_user.user_config.view_loc_groups.collect{|l| l.locations}.flatten
+    #locations = @loc_groups.map{|lg| lg.locations}.flatten
+    for location in @visible_locations
+      @location_rows[location] = [] #initialize rows
+      @location_rows[location][0] = [] #initialize rows
+    end
+      	
     #for AJAX; needs cleanup if we have time
     @loc_groups = current_user.user_config.view_loc_groups.select{|l| !l.locations.empty?}
     @dept_start_hour ||= current_department.department_config.schedule_start / 60
@@ -147,13 +177,6 @@ end
     @hours_per_day ||= (@dept_end_hour - @dept_start_hour)
     @time_increment ||= current_department.department_config.time_increment
     @blocks_per_hour ||= 60/@time_increment.to_f
-
-    @visible_locations ||= current_user.user_config.view_loc_groups.collect{|l| l.locations}.flatten
-    #locations = @loc_groups.map{|lg| lg.locations}.flatten
-    for location in @visible_locations
-      @location_rows[location] = [] #initialize rows
-      @location_rows[location][0] = [] #initialize rows
-    end
 
     # @hidden_shifts = Shift.hidden_search(day.beginning_of_day + @dept_start_hour.hours + @time_increment.minutes,
     #                                      day.beginning_of_day + @dept_end_hour.hours - @time_increment.minutes,
