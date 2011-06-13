@@ -69,7 +69,7 @@
           <p><%= submit_to_remote "edit_button", "Save Changes", :url => { :controller => 'shifts', :action => 'update', :calendar => params[:calendar] } %></p>
         <% end %>
 
-        <% if current_user == @shift.user and !@shift.has_passed? %>
+        <% if current_user == @shift.user and !@shift.has_passed? and !@shift.has_sub?%>
           <%= button_to "Sign in", shift_report_path(@shift), :method => :post, :onclick => "if(ie){window.location.href='#{escape_javascript(shift_path(@shift))}'}" %>
         <% end %>
 
@@ -139,7 +139,7 @@
   <% end %>
 
   <p>
-    <% if current_user == @shift.user and !@shift.has_passed? and @shift.report.nil? %>
+    <% if current_user == @shift.user and !@shift.has_passed? and @shift.report.nil? and !@shift.has_sub? %>
       <%= button_to "Sign in", shift_report_path(@shift), :method => :post, :onclick => "if(ie){window.location.href='#{escape_javascript(shift_path(@shift))}'}" %>
     <% end %>
 
