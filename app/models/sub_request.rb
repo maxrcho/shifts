@@ -8,7 +8,8 @@ class SubRequest < ActiveRecord::Base
            :start_less_than_end,
            :not_in_the_past,
            :user_does_not_have_concurrent_sub_request,
-           :requested_users_have_permission
+           :requested_users_have_permission, 
+           :not_signed_in
   attr_accessor :mandatory_start_date
   attr_accessor :mandatory_start_time
   attr_accessor :mandatory_end_date
@@ -150,6 +151,13 @@ class SubRequest < ActiveRecord::Base
         errors.add_to_base("The following users do not have permission to work in this location: #{c.map(&:name)* ", "}")
     end
   end
+  
+  def not_signed_in
+    if self.shift.signed_in?
+      errors.add_to_base("You cannot create a sub request for a signed-in shift.")
+    end
+  end
+  
 
 end
 
