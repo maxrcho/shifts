@@ -1,6 +1,6 @@
 <% title "Editing Sub Request" %>
 <%= render :partial => 'form' %>
 
+<%= link_to 'Cancel Request', @sub_request, :confirm => 'Are you sure?', :method => :delete %> |
 <%= link_to 'Show', @sub_request %> |
-<%= link_to 'Back', sub_requests_path %>
-
+<%= link_to 'See all subs', sub_requests_path %>
