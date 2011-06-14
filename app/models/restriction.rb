@@ -3,6 +3,7 @@ class Restriction < ActiveRecord::Base
 
   validates_presence_of :starts, :expires
   validates_presence_of :max_hours,  :unless => :max_subs, :message => "and Max subs can't both be blank"
+ # validate :start_less_than_end
   attr_accessor :start_date
   attr_accessor :start_time
   attr_accessor :end_date
@@ -23,6 +24,13 @@ class Restriction < ActiveRecord::Base
     self.starts ||= self.start_date.to_date.to_time + self.start_time.seconds_since_midnight
     self.expires ||= self.end_date.to_date.to_time + self.end_time.seconds_since_midnight
   end
+  
+ # def start_less_than_end
+     #if self.end_date < self.start_date || self.end_time <= self.start_time
+    #   errors.add_to_base("All start times must be before end times.")
+   #  end
+  # end
+  
 
 end
 
