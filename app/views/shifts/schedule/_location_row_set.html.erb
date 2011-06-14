@@ -1,6 +1,6 @@
 <% location_preprocessing(location_row_set, day) unless day < Date.today %><%# prepare signup bar, etc. %>
 
-<%if @has_shifts == 1 or @show_empty == 1%>
+<%if @has_shifts or @location_link == "Hide empty locations"%>
 <%= render :partial => "shifts/schedule/location_row", :collection => @location_rows[location_row_set], :locals => {:day => day, :location => location_row_set} -%>
 	<%#timeslot row%>
 	<% unless @location_rows_timeslots[location_row_set].nil? %>

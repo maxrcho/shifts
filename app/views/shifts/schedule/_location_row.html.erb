@@ -1,6 +1,6 @@
 <%location_row_preprocessing(location, day)%>
 
-<% if @has_shifts == 1 or @show_empty == 1%>
+<%if @has_shifts or @location_link == "Hide empty locations"%>
 	<ul id="location<%=location.id%>_<%=day%>_events" class="events" style="height:<%= @table_pixels / (@table_height)%>px;">
   	<% if day < Date.today %>
     	<li id="location<%=location.id%>_<%=day%>_free_time" style="width:100%;" class="no_signups"></li>

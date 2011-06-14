@@ -32,21 +32,22 @@ module ShiftsHelper
   def left_location_preprocessing(left_location, day)
   	shifts = @location_rows[left_location].flatten
   	if shifts.empty?
-      		@has_shifts = 0
-      	else
-      		@has_shifts = 1
-      	end
+      @has_shifts = false
+    else
+      @has_shifts = true
+    end
   end
   
   def location_preprocessing(location, day)
 
+    
   	timeslots = @location_rows_timeslots[location]
-    shifts = @location_rows[location].flatten
+  	shifts = @location_rows[location].flatten
     if shifts.empty?
-      		@has_shifts = 0
-      	else
-      		@has_shifts = 1
-      	end
+    	@has_shifts = false
+    else
+      @has_shifts = true
+    end
 
     #what times is this location open?
     @open_at = {}
@@ -110,10 +111,10 @@ module ShiftsHelper
   def location_row_preprocessing(location, day)
   	shifts = @location_rows[location].flatten
   	if shifts.empty?
-      		@has_shifts = 0
-      	else
-      		@has_shifts = 1
-      	end
+  		@has_shifts = false
+    else
+      @has_shifts = true
+    end
   end
 
   def min_staff_not_met?(time, location)
@@ -162,13 +163,6 @@ end
 
   def day_preprocessing(day)
     @location_rows = {}
-
-    @visible_locations ||= current_user.user_config.view_loc_groups.collect{|l| l.locations}.flatten
-    #locations = @loc_groups.map{|lg| lg.locations}.flatten
-    for location in @visible_locations
-      @location_rows[location] = [] #initialize rows
-      @location_rows[location][0] = [] #initialize rows
-    end
       	
     #for AJAX; needs cleanup if we have time
     @loc_groups = current_user.user_config.view_loc_groups.select{|l| !l.locations.empty?}
@@ -185,6 +179,11 @@ end
     #                             day.beginning_of_day + @dept_end_hour.hours, @time_increment.minutes, locations.map{|l| l.id})
 
     @visible_locations ||= current_user.user_config.view_loc_groups.collect{|l| l.locations}.flatten
+    #locations = @loc_groups.map{|lg| lg.locations}.flatten
+    for location in @visible_locations
+      @location_rows[location] = [] #initialize rows
+      @location_rows[location][0] = [] #initialize rows
+    end
 
     shifts = Shift.active.in_locations(@visible_locations).on_day(day).scheduled #TODO: .active
     shifts ||= []

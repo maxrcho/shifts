@@ -1,4 +1,4 @@
 <%= render :partial => "shifts/schedule/left_location", :collection => Location.active.in_group(left_loc_group).sort_by(&:short_name).reverse.sort_by(&:priority).reverse, :locals => {:day => day} %>
-<%if @has_shifts == 1 or @show_empty == 1%>
+<%if @has_shifts or @location_link == "Hide empty locations"%>
 <div class="day divider" style="height: <%= @divider_height %>px;"></div>
 <%end%>
