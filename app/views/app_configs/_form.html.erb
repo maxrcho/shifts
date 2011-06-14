@@ -16,11 +16,11 @@
 	<small>This is the administrator email that any non-department-specific correspondences are sent to. </small><br />
 	<%= f.text_field :admin_email %>
   </p>	
-  <p>
-    <%= f.label :use_ldap, text = "Allow LDAP for importing users?" %> <br />
-    <%= f.check_box :use_ldap, {:id => "ldap_check_box"} %>
-  </p>
-  <div class="ldap_fields" <%unless @app_config.use_ldap%>id="hide"<%end%>>
+  
+  <div id ="ldap_link">
+  <%= link_toggle "ldap_fields", "Show/hide LDAP options", "fast" %>
+  </div>
+  <div id = "ldap_fields", style="display:none" >
     <p>
       <%= f.label :ldap_host_address, text = "LDAP Host address" %> <br />
       <%= f.text_field :ldap_host_address %>
