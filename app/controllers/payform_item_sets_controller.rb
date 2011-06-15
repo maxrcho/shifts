@@ -16,15 +16,17 @@ class PayformItemSetsController < ApplicationController
   end
   
   def create
+    date = build_date_from_params(:date, params[:payform_item_set])
     params[:user_ids].delete("")
     set_payform_item_hours("payform_item_set")
+    
     @payform_item_set = PayformItemSet.new(params[:payform_item_set])
-    @payform_item_set.active = true #TODO: set this as a default in the database
-    date = build_date_from_params(:date, params[:payform_item_set])
+    
     
     begin
       PayformItemSet.transaction do
         @payform_items = []
+        @users = []
       
         users = User.find(params[:user_ids])
         users.each do |user| 
@@ -38,7 +40,7 @@ class PayformItemSetsController < ApplicationController
           flash[:notice] = "Successfully created payform item set."
           redirect_to payform_item_sets_path
         else
-          flash[:error] = @payform_item_set.errors.full_messages.to_sentence
+          flash[:error] = "ERROR ERROR ERROR"#@payform_item_set.errors.full_messages.to_sentence
           @users_select = current_department.users.sort_by(&:name)
           render :action => "new"
         end 
