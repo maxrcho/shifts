@@ -4,7 +4,6 @@ class PayformItemSetsController < ApplicationController
   
   before_filter :require_department_admin
   
-  # Shouldn't this filter by department?
   def index
     @active_sets = PayformItemSet.active
     @expired_sets = PayformItemSet.expired
@@ -12,7 +11,7 @@ class PayformItemSetsController < ApplicationController
   
   def new
     @payform_item_set = PayformItemSet.new
-    @users_select = current_department.active_users.sort_by(&:last_name)
+    @users_select = current_department.active_users.sort_by(&:reverse_name)
   end
   
   def create
