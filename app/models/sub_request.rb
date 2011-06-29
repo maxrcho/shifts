@@ -154,7 +154,7 @@ class SubRequest < ActiveRecord::Base
   
   def not_signed_in
     if self.shift.signed_in?
-      errors.add_to_base("You cannot create a sub request for a signed-in shift.")
+      errors.add_to_base("You cannot create a sub request for a shift you have already signed into.")
     end
   end
   
