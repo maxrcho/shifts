@@ -7,6 +7,7 @@ class Calendar < ActiveRecord::Base
   validates_presence_of :name
   validates_presence_of :start_date
   validates_presence_of :end_date, :if => Proc.new{|calendar| !calendar.default?}
+  validate :start_less_than_end
 
   validates_uniqueness_of :name, :scope => :department_id
 
@@ -87,6 +88,10 @@ class Calendar < ActiveRecord::Base
     else
       return conflicts
     end
+  end
+  
+  def start_less_than_end
+    errors.add(:start, "must be earlier than end time") if (self.start_date >= end_date)
   end
 
 end
