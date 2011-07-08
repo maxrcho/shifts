@@ -202,6 +202,9 @@ class PayformsController < ApplicationController
     if params[:submitted]
       scope += payforms.unapproved
     end
+    if params[:skipped]
+      scope += payforms.unskipped
+    end
     if params[:approved]
       scope += payforms.unprinted
     end

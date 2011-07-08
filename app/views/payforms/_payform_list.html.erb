@@ -1,5 +1,5 @@
 <% if params[:printed].nil? %>
-  <%= image_tag("icons/flag_purple.png", :class => "mini_icon")%> <%= link_to "Show Finalized Payforms", payforms_path(:unsubmitted =>true, :submitted => true, :approved => true, :printed => true), :class => "action_with_icon" %>
+  <%= image_tag("icons/flag_purple.png", :class => "mini_icon")%> <%= link_to "Show Finalized Payforms", payforms_path(:unsubmitted =>true, :submitted => true, :skipped => true, :approved => true, :printed => true), :class => "action_with_icon" %>
 <% else %>
   <%= image_tag("icons/flag_purple.png", :class => "mini_icon")%> <%= link_to "Hide Finalized Payforms", payforms_path, :class => "action_with_icon" %>
 <% end %>
@@ -29,7 +29,7 @@
   </tr></thead>
   <%= render :partial => "payform", :collection => @payforms %>
   <% if @payforms.empty? -%>
-    <tr><td colspan=5>(No payforms to show)</td></tr>
+    <tr><td colspan=6>(No payforms to show)</td></tr>
   <% end -%>
   <tfoot><tr>
     <% if current_user.is_admin_of?(current_department) -%>
@@ -41,6 +41,9 @@
     <% if params[:submitted] %>
       <th><%= @payforms.select{|p| p.submitted && !p.approved}.length %></th>
     <% end -%>
+	<% if params[:skipped] %>
+	  <th><%= @payforms.select{|p| p.skipped}.length %></th>
+	<% end -%>
     <% if params[:approved] %>
       <th><%= @payforms.select{|p| p.approved  && !p.printed }.length %></th>
     <% end -%>
