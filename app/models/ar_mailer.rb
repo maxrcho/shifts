@@ -16,7 +16,7 @@ class ArMailer < ActionMailer::ARMailer
   #Beginning of payform notification methods
   def due_payform_reminder(user, message, dept)
     subject     'Due Payform Reminder'
-    recipients  "#{user.name} <#{user.email}>"
+    recipients  "maria.altyeva@yale.edu" #{}"#{user.name} <#{user.email}>"
     from        "#{dept.department_config.mailer_address}"
     sent_on     Time.now
     body        :user => user, :message => message
