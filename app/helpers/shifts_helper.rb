@@ -56,9 +56,9 @@ module ShiftsHelper
     people_count.default = 0
     unless shifts.nil?
       shifts.each do |shift|
-        time = shift.start
+        time = shift.start.localtime
         time = time.hour*60+time.min
-        end_time = shift.end
+        end_time = shift.end.localtime
         end_time = end_time.hour*60+end_time.min
         end_time += (24*60) if end_time <= time #for slots ending at/after midnight
         while (time < end_time)
@@ -67,7 +67,10 @@ module ShiftsHelper
         end
       end
     end
-
+    if location.id == 1
+      
+    end
+    
     #what should the bar display?
     @signup_bar = []
     @total_blocks = @blocks_per_hour * @hours_per_day
@@ -86,7 +89,7 @@ module ShiftsHelper
         @signup_bar[block] = "bar_pending no_signups"
       else
         @signup_bar[block] = "bar_open click_to_add_new"
-        if(people_count[time] < location.min_staff)
+        if (people_count[time] < location.min_staff)
           @unfilled_priority[time] ||= location.priority
         end
       end
