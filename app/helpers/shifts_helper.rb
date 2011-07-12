@@ -67,9 +67,6 @@ module ShiftsHelper
         end
       end
     end
-    if location.id == 1
-      
-    end
     
     #what should the bar display?
     @signup_bar = []
