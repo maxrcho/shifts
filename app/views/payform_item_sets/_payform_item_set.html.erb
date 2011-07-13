@@ -1,8 +1,8 @@
 <tr<%= " class='disabled'" unless payform_item_set.active %>>
   <td><%= payform_item_set.date.strftime("%b %d, %Y" ) %></td>
-  <td><%= payform_item_set.hours %></td>
+  <td><%= payform_item_set.active %></td>
   <td><%=h payform_item_set.category.name %></td>
-  <td><%=h payform_item_set.description %></td>
+  <td><%= payform_item_set.description %></td>
   <% if payform_item_set.active %>
     <td><%= link_to "Edit", edit_payform_item_set_path(payform_item_set) %></td>
     <td><%= link_to "Destroy", payform_item_set, :confirm => 'Are you sure?', :method => :delete %></td>

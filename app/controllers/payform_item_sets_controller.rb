@@ -20,7 +20,7 @@ class PayformItemSetsController < ApplicationController
     set_payform_item_hours("payform_item_set")
     
     @payform_item_set = PayformItemSet.new(params[:payform_item_set])
-    
+    @payform_item_set.active = true
     
     begin
       PayformItemSet.transaction do
