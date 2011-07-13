@@ -6,20 +6,24 @@ class PayformItemSetsController < ApplicationController
   
   # Shouldn't this filter by department?
   def index
-    @active_sets = PayformItemSet.active
-    @expired_sets = PayformItemSet.expired
-  end
+    @active_sets = PayformItemSet.find(:all, :conditions => ["#{department_id} = ?", current_department.id])  
+    #@expired_sets = PayformItemSet.expired
+  end  
+  
+  
+  
   
   def new
     @payform_item_set = PayformItemSet.new
-    @users_select = current_department.active_users.sort_by(&:last_name)
+    @users_select = current_department.active_users.sort_by(&:reverse_name)
   end
   
   def create
     params[:user_ids].delete("")
     set_payform_item_hours("payform_item_set")
     @payform_item_set = PayformItemSet.new(params[:payform_item_set])
-    @payform_item_set.active = true #TODO: set this as a default in the database
+    @payform_item_set.active = true #this needs to be here instead of the db, as the call must be explicit
+    @payform_item_set.department_id = current_department.id
     date = build_date_from_params(:date, params[:payform_item_set])
     
     begin
@@ -36,9 +40,9 @@ class PayformItemSetsController < ApplicationController
         
         if @payform_item_set.save and @payform_item_set.payform_items << @payform_items
           flash[:notice] = "Successfully created payform item set."
+          flash[:notice] = @payform_items.size
           redirect_to payform_item_sets_path
         else
-          flash[:error] = @payform_item_set.errors.full_messages.to_sentence
           @users_select = current_department.users.sort_by(&:name)
           render :action => "new"
         end 

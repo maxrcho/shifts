@@ -2,6 +2,7 @@ class PayformItemSet < ActiveRecord::Base
 
   has_many :payform_items
   belongs_to :category
+  belongs_to :department_id
   delegate :department, :to => :category
   validates_presence_of :description, :hours, :date, :category_id
   validate :payform_item_creation
