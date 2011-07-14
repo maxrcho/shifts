@@ -263,8 +263,13 @@ class Shift < ActiveRecord::Base
   #to enable the view of unscheduled shifts, a shift that lacks an end attribute is viewed as ending right now
   # else, the end attribute is read (referenced in shifts_helper)
   def end
-     read_attribute(:end).nil? ? Time.now : read_attribute(:end).localtime
+     read_attribute(:end).nil? ? Time.now : read_attribute(:end).in_time_zone
    end
+   
+  #necessary to enable proper view in other timezones 
+  def start
+    read_attribute(:start).nil? ? Time.now : read_attribute(:start).in_time_zone
+  end
 
   #a shift has been signed in to if it has a report
   # NOTE: this evaluates whether a shift is CURRENTLY signed in
