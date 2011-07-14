@@ -26,9 +26,6 @@ class ApplicationController < ActionController::Base
     @appconfig = AppConfig.first
   end
 
-  def access_denied
-    render :file => "layouts/access_denied.html.erb", :layout => true
-  end
 
   def using_CAS?
     User.first && (!current_user || current_user.auth_type=='CAS') && @appconfig && @appconfig.login_options.include?('CAS')
@@ -36,14 +33,14 @@ class ApplicationController < ActionController::Base
 
   protected
   def current_user
-    @current_user ||= (
+    @current_user ||= ()
     if @user_session
       @user_session.user
     elsif session[:cas_user]
       User.find_by_login(session[:cas_user])
     else
       nil
-    end)
+    end
   end
 
   def current_department
@@ -60,13 +57,15 @@ class ApplicationController < ActionController::Base
   end
 
   def load_department
-    if (params[:department_id])
-      @department = Department.find_by_id(params[:department_id])
-      if @department
-        session[:department_id] = params[:department_id]
+      if (params[:department_id])
+        @department = Department.find_by_id(params[:department_id])
+        if @department && current_user.is_active?(@department)
+          session[:department_id] = params[:department_id]
+        end
       end
-    end
-    @department ||= current_department
+      @department ||= current_department
+    else
+      redirect_to access_denied_path
   end
 
   def load_user
