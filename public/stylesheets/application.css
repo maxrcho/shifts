@@ -672,6 +672,12 @@ img.loading_icon {
   display: block;
 }
 
+.item {
+	width: 300px;
+	margin: 5px;
+	float: left;
+}
+
 /*To align links and icons*/
 a.action_with_icon{
 	vertical-align: middle;
