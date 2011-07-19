@@ -674,7 +674,13 @@ img.loading_icon {
 
 .item {
 	width: 300px;
-	margin: 5px;
+	margin: 0 auto;
+	float: left;
+}
+
+.box {
+	width: 600px;
+	margin: 10px;
 	float: left;
 }
 
