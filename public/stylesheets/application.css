@@ -672,16 +672,16 @@ img.loading_icon {
   display: block;
 }
 
-.item {
-	width: 300px;
-	margin: 0 auto;
+.dashboard_box {
+	width: 315px;
+	margin: 5px;
 	float: left;
 }
 
-.box {
-	width: 600px;
-	margin: 10px;
-	float: left;
+.report_box {
+	width: 425px;
+	margin: 5px;
+	float: center;
 }
 
 /*To align links and icons*/

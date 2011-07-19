@@ -77,19 +77,19 @@ tr.list_report_item_odd {
 }
 
 #useful_links {
-  width: 48%;
+  width: 390px;
 	float: right;
   margin-bottom: 5px;
 }
 
 #report_data_objects {
-  width: 48%;
+  width: 390px;
   float: right;
   margin-bottom: 5px;
 }
 
 #shift_tasks {
-  width: 48%;
+  width: 390px;
   float: right;
   margin-bottom: 5px;
 }

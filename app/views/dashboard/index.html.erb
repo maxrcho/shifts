@@ -2,14 +2,14 @@
 
 <div id="container">
 	
-	<div class="item">
+	<div class="dashboard_box">
     <fieldset class ="index">
       <legend>Announcements</legend>
         <%= render :partial => 'notices/dashboard' %>
     </fieldset>
 	</div>
 	
-  <div class="item">
+  <div class="dashboard_box">
 	  <fieldset class="index">
 	    <legend>Your Shifts</legend>
 	      <h4>Current Shift</h4>
@@ -24,7 +24,7 @@
 	  </fieldset>
 	</div>
 	
-	<div class="item">
+	<div class="dashboard_box">
 	  <fieldset class="index">
 	    <legend>Sub Requests</legend>
 	    <% unless @subs_you_requested.empty? %>
@@ -43,7 +43,7 @@
 	  </fieldset>
 	</div>
 		
-	<div class="item">
+	<div class="dashboard_box">
 	  <fieldset class="index">
 	    <legend>Punch Clock</legend>
 	    <% if current_user.punch_clock %>
@@ -55,14 +55,14 @@
 	  </fieldset>
 	</div>	
 	
-  <div class="item">  
+  <div class="dashboard_box">  
     <fieldset class="index">
       <legend>Active Shifts</legend>
         <%= render :partial => 'shifts/shifts_layout', :object => @signed_in_shifts %>
     </fieldset>
 	</div>
 
-	<div class="item">
+	<div class="dashboard_box">
     <fieldset class="index">
       <legend>Shift Statistics</legend>
 				<% @summary = current_user.summary_stats(Date.today - 7, Date.today) %>
@@ -70,7 +70,7 @@
     </fieldset>
 	</div>
 
-	<div class="item">
+	<div class="dashboard_box">
     <% unless @watched_objects.empty? %>
       <fieldset class="index">
         <legend>Recent updates for your watched data objects</legend>
@@ -100,8 +100,8 @@
 	$(function(){
 	  $('#container').masonry({
 	    // options
-	    itemSelector : '.item',
-	    columnWidth : 320,
+	    itemSelector : '.dashboard_box',
+	    columnWidth : 325,
 			isFitWidth: true,
 			isAnimated: true
 	  });

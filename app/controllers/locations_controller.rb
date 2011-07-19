@@ -79,7 +79,7 @@ class LocationsController < ApplicationController
     if params[:more_time] == nil
       session[:start_time] = Time.now
     end
-    @start_time = find_start_time - 5.hours
+    @start_time = find_start_time - 50.hours
     session[:start_time] = @start_time
     @report_items = ReportItem.in_location(@location).after_time(@start_time).reverse
     respond_to do |format|
