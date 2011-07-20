@@ -673,13 +673,13 @@ img.loading_icon {
 }
 
 .dashboard_box {
-	width: 315px;
+	width: 300px;
 	margin: 5px;
-	float: left;
+	float: center;
 }
 
 .report_box {
-	width: 425px;
+	width: 400px;
 	margin: 5px;
 	float: center;
 }

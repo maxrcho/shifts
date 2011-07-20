@@ -95,6 +95,16 @@
 <script>
   initialize("body");
 	
+	$(function(){
+	  $('#container').masonry({
+	    // options
+	    itemSelector : '.dashboard_box',
+	    columnWidth : 320,
+			isFitWidth: true,
+			isAnimated: true
+	  });
+	});
+	
   function initialize(div){
     $(div+' li.click_to_add_new').click(function (e) {
       popup_new($(this), e, this);
@@ -197,15 +207,5 @@
     }
     return x;
   }
-
-	$(function(){
-	  $('#container').masonry({
-	    // options
-	    itemSelector : '.dashboard_box',
-	    columnWidth : 325,
-			isFitWidth: true,
-			isAnimated: true
-	  });
-	});
 </script>
 
