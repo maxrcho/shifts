@@ -65,15 +65,6 @@ class AppMailer < ActionMailer::Base
     body          :edit_admin_password_reset_url => edit_password_reset_url(user.perishable_token)
   end
 
-# For use when users are imported from csv #duplicate found in ar_mailer, not DRY -ben
-  def new_user_password_instructions(user, dept)
-    subject       "Password Creation Instructions"
-    from          dept.department_config.mailer_address
-    recipients    user.email
-    sent_on       Time.now
-    body          :edit_new_user_password_url => edit_password_reset_url(user.perishable_token)
-  end
-
   def change_auth_type_password_reset_instructions(user)
     subject       "Password Creation Instructions"
     from          "Yale@yale.edu"
