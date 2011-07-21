@@ -25,7 +25,7 @@ class SubRequestsController < ApplicationController
   def show
     @sub_request = SubRequest.find(params[:id])
     @sub_request.user_is_eligible?(current_user) || user_is_owner_or_admin_of(@sub_request.shift, current_department)
-    #if user_is_own_or_admin_of fails, it will redirect away from page w/ associated error message.
+    #if user_is_owner_or_admin_of fails, it will redirect away from page w/ associated error message.
   end
 
   def new
