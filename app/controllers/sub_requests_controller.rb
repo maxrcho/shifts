@@ -32,12 +32,13 @@ class SubRequestsController < ApplicationController
     @sub_request = SubRequest.new(:shift_id => params[:shift_id])
     @sub_request.mandatory_start = @sub_request.start = @sub_request.shift.start
     @sub_request.mandatory_end = @sub_request.end = @sub_request.shift.end
-    return unless user_is_owner_or_admin_of(@sub_request.shift, current_department)    #is 'return unless' unnessecary here? -Bay
+    return unless user_is_owner_or_admin_of(@sub_request.shift, current_department)
   end
 
   def edit
     @sub_request = SubRequest.find(params[:id])
-    return unless user_is_owner_or_admin_of(@sub_request.shift, current_department)        #is 'return unless' unnessecary here? -Bay
+    return unless user_is_owner_or_admin_of(@sub_request.shift, current_department)
+    #return unless is necessary to ensure someone doesn't enter the edit path manually
   end
 
   def create
