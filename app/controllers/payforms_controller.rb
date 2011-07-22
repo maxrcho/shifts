@@ -148,7 +148,6 @@ class PayformsController < ApplicationController
   def email_reminders
     if !params[:id] or params[:id].to_i != @department.id
       redirect_to :email_reminders and return
-##originally we also had :id => @department.id  ~Casey
     end
     @default_reminder_msg = current_department.department_config.reminder_message
     @default_warning_msg = current_department.department_config.warning_message

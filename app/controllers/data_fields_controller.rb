@@ -48,7 +48,7 @@ class DataFieldsController < ApplicationController
     redirect_to data_type_path(@data_type)
   end
   
-  #For ajax only -ben
+  #FOR AJAX
   def update_form(data_field_id = nil)
     @data_field = DataField.find(data_field_id) if data_field_id
     @display_type = params[:display_type] ? params[:display_type] : @data_field.display_type

@@ -170,7 +170,7 @@ class ApplicationController < ActionController::Base
 
   # These three methods all return true/false, so they can be tested to trigger return statements
   # Takes a department, location, or loc_group
-  # TODO: This is mixing model logic!!!
+  # necessary because there is no model for applications
   def user_is_admin_of(thing)
     unless current_user.is_admin_of?(thing)
       error_message = "You are not authorized to administer this #{thing.class.name.decamelize}."
@@ -267,14 +267,6 @@ class ApplicationController < ActionController::Base
       end
     end
   end
-
-#  def redirect_with_flash(msg = nil, options = {:action => :index})
-#    if msg
-#      msg = msg.join("<br/>") if msg.is_a?(Array)
-#      flash[:notice] = msg
-#    end
-#    redirect_to options
-#  end
 
   def parse_date_and_time_output(form_output)
 		time_attribute_names = ["start", "end", "mandatory_start", "mandatory_end"]

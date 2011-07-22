@@ -11,7 +11,6 @@ class DataTypesController < ApplicationController
   
   def new
     @data_type = DataType.new
-    #@data_type.data_fields.build
   end
   
   def create
@@ -27,7 +26,6 @@ class DataTypesController < ApplicationController
   
   def edit
     @data_type = DataType.find(params[:id])
-    #@data_type.data_fields.build if @data_type.data_fields.empty?
   end
   
   def update

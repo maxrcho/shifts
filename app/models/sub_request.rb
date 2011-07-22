@@ -32,8 +32,9 @@ class SubRequest < ActiveRecord::Base
           new_shift.power_signed_up = true #so that you don't get blocked taking a sub due to validations
           new_shift.signed_in = false #if you take a sub for a shift, but the requestor has signed in this prevents an error
           new_shift.user = user
-          if new_shift.start < Time.now && old_shift.department.department_config.can_take_passed_sub #if the sub request shift has already started, someone else can still sign up for the sub, but the start time will be the time you took the sub, to avoid the "not_in_the_past" validations
-            new_shift.start = Time.now #
+          if new_shift.start < Time.now && old_shift.department.department_config.can_take_passed_sub 
+          #if the sub request shift has already started, someone else can still sign up for the sub, but the start time will be the time you took the sub, to avoid the "not_in_the_past" validations
+            new_shift.start = Time.now 
             new_shift.save_with_validation(false)
           else
             new_shift.start = just_mandatory ? sub_request.mandatory_start : sub_request.start
@@ -41,7 +42,7 @@ class SubRequest < ActiveRecord::Base
           new_shift.end = just_mandatory ? sub_request.mandatory_end : sub_request.end
           UserSinksUserSource.delete_all("#{:user_sink_type.to_sql_column} = #{"SubRequest".to_sql} AND #{:user_sink_id.to_sql_column} = #{sub_request.id.to_sql}")
           sub_request.destroy
-          email_start = new_shift.start.time
+          email_start = new_shift.start.time #necessary for the subrequest email to send the proper time
           email_end = new_shift.end.time
           Shift.delete_part_of_shift(old_shift, new_shift.start, new_shift.end)
           new_shift.save!

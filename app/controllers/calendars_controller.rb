@@ -130,9 +130,7 @@ class CalendarsController < ApplicationController
     redirect_to calendars_url
   end
 
-
-#just a view -mike
-
+#This adds the view
   def prepare_wipe_range
   end
 
@@ -145,7 +143,7 @@ class CalendarsController < ApplicationController
     redirect_to calendars_path
   end
 
-#just a view -mike
+#This adds the view
   def warn
   end
 

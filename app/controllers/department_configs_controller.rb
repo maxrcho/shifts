@@ -9,8 +9,6 @@ class DepartmentConfigsController < ApplicationController
     @rounding_choices = [1, 15, 30, 60].map{|r| ["#{r} min", r]}
     @department_config = DepartmentConfig.find(params[:id])
     @select_dept = @department_config.department.name
-    #@time_choices = (0..1440).step(@department_config.time_increment).map{|t| [t.min_to_am_pm, t]}
-    #I'm hardcoding this as an hourly step, at least for now. -ryan
   end
 
   def update

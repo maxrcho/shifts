@@ -23,8 +23,8 @@ class DashboardController < ApplicationController
     @dept_start_hour = current_department.department_config.schedule_start / 60
     @dept_end_hour = current_department.department_config.schedule_end / 60
     @hours_per_day = (@dept_end_hour - @dept_start_hour)
-    @dept_start_minute = @dept_start_hour * 60
-    @dept_end_minute = @dept_end_hour * 60
+    @dept_start_minute = @dept_start_hour.minute
+    @dept_end_minute = @dept_end_hour.minute
     @loc_groups = current_user.user_config.view_loc_groups
     @display_unscheduled_shifts = @department.department_config.unscheduled_shifts
     @time_increment = current_department.department_config.time_increment
