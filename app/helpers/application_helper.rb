@@ -141,7 +141,7 @@ module ApplicationHelper
 		#prepare a value of the :with parameter
 		with = "'"
 		for field in fields
-			with += field + "=’$(’#" + field + "’).is(':checked')"
+			with += field + "='$('#" + field + "').is(':checked')"
 			with += " + " if field != fields.last
 		end
  		with += "'"
