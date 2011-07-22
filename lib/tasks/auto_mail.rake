@@ -40,7 +40,7 @@ namespace :email do
   #rake part
   desc "Send automatic reminders for due payforms"
 
-  task (:late_payform_warnings => :environment) do
+  task :late_payform_warnings => :environment do
     departments_that_want_users_warned = Department.all.select { |d| d.department_config.auto_warn }
     for dept in departments_that_want_users_warned
       send_warnings(dept)
@@ -49,7 +49,7 @@ namespace :email do
 
   desc "Send automatic warnings for late payforms"
 
-  task (:payform_reminders => :environment) do
+  task :payform_reminders => :environment do
     departments_that_want_users_reminded = Department.all.select { |d| d.department_config.auto_remind }
     for dept in departments_that_want_users_reminded
       send_reminders(dept)

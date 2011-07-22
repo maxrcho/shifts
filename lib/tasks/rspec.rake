@@ -1,4 +1,6 @@
-gem 'test-unit', '1.2.3' if RUBY_VERSION.to_f >= 1.9
+#TODO: Is this needed?
+#gem 'test-unit', '1.2.3' if RUBY_VERSION.to_f >= 1.9
+
 rspec_plugin_dir = File.expand_path(File.dirname(__FILE__) + '/../../vendor/plugins/rspec')
 $LOAD_PATH.unshift("#{rspec_plugin_dir}/lib") if File.exist?(rspec_plugin_dir)
 
@@ -11,6 +13,7 @@ rescue MissingSourceFile
   module Spec
     module Rake
       class SpecTask
+        include ::Rake::DSL
         def initialize(name)
           task name do
             # if rspec-rails is a configured gem, this will output helpful material and exit ...
