@@ -1,7 +1,6 @@
 class StatsController < ApplicationController
  
   def index
-    # return unless user_is_admin_of(current_department)
     @start_date = interpret_start
     @end_date = interpret_end
     @user_stats = {}

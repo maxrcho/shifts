@@ -6,7 +6,6 @@ class UserProfileEntriesController < ApplicationController
 
   def show
     @user_profile_fields = UserProfileField.find(:all, :conditions => {:department_id => @department.id})
-#    @user_profile_entry = UserProfileEntry.find
   end
 
   def new
