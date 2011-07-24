@@ -100,7 +100,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :locations, :except => [:index, :show, :edit, :find_allowed_locations, :new, :update, :create, :destroy], :collection => {:display_report_items => [:get, :post], :toggle => [:get, :post]}
   #map.resources :locations, :collection => {:display_report_items => [:post, :get], :toggle => [:post, :get], :index => [:post, :get]}, :except => [:index, :show, :edit, :find_allowed_locations, :new, :update, :create, :destroy]
 
-  map.resources :data_types do |data_type|
+  map.resources :data_types, :collection => {:index => [:post, :get]} do |data_type|
     data_type.resources :data_fields
     data_type.resources :data_objects, :only => [:new, :create]
   end

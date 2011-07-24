@@ -4,7 +4,10 @@ class DataObjectsController < ApplicationController
 # Needs views revised for non-ajax degradeability -ben
 # Note: there are good reasons not to do this by merely hiding the group_by divs
   def index
+    @start_date = interpret_start
+    @end_date = interpret_end
     @data_objects = current_department.data_objects
+    @data_objects = @data_objects.select{|data_object| data_object.updated_at >= interpret_start && data_object.updated_at <= interpret_end}
     @group_type_options = options_for_group_type
     @group_by_options = []
     @selected_type = ["Department", "departments"]
@@ -129,6 +132,26 @@ private
       flash[:notice] = "You do not have permission to administer this data object."
       redirect_to access_denied_path
     end
+  end
+  
+  def interpret_start
+   	if params[:data_object]
+   	  return Date.civil(params[:data_object][:"start_date(1i)"].to_i,params[:data_object][:"start_date(2i)"].to_i,params[:data_object][:"start_date(3i)"].to_i)
+   	elsif params[:start_date]
+   	  return params[:start_date].to_date
+   	else
+   	  return 1.week.ago.to_date
+   	end
+  end
+   	
+  def interpret_end
+   	if params[:data_object]
+   	  return Date.civil(params[:data_object][:"end_date(1i)"].to_i,params[:data_object][:"end_date(2i)"].to_i,params[:data_object][:"end_date(3i)"].to_i)
+   	elsif params[:end_date]
+   	  return params[:end_date].to_date
+   	else
+   	  return Date.today.to_date
+   	end
   end
 
 end
