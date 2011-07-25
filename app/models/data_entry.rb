@@ -23,9 +23,9 @@ class DataEntry < ActiveRecord::Base
           content << k.to_s + ":"
           content << v.to_s.gsub(";","**semicolon**").gsub(":","**colon**") + ";"
         end
-        content.chomp!(";")          #strip off the last semicolon
+        content.chomp!(";") #strip off the last semicolon
         content << ";;"
-      elsif !value.empty?                                         #Should protect against empty values
+      elsif !value.empty? #Should protect against empty values
         content << key.to_s + "::"
         content << value.to_s.gsub(";","**semicolon**").gsub(":","**colon**") + ";;"
       end
