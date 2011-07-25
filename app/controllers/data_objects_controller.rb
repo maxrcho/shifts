@@ -7,20 +7,25 @@ class DataObjectsController < ApplicationController
     @start_date = interpret_start
     @end_date = interpret_end
     @data_objects = current_department.data_objects
-    @data_objects = @data_objects.select{|data_object| data_object.updated_at >= interpret_start && data_object.updated_at <= interpret_end}
+ #   @data_objects = @data_objects.select{|data_object| data_object.updated_at >= interpret_start && data_object.updated_at <= interpret_end}
     @group_type_options = options_for_group_type
     @group_by_options = []
     @selected_type = ["Department", "departments"]
     if params[:group_type]
+      flash[:notice] = 1
       @group_by_options = options_for_group_by(params[:group_type])
       if params[:group_by] && !params[:group_by].blank?
+        flash[:notice] = 2
         @data_objects &= params[:group_type].classify.constantize.find(params[:group_by]).data_objects
         @selected_by = @group_by_options.select{|opt| opt.include? params[:group_by].to_i}.flatten
       else
+        flash[:notice] = 3
         @selected_by = @group_by_options.first
       end
+      flash[:notice] = 4
       @selected_type = @group_type_options.select{|a|a.include? params[:group_type]}.flatten
     end
+    @data_objects = @data_objects.select{|data_object| data_object.updated_at >= interpret_start && data_object.updated_at <= interpret_end}
     @types_objects_hash = @data_objects.group_by &:data_type
     respond_to do |format|
       format.html #{ update_page{|page| page.hide 'submit'}}
