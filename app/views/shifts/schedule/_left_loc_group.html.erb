@@ -1,9 +1,8 @@
+<%= render :partial => "shifts/schedule/left_location", :collection => Location.active.in_group(left_loc_group).sort_by(&:short_name).reverse.sort_by(&:priority).reverse, :locals => {:day => day} %>
 <%if @has_shifts%>
-	<%= render :partial => "shifts/schedule/left_location", :collection => Location.active.in_group(left_loc_group).sort_by(&:short_name).reverse.sort_by(&:priority).reverse, :locals => {:day => day} %>
 	<div class="day divider" style="height: <%= @divider_height %>px;"></div>
 <%else%>
 	<div class="toggle-empty" style="display:none">
-		<%= render :partial => "shifts/schedule/left_location", :collection => Location.active.in_group(left_loc_group).sort_by(&:short_name).reverse.sort_by(&:priority).reverse, :locals => {:day => day} %>
 		<div class="day divider" style="height: <%= @divider_height %>px;"></div>
 	</div>
 <%end%>

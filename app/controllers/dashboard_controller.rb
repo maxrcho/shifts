@@ -4,13 +4,6 @@ class DashboardController < ApplicationController
   helper :punch_clocks
 
   def index
-  	if params[:loc_link] == "Show all locations"
-  		@location_link = "Hide empty locations"
-  		@show_empty = 1
-  	else
-  		@location_link = "Show all locations"
-  		@show_empty = 0
-  	end
   	if params[:date].blank?
   		@current_date = Date.today
   	else

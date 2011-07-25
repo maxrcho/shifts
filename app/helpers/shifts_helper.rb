@@ -41,7 +41,7 @@ module ShiftsHelper
   def location_preprocessing(location, day)
 
     
-  	timeslots = @location_rows_timeslots[location]
+    timeslots = @location_rows_timeslots[location]
   	shifts = @location_rows[location].flatten
     if shifts.empty?
     	@has_shifts = false
