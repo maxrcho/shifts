@@ -19,16 +19,6 @@ class DashboardController < ApplicationController
 
     @watched_objects = DataObject.find(current_user.user_config.watched_data_objects.split(', ')).group_by(&:data_type)
     @current_notices = current_department.current_notices
-    
-    @dept_start_hour = current_department.department_config.schedule_start / 60
-    @dept_end_hour = current_department.department_config.schedule_end / 60
-    @hours_per_day = (@dept_end_hour - @dept_start_hour)
-    @dept_start_minute = @dept_start_hour.minute
-    @dept_end_minute = @dept_end_hour.minute
-    @loc_groups = current_user.user_config.view_loc_groups
-    @display_unscheduled_shifts = @department.department_config.unscheduled_shifts
-    @time_increment = current_department.department_config.time_increment
-    @blocks_per_hour = 60/@time_increment.to_f
   end
 
 end

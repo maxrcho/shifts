@@ -67,6 +67,14 @@ class ApplicationController < ActionController::Base
       end
     end
     @department ||= current_department
+    @dept_start_hour = @department.department_config.schedule_start / 60
+    @dept_end_hour = @department.department_config.schedule_end / 60
+    @dept_start_minute = @dept_start_hour.minute
+    @dept_end_minute = @dept_end_hour.minute
+    @hours_per_day = (@dept_end_hour - @dept_start_hour)
+    @time_increment = @department.department_config.time_increment
+    @blocks_per_hour = 60/@time_increment.to_f
+    @blocks_per_day = @hours_per_day * @blocks_per_hour
   end
 
   def load_user

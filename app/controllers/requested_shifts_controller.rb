@@ -6,13 +6,6 @@ class RequestedShiftsController < ApplicationController
 		@week_template = Template.find(:first, :conditions => {:id => params[:template_id]})
 		#copied from time_slot, some might not be necessary?
 		@period_start = Date.today.previous_sunday
-    #TODO:simplify this stuff:
-    @dept_start_hour = current_department.department_config.schedule_start / 60
-    @dept_end_hour = current_department.department_config.schedule_end / 60
-    @hours_per_day = (@dept_end_hour - @dept_start_hour)
-    @block_length = current_department.department_config.time_increment
-    @blocks_per_hour = 60/@block_length.to_f
-    @blocks_per_day = @hours_per_day * @blocks_per_hour
 		#definitely remove hidden timeslots
     @hidden_timeslots = [] #for timeslots that don't show up on the view
 

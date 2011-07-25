@@ -223,13 +223,6 @@ class CalendarsController < ApplicationController
     # #@shifts = @shifts.group_by{|s| s.start.strftime("%Y-%m-%d")}
     # #@time_slots = @time_slots.group_by{|t| t.start.strftime("%Y-%m-%d")}
 
-
-    @dept_start_hour = current_department.department_config.schedule_start / 60
-    @dept_end_hour = current_department.department_config.schedule_end / 60
-    @hours_per_day = (@dept_end_hour - @dept_start_hour)
-    @time_increment = current_department.department_config.time_increment
-    @blocks_per_hour = 60/@time_increment.to_f
-
     #get calendar colors
     @color_array = ["9f9", "9ff", "ff9", "f9f", "f99", "99f","9f9", "9ff", "ff9", "f9f", "f99", "99f","9f9", "9ff", "ff9", "f9f", "f99", "99f","9f9", "9ff", "ff9", "f9f", "f99", "99f"]
     @color = {}
