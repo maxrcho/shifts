@@ -180,11 +180,6 @@ class User < ActiveRecord::Base
   def reverse_name
     [last_name, first_name].join(" ")
   end
-
-  # Useful for alphabetical sorting of lists containing duplicate last names
-  def reverse_name
-    [last_name, first_name].join(" ")
-  end
   
   def full_name_with_nick
     if nick_name && !nick_name.blank?
@@ -224,7 +219,7 @@ class User < ActiveRecord::Base
   end
   
   
-  #returns  upcoming sub_requests user has permission to take.  Default is for all departments
+  #returns upcoming sub_requests user has permission to take.  Default is for all departments
   def available_sub_requests(source)
     @all_subs = []
     @all_subs = SubRequest.find(:all, :conditions => ["end >= ?", Time.now]).select { |sub| self.can_take_sub?(sub) }.select{ |sub| !sub.shift.missed?}
@@ -308,17 +303,6 @@ class User < ActiveRecord::Base
        stat_entry[:shift] = s.short_display
        stat_entry[:in] = s.created_at
        stat_entry[:out] = s.updated_at
-       # if s.missed
-       #   stat_entry[:notes] = "Missed"
-       # elsif s.late && s.left_early
-       #   stat_entry[:notes] = "Late " + (s.created_at - s.start)/60 + " minutes, and left early " + (s.end - s.updated_at)/60 + " minutes"
-       # elsif s.late
-       #   stat_entry[:notes] = "Late " + (s.created_at - s.start)/60 + " minutes"
-       # elsif s.left_early
-       #   stat_entry[:notes] = "Left early " + (s.end - s.updated_at)/60 + " minutes"
-       # else
-       #   stat_entry[:notes]
-       # end
        if s.missed
          stat_entry[:notes] = "Missed"
        elsif s.late && s.left_early

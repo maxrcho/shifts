@@ -7,14 +7,7 @@ class Role < ActiveRecord::Base
 
   validates_presence_of :name
   validates_presence_of :department_id
-  validate :must_have_unique_name_in_dept #can't use scope because of habtm relationship :(
-
-# should be entirely unnecessary now -ben
-#  # FIXME: only role of user admin permission can belong to more than one department.
-#  # should user_admin role and loc_group roles be separated?
-#  def must_belong_to_department
-#    errors.add("Role must belong to a department.", "") if self.departments.empty?
-#  end
+  validate :must_have_unique_name_in_dept #can't use scope because of habtm relationship 
 
   def must_have_unique_name_in_dept
     #get a list of roles in the same department as this role, excluding this role
