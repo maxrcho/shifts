@@ -70,6 +70,7 @@ module ShiftsHelper
 
     #what should the bar display?
     @signup_bar = []
+    @signup_status = [] #for the hover view
     @total_blocks = @blocks_per_hour * @hours_per_day
     now = Time.now
     now = now.hour*60+now.min
@@ -78,14 +79,19 @@ module ShiftsHelper
       time = @dept_start_hour*60 + block*@time_increment
       if today and time < now
         @signup_bar[block] = "bar_passed no_signups"
+        @signup_status[block] = "PASSED"
       elsif !@open_at[time] or !current_user.can_signup?(location.loc_group)
         @signup_bar[block] = "bar_closed no_signups"
+        @signup_status[block] = "CLOSED"
       elsif people_count[time] >= location.max_staff
         @signup_bar[block] = "bar_full no_signups"
+        @signup_status[block] = "FULL"
       elsif @unfilled_priority[time] and location.priority < @unfilled_priority[time]
         @signup_bar[block] = "bar_pending no_signups"
+        @signup_status[block] = "PENDING"
       else
         @signup_bar[block] = "bar_open click_to_add_new"
+        @signup_status[block] = "OPEN"      
         if(people_count[time] < location.min_staff)
           @unfilled_priority[time] ||= location.priority
         end
