@@ -240,7 +240,7 @@ class User < ActiveRecord::Base
     Restriction.current.select{|r| r.users.include?(self)}
   end
 
-  def toggle_active(department) #TODO why don't we just update the attribues on the current entry and save it?
+  def toggle_active(department) #handled this way to be consistent with the rest of the app.
     new_entry = DepartmentsUser.new();
     old_entry = DepartmentsUser.find(:first, :conditions => { :user_id => self, :department_id => department})
     shifts = Shift.for_user(self).select{|s| s.start > Time.now}

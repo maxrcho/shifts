@@ -5,7 +5,7 @@ class UsersController < ApplicationController
     if params[:show_inactive]
       @users = @department.users
     else
-      @users = current_department.active_users
+      @users = @department.active_users
     end
 
     if params[:search]
@@ -19,7 +19,7 @@ class UsersController < ApplicationController
       @users = @search_result
     end
 
-    @users = @users.sort_by(&:last_name)
+    @users = @users.sort_by(&:reverse_name)
 
     respond_to do |wants|
       wants.html
