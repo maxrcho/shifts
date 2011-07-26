@@ -7,13 +7,13 @@ class ShiftPreference < ActiveRecord::Base
 	validate :max_total_hours_greater_than_min
 	validate :max_continuous_hours_greater_than_min
 	validate :max_number_of_shifts_greater_than_min
-	#validate :max_hours_per_day_greater_than_continuous
-  #validate :feasibility_of_preferences
+	validate :max_hours_per_day_less_than_continuous
+#  validate :feasibility_of_preferences
 
 	protected
 
-	def max_hours_per_day_greater_than_continuous
-		errors.add_to_base("Maximum hours per day is greater than maximum continuous hours") if (self.max_hours_per_day > self.max_continuous_hours)
+	def max_hours_per_day_less_than_continuous
+		errors.add_to_base("Maximum continuous hours per day is greater than maximum total hours") if (self.max_hours_per_day < self.max_continuous_hours)
 	end
 
   def max_total_hours_greater_than_min
