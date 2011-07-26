@@ -21,7 +21,7 @@ class DataEntriesController < ApplicationController
         @on_report_page = true
         content = []
         @data_entry.data_fields_with_contents.each {|entry| content.push("#{DataField.find(entry.first).name.humanize}: #{entry.second}")}
-        @report.report_items << ReportItem.new(:time => Time.now, :content => "Updated #{@data_entry.data_object.name}.  #{content.join(', ')}.", :ip_address => request.remote_ip)
+        @report.report_items << ReportItem.new(:time => Time.now, :content => "Updated #{@data_entry.data_object.name}: #{"\n"} #{content.join("\n")}", :ip_address => request.remote_ip)
       end
     else
       flash[:error] = "Could not update #{@data_entry.data_object.name}."

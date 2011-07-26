@@ -1,5 +1,6 @@
 --- 
 data_entries_001: 
+<<<<<<< HEAD
   content: 1::3039;;2::Yes;;3::2
   created_at: 2009-09-15 22:16:32
   data_object_id: "9"
@@ -79764,3 +79765,16 @@ data_entries_9999:
   data_object_id: "40"
   id: "10038"
   updated_at: 2010-04-13 19:41:07
+=======
+  content: 3::5
+  created_at: 2011-06-01 19:25:03
+  data_object_id: "1"
+  id: "1"
+  updated_at: 2011-06-01 19:25:03
+data_entries_002: 
+  content: 3::5
+  created_at: 2011-06-01 19:29:15
+  data_object_id: "1"
+  id: "2"
+  updated_at: 2011-06-01 19:29:15
+>>>>>>> development

@@ -1,5 +1,6 @@
 --- 
 data_types_001: 
+<<<<<<< HEAD
   created_at: 2009-09-15 16:00:19
   department_id: "1"
   description: Printer
@@ -41,3 +42,11 @@ data_types_006:
   id: "6"
   name: Phone Call
   updated_at: 2010-03-30 20:50:24
+=======
+  created_at: 2011-06-01 19:22:19
+  department_id: "1"
+  description: ""
+  id: "2"
+  name: Printer
+  updated_at: 2011-06-01 19:22:19
+>>>>>>> development

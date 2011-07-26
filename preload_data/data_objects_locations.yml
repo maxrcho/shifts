@@ -1,11 +1,17 @@
 --- 
 data_objects_locations_001: 
+<<<<<<< HEAD
   data_object_id: "5"
   location_id: "6"
+=======
+  data_object_id: "4"
+  location_id: "1"
+>>>>>>> development
 data_objects_locations_002: 
-  data_object_id: "3"
+  data_object_id: "4"
   location_id: "2"
 data_objects_locations_003: 
+<<<<<<< HEAD
   data_object_id: "6"
   location_id: "7"
 data_objects_locations_004: 
@@ -257,3 +263,16 @@ data_objects_locations_085:
 data_objects_locations_086: 
   data_object_id: "1"
   location_id: "26"
+=======
+  data_object_id: "1"
+  location_id: "3"
+data_objects_locations_004: 
+  data_object_id: "2"
+  location_id: "1"
+data_objects_locations_005: 
+  data_object_id: "3"
+  location_id: "1"
+data_objects_locations_006: 
+  data_object_id: "3"
+  location_id: "2"
+>>>>>>> development
