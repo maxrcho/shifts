@@ -150,33 +150,15 @@ class UsersController < ApplicationController
     end
   end
 
-  def destroy #the preferred action. really only disables the user for that department.
-  # DRAFT IMPROVEMENT -ben
-  #    @user = User.find(params[:id])
-  #    @user.destroy
-  #    flash[:notice] = "Successfully destroyed user."
-  #    redirect_to department_users_path(current_department)
-  # END DRAFT
-    @user = User.find(params[:id])
-    if @user.toggle_active(@department) #new_entry.save
-      flash[:notice] = "Successfully deactivated user."
-      redirect_to @user
-    else
-      render :action => 'edit'
-    end
-  end
-
-  # I believe that neither of these two actions is in use anymore -ben
-  # Replacement for destroy action
-  #  def deactivate
-  #    @user = User.find(params[:id])
-  #    if @user.toggle_active(@department) #new_entry.save
-  #      flash[:notice] = "Successfully deactivated user."
-  #      redirect_to @user
-  #    else
-  #      render :action => 'edit'
-  #    end
-  #  end
+   def deactivate
+     @user = User.find(params[:id])
+     if @user.toggle_active(@department) #new_entry.save
+       flash[:notice] = "Successfully deactivated user."
+       redirect_to @user
+     else
+       render :action => 'edit'
+     end
+   end
 
   # Reactivates the user
   #  def restore
@@ -195,7 +177,7 @@ class UsersController < ApplicationController
   #  end
 
   # To be replaced with destroy
-  def really_destroy #if we ever need an action that actually destroys users.
+  def destroy #if we ever need an action that actually destroys users.
     @user = User.find(params[:id])
     @user.destroy
     flash[:notice] = "Successfully destroyed user."
@@ -291,10 +273,6 @@ class UsersController < ApplicationController
       roles = Department.find(params[:department_id]).roles.sort_by(&:name)
       roles.each do |role|
         if role.name.downcase.include?(params[:q])
-          #if (user.login and user.login.include?(params[:q])) or (user.name and user.name.include?(params[:q]))
-          #role.users.each do |u|
-          #  @list << {:id => "User||#{u.id}", :name => "#{u.name} (#{u.login})"}  
-          #end
           @list << {:id => "Role||#{role.id}", :name => "Role: #{role.name}"}
         end
       end
