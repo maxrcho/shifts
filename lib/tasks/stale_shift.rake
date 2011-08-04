@@ -8,6 +8,7 @@ namespace :email do
       ArMailer.deliver(email)
       shift.stale_shifts_unsent = false
       shift.save
+      puts shift.user.name
     end
    
   end
