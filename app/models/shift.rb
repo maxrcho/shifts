@@ -21,7 +21,7 @@ class Shift < ActiveRecord::Base
   attr_accessor :start_time
   attr_accessor :end_date
   attr_accessor :end_time
-
+  
 #TODO: remove all to_sql calls except where needed for booleans
   named_scope :active, :conditions => {:active => true}
   named_scope :for_user, lambda {|usr| { :conditions => {:user_id => usr.id }}}
@@ -50,10 +50,12 @@ class Shift < ActiveRecord::Base
         :conditions => ["end < ? AND reports.id is null AND shifts.active = ?", Time.now.utc, true]
   named_scope :late,
         :joins => :report,
-        :conditions => ["#{:arrived.to_sql_column} - #{:start.to_sql_column} > ?",7*60] #TODO: inlcude department config (instead of defaulting to "7")
+        :conditions => ["#{:arrived.to_sql_column} - #{:start.to_sql_column} > ?", 7*60] #TODO: inlcude department config (instead of defaulting to "7")
   named_scope :left_early,
         :joins => :report,
-        :conditions => ["(#{:end.to_sql_column} - #{:departed.to_sql_column} > ?)",7*60] #TODO: inlcude department config (instead of defaulting to "7")
+        :conditions => ["(#{:end.to_sql_column} - #{:departed.to_sql_column} > ?)", 7*60] #TODO: inlcude department config (instead of defaulting to "7")
+
+
 
   #TODO: clean this code up -- maybe just one call to shift.scheduled?
   validates_presence_of :end, :if => Proc.new{|shift| shift.scheduled?}
