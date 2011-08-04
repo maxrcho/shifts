@@ -47,10 +47,6 @@ class ShiftsController < ApplicationController
     # @time_slots = @time_slots.group_by{|t| t.start.strftime("%Y-%m-%d")}
 
     #@time_slots = TimeSlot.all
-
-
-
-
   end
 
 # TODO: verify that it can be removed
