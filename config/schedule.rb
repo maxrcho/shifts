@@ -22,7 +22,7 @@ every 1.day, :at => '1am' do
  command "bundle exec rake db:populate_missed_tasks RAILS_ENV=production"
 end
 
-every 10.minutes do
+every 1.minute do
   command "bundle exec rake email:stale_shift_reminders RAILS_ENV=production"
   command "bundle exec rake db:update_shift_stats RAILS_ENV=production"
 end

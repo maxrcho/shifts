@@ -81,6 +81,16 @@ class AppMailer < ActionMailer::Base
     sent_on       Time.now
     body          :edit_password_url => edit_password_reset_url(user.perishable_token)
   end
+  
+  #STALE SHIFTS
+  #an email is sent to a student if they have been inactive in their shift for an hour
+  def stale_shift(user, stale_shift, dept) 
+    subject       "Your Shift in the #{stale_shift.location.name} has been inactive for at least an hour."
+    recipients    "maria.altyeva@yale.edu"#{}"#{user.name} <#{user.email}>"
+    from          dept.department_config.mailer_address
+    sent_on       Time.now
+    body          :user => user, :stale_shift => stale_shift
+  end
 
 end
 
