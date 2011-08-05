@@ -13,11 +13,12 @@ class ApplicationController < ActionController::Base
   before_filter :prepare_mail_url
   #before_filter :load_user
 
-
+  helper :application
   helper :layout # include all helpers, all the time (whyy? -Nathan)
   helper_method :current_user
   helper_method :current_department
-
+  helper_method :calculate_department_times
+  
   filter_parameter_logging :password, :password_confirmation
 
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
@@ -66,15 +67,6 @@ class ApplicationController < ActionController::Base
         session[:department_id] = params[:department_id]
       end
     end
-    @department ||= current_department
-    @dept_start_hour = @department.department_config.schedule_start / 60
-    @dept_end_hour = @department.department_config.schedule_end / 60
-    @dept_start_minute = @dept_start_hour.minute
-    @dept_end_minute = @dept_end_hour.minute
-    @hours_per_day = (@dept_end_hour - @dept_start_hour)
-    @time_increment = @department.department_config.time_increment
-    @blocks_per_hour = 60/@time_increment.to_f
-    @blocks_per_day = @hours_per_day * @blocks_per_hour
   end
 
   def load_user
@@ -204,6 +196,17 @@ class ApplicationController < ActionController::Base
     return true
   end
 
+  def calculate_department_times
+    @department ||= current_department
+    @dept_start_hour = @department.department_config.schedule_start / 60
+    @dept_end_hour = @department.department_config.schedule_end / 60
+    @dept_start_minute = @dept_start_hour.minute
+    @dept_end_minute = @dept_end_hour.minute
+    @hours_per_day = (@dept_end_hour - @dept_start_hour)
+    @time_increment = @department.department_config.time_increment
+    @blocks_per_hour = 60/@time_increment.to_f
+    @blocks_per_day = @hours_per_day * @blocks_per_hour
+  end
 
   # Takes any object that has a user method and checks against current_user
   #TODO: This is mixing model logic!!!

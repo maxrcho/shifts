@@ -2,6 +2,7 @@ class TimeSlotsController < ApplicationController
   before_filter :require_department_admin
 
   def index
+    calculate_department_times
     @period_start = params[:date] ? Date.parse(params[:date]).previous_sunday : Date.today.previous_sunday
     @hidden_timeslots = [] #for timeslots that don't show up on the view
   end

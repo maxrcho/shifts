@@ -99,7 +99,6 @@ module ApplicationHelper
     output + "</select>"
   end
 
-
   def time_format
     '%I:%M%p'
   end
@@ -136,7 +135,7 @@ module ApplicationHelper
       @repeating_event.location_ids = [] << params[:location_id]
     end
   end
-
+  
 	def observe_fields(fields)
 		#prepare a value of the :with parameter
 		with = "'"

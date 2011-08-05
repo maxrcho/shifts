@@ -3,6 +3,7 @@ class RequestedShiftsController < ApplicationController
   before_filter :require_proper_template_role
 
   def index
+    calculate_department_times
 		@week_template = Template.find(:first, :conditions => {:id => params[:template_id]})
 		#copied from time_slot, some might not be necessary?
 		@period_start = Date.today.previous_sunday

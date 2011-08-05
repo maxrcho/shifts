@@ -3,6 +3,7 @@ class CalendarsController < ApplicationController
   before_filter :require_department_admin, :only => [:new, :create, :edit, :update, :destroy]
 
   def index
+    calculate_department_times
     @calendars = (current_user.is_admin_of?(@department) ? @department.calendars : @department.calendars.public)
     index_prep
   end
@@ -137,6 +138,7 @@ class CalendarsController < ApplicationController
 
   private
   def index_prep
+    calculate_department_times
     @period_start = params[:date] ? Date.parse(params[:date]).previous_sunday : Date.today.previous_sunday
     # figure out what days to display based on user preferences
     if params[:date].blank? and (current_user.user_config.view_week != "" and current_user.user_config.view_week != "whole_period")
@@ -161,12 +163,6 @@ class CalendarsController < ApplicationController
     @visible_loc_groups = current_user.user_config.view_loc_groups
     @selected_loc_groups = @visible_loc_groups.collect{|l| l.id}
     @visible_locations = current_user.user_config.view_loc_groups.collect{|l| l.locations}.flatten.select{|l| l.active?}
-    @dept_start_hour = current_department.department_config.schedule_start / 60
-    @dept_end_hour = current_department.department_config.schedule_end / 60
-    @hours_per_day = (@dept_end_hour - @dept_start_hour)
-    @time_increment = current_department.department_config.time_increment
-    @blocks_per_hour = 60/@time_increment.to_f
-
     #get calendar colors
     @color_array = ["9f9", "9ff", "ff9", "f9f", "f99", "99f","9f9", "9ff", "ff9", "f9f", "f99", "99f","9f9", "9ff", "ff9", "f9f", "f99", "99f","9f9", "9ff", "ff9", "f9f", "f99", "99f"]
     @color = {}

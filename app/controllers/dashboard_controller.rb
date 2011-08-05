@@ -4,6 +4,7 @@ class DashboardController < ApplicationController
   helper :punch_clocks
 
   def index
+    calculate_department_times
   	if params[:date].blank?
   		@current_date = Date.today
   	else
