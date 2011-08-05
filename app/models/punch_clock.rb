@@ -1,5 +1,3 @@
-# Needs to be refactored for consistency in messages pause, unpause, and submit
-# Should all return a message in event of failure, nil for success
 class PunchClock < ActiveRecord::Base
   belongs_to :user
   belongs_to :department
@@ -30,7 +28,7 @@ class PunchClock < ActiveRecord::Base
     if self.save
      nil
     else
-      "Could not pause clock."
+      "Could not unpause clock."
     end
   end  
   
