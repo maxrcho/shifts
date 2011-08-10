@@ -217,6 +217,7 @@
   }
 
   function loading_tooltip(x,y){
+    if(<%= mobile_device? %>){ x = 0; }
     $('body').append("<div id='tooltip' style='position: absolute; left:"+x+"px; top:"+y+"px'>Loading...</div>");
   }
 

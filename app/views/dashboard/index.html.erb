@@ -5,11 +5,11 @@
 
 
 <div id="left_stuff">
-  
-  
+
+
   <fieldset class="index" id="shifts">
     <legend>Your Shifts</legend>
-    <% if user_has_active_shift?%>  
+    <% if user_has_active_shift?%>
 	<h4>Current Shift</h4>
 	 <% end %>
       <%= render :partial => "shifts/user_options" %>
@@ -57,17 +57,17 @@
     <% end %>
 
   </div>
- 
+
   <div id="right_stuff">
-    
+
     <fieldset class ="index" id="notices_for_you">
       <legend>Announcements</legend>
        <div id = "dashboard_notices"> <%= render :partial => 'notices/dashboard' %></div>
-		<br />	
+		<br />
 		<%= link_to_post_a_sticky() %>
 		<%= link_to_post_an_announcement %>
     </fieldset>
-    
+
     <fieldset class="index" id="shifts">
       <legend>Active Shifts</legend>
         <%= render :partial => 'shifts/shifts_layout', :object => @signed_in_shifts %>
@@ -185,8 +185,10 @@
   // }
 
   function loading_tooltip(x,y){
+    if(<%= mobile_device? %>){ x = 0; }
     $('body').append("<div id='tooltip' style='position: absolute; left:"+x+"px; top:"+y+"px'>Loading...</div>");
   }
+
 
   function getXOffset(element){
     var x = 0
@@ -197,4 +199,3 @@
     return x;
   }
 </script>
-
