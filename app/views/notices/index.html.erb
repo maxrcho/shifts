@@ -1,8 +1,10 @@
 <% content_for :title, "Notices" %>
 <h1 id="page_title">Notices</h1>
+<% if current_user.is_admin_of?(current_department) %>
+  <%= link_to 'Inactive notices', archive_notices_path %> <br /> <br />
+<% end %>
 <%= link_to_post_a_sticky() %>
 <%= link_to_post_an_announcement %> <br /> <br />
 <div id="all_notices">
   <%= render :partial => "all_notices" %>
 </div>
-

@@ -1,4 +1,6 @@
+  <% archive_notices_path %>
 <% if current_user.is_admin_of?(current_department) %>
+
   <% unless Notice.upcoming.empty? %>
 
   <div id = "upcoming">
@@ -27,8 +29,8 @@
 		    <% unless @loc_current_notices.empty? %>
 		      <fieldset class ="index">
 		        <legend><%= loc.name %></legend>
-		          <div>	        
-		            <%= render :partial => 'notices/notice', :collection => @loc_current_notices, :locals => {:html_class => "index_notice"}%> 
+		          <div>
+		            <%= render :partial => 'notices/notice', :collection => @loc_current_notices, :locals => {:html_class => "index_notice"}%>
 		          </div>
 		      </fieldset>
 		      <br/>
@@ -36,4 +38,3 @@
 		  <% end %>
   <% end %>
 </div>
-
