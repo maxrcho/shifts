@@ -8,9 +8,9 @@ namespace :email do
     late_shifts = []
     left_early_shifts = []
 
-    missed_shifts = shifts_to_email.missed
-    late_shifts = shifts_to_email.late
-    left_early_shifts = shifts_to_email.left_early
+    missed_shifts = shifts_to_email.missed(department)
+    late_shifts = shifts_to_email.late(department)
+    left_early_shifts = shifts_to_email.left_early(department)
   
     stats_email = ArMailer.create_email_stats(missed_shifts, late_shifts, left_early_shifts, department)
     ArMailer.deliver(stats_email)
