@@ -11,9 +11,14 @@ module ShiftsHelper
     @dept_end_hour ||= current_department.department_config.schedule_end / 60
     @hours_per_day ||= (@dept_end_hour - @dept_start_hour)
 
+    if day > shift.start.to_date
+    left = (((after ? after : shift.start) - (shift.start.beginning_of_day + @dept_start_hour.hours + 24.hours))/3600.0)/@hours_per_day*100
+    else
     left = (((after ? after : shift.start) - (shift.start.beginning_of_day + @dept_start_hour.hours))/3600.0)/@hours_per_day*100
+    end
+
     width = ((shift.end - (after ? after : shift.start))/3600.0) / @hours_per_day * 100
-    if (left < 0) || (day > shift.start.to_date)
+    if left < 0
       width += left
       left = 0
       @left_overflow = true
@@ -110,7 +115,7 @@ module ShiftsHelper
   def calculate_default_times
     if @shift.new_record? #true for new html&tooltip
       @default_start_date = (params[:date] ? Time.parse(params[:date]) : Time.now).to_date
-    else # true for edit html&tooltip
+  else # true for edit html&tooltip
       @default_start_date = @shift.start
     end
 
@@ -172,9 +177,10 @@ end
     @visible_locations ||= current_user.user_config.view_loc_groups.collect{|l| l.locations}.flatten
     #adding the option to view unscheduled shifts
     if current_department.department_config.unscheduled_shifts == true
-        shifts = Shift.active.in_locations(@visible_locations).on_day(day) #TODO: .active
+#      shifts = Shift.active.in_locations(@visible_locations).on_day(day) #TODO: .active
+      shifts = Shift.active.in_locations(@visible_locations).on_day_and_half_day_before(day) #TODO: .active
     else
-      shifts = Shift.active.in_locations(@visible_locations).on_day(day).scheduled
+      shifts = Shift.active.in_locations(@visible_locations).on_day_and_half_day_before(day).scheduled
     end
     shifts ||= []
     shifts = shifts.sort_by{|s| [s.location_id, s.start]}

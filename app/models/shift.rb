@@ -27,6 +27,23 @@ class Shift < ActiveRecord::Base
   named_scope :for_user, lambda {|usr| { :conditions => {:user_id => usr.id }}}
   named_scope :not_for_user, lambda {|usr| { :conditions => ["user_id != #{usr.id}"]}}
   named_scope :on_day, lambda {|day| { :conditions => ["#{:start.to_sql_column} >= #{day.beginning_of_day.utc.to_sql} and #{:start.to_sql_column} < #{day.end_of_day.utc.to_sql}"]}}
+
+#on_half_day_before
+#Starts after noon the previous day, before current day starts
+
+#don't work
+#Ends after previous day's dept_end_time+2h (so people signing out just after midnight don't show up on the next day)
+#{:end.to_sql_column} > #{day.beginning_of_day + current_department.department_config.schedule_end.minutes - 22.hours} and
+#Is not a shift that has been signed in forever (> max shift length)
+#{:end.to_sql_column - :start.to_sql_column} < #{(current_department.department_config.schedule_end.hours - current_department.department_config.schedule_start.hours)}
+  named_scope :on_day_and_half_day_before, lambda {|day| { :conditions => ["(
+#{:start.to_sql_column} >= #{(day.beginning_of_day.utc - 12.hours).to_sql} and
+#{:start.to_sql_column} < #{day.beginning_of_day.utc.to_sql} and
+#{:end.to_sql_column} >= #{day.beginning_of_day.utc.to_sql} and
+#{:end.to_sql_column} < #{day.end_of_day.utc.to_sql}) or (
+#{:start.to_sql_column} >= #{day.beginning_of_day.utc.to_sql} and #{:start.to_sql_column} < #{day.end_of_day.utc.to_sql})
+"]}}
+
   named_scope :on_days, lambda {|start_day, end_day| { :conditions => ["#{:start.to_sql_column} >= #{start_day.beginning_of_day.utc.to_sql} and #{:start.to_sql_column} < #{end_day.end_of_day.utc.to_sql}"]}}
   named_scope :between, lambda {|start, stop| { :conditions => ["#{:start.to_sql_column} >= #{start.utc.to_sql} and #{:start.to_sql_column} < #{stop.utc.to_sql}"]}}
   named_scope :overlaps, lambda {|start, stop| { :conditions => ["#{:end.to_sql_column} > #{start.utc.to_sql} and #{:start.to_sql_column} < #{stop.utc.to_sql}"]}}
@@ -186,7 +203,7 @@ class Shift < ActiveRecord::Base
       return out.collect{|t| "The shift for "+t.to_message_name+" conflicts. Use wipe to fix."}.join(",")
     end
   end
-  
+
 
   #Used for activating calendars, check/wipe conflicts -Mike
   def self.check_for_conflicts(shifts, wipe)
@@ -259,7 +276,7 @@ class Shift < ActiveRecord::Base
       return number_report_items/shift_time
     end
   end
-  
+
   #to enable the view of unscheduled shifts, a shift that lacks an end attribute is viewed as ending right now
   # else, the end attribute is read (referenced in shifts_helper)
   def end
@@ -376,18 +393,18 @@ class Shift < ActiveRecord::Base
   def time_string
     scheduled? ? "#{start.to_s(:am_pm)} - #{self.end.to_s(:am_pm)}" : "unscheduled"
   end
-  
+
   def task_time
     scheduled? ? "#{start.to_s(:am_pm)} - #{self.end.to_s(:am_pm)}" : "unscheduled (#{start.to_s(:am_pm)} - #{self.end.to_s(:am_pm)})"
-    
+
   end
 
   def sub_request
     SubRequest.find_by_shift_id(self.id)
   end
-  
-  
-  
+
+
+
 
   # ======================
   # = Validation helpers =
@@ -405,7 +422,7 @@ class Shift < ActiveRecord::Base
   end
 
   private
-  
+
   def restrictions
     unless self.power_signed_up
       errors.add(:user, "is required") and return if self.user.nil?
@@ -435,7 +452,7 @@ class Shift < ActiveRecord::Base
   def start_less_than_end
     errors.add(:start, "must be earlier than end time") if (self.end <= self.start)
   end
-  
+
   #TODO: Fix this to check timeslots by time_increment
   def shift_is_within_time_slot
     unless self.power_signed_up
@@ -558,4 +575,3 @@ class Shift < ActiveRecord::Base
     end
   end
 end
-
