@@ -9,9 +9,8 @@ module CalendarsHelper
     @dept_end_hour = current_department.department_config.schedule_end / 60
     @hours_per_day ||= (@dept_end_hour - @dept_start_hour)
 
-    if !shift.end
-      shift.end = Time.now
-    elsif shift.end <= shift.start + current_department.department_config.time_increment.minutes
+    shift.end ||= Time.now
+    if shift.end <= shift.start + current_department.department_config.time_increment.minutes
       shift.end = shift.start + current_department.department_config.time_increment.minutes
     end
 
@@ -116,9 +115,8 @@ module CalendarsHelper
 #much of this logic goes toward having three rows in the TTO - 'rejected' just means rejected from the current line, being placed instead on a lower line. Nothing should be permanently 'rejected' in this process.
     until shifts.empty?
       shift = shifts.shift
-      if !shift.end
-        shift.end = Time.now
-      elsif shift.end <= shift.start + current_department.department_config.time_increment.minutes
+      shift.end ||= Time.now
+      if shift.end <= shift.start + current_department.department_config.time_increment.minutes
         shift.end = shift.start + current_department.department_config.time_increment.minutes
       end
       @location_rows[shift.location][location_row] = [shift]
