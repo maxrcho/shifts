@@ -28,19 +28,17 @@ class Shift < ActiveRecord::Base
   named_scope :not_for_user, lambda {|usr| { :conditions => ["user_id != #{usr.id}"]}}
   named_scope :on_day, lambda {|day| { :conditions => ["#{:start.to_sql_column} >= #{day.beginning_of_day.utc.to_sql} and #{:start.to_sql_column} < #{day.end_of_day.utc.to_sql}"]}}
 
-#on_half_day_before
-#Starts after noon the previous day, before current day starts
 
-#don't work
-#Ends after previous day's dept_end_time+2h (so people signing out just after midnight don't show up on the next day)
-#{:end.to_sql_column} > #{day.beginning_of_day + current_department.department_config.schedule_end.minutes - 22.hours} and
-#Is not a shift that has been signed in forever (> max shift length)
-#{:end.to_sql_column - :start.to_sql_column} < #{(current_department.department_config.schedule_end.hours - current_department.department_config.schedule_start.hours)}
-  named_scope :on_day_and_half_day_before, lambda {|day| { :conditions => ["(
+#1 and 2: started on second half of yesterday
+#3: only shifts which went late (past dept_end) by two hours.  (when people stay signed into the TTO just past midnight shouldn't clutter up the next morning's schedule view) This value could even be in app_config, or somewhere more transparent?
+#4: don't show people who stay signed in for days from appearing every single day; just the day after.
+#everyting else: on_day like normal
+  named_scope :on_day_and_half_day_before, lambda {|day, day_dept_end| { :conditions => ["(
 #{:start.to_sql_column} >= #{(day.beginning_of_day.utc - 12.hours).to_sql} and
 #{:start.to_sql_column} < #{day.beginning_of_day.utc.to_sql} and
-#{:end.to_sql_column} >= #{day.beginning_of_day.utc.to_sql} and
-#{:end.to_sql_column} < #{day.end_of_day.utc.to_sql}) or (
+#{:end.to_sql_column} >= #{(day_dept_end - 22.hours).utc.to_sql} and
+#{:end.to_sql_column} < #{day.end_of_day.utc.to_sql})
+or (
 #{:start.to_sql_column} >= #{day.beginning_of_day.utc.to_sql} and #{:start.to_sql_column} < #{day.end_of_day.utc.to_sql})
 "]}}
 

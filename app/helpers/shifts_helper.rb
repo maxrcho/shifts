@@ -178,10 +178,12 @@ end
     #adding the option to view unscheduled shifts
     if current_department.department_config.unscheduled_shifts == true
 #      shifts = Shift.active.in_locations(@visible_locations).on_day(day) #TODO: .active
-      shifts = Shift.active.in_locations(@visible_locations).on_day_and_half_day_before(day) #TODO: .active
+      shifts = Shift.active.in_locations(@visible_locations).on_day_and_half_day_before(day, day.beginning_of_day + current_department.department_config.schedule_end.hours) #TODO: .active
     else
-      shifts = Shift.active.in_locations(@visible_locations).on_day_and_half_day_before(day).scheduled
+      shifts = Shift.active.in_locations(@visible_locations).on_day_and_half_day_before(day, day.beginning_of_day + current_department.department_config.schedule_end.hours).scheduled
     end
+
+
     shifts ||= []
     shifts = shifts.sort_by{|s| [s.location_id, s.start]}
 
