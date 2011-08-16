@@ -1,1 +1,17 @@
-<%= render :file => "layouts/dashboard.html.erb" %>
+<% content_for :head do %>
+
+  <%# put payform specific head info here %>
+  <% stylesheet 'shift', 'report' %>
+
+<% end %>
+
+<%= render :partial => "layouts/department_menu.html.erb" %>
+
+<% content_for :body do %>
+
+  <%= yield %>
+
+  <div class="clear"></div>
+<% end -%>
+
+<%= render :file => "layouts/application.html.erb" %>
