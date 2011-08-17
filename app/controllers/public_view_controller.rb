@@ -4,7 +4,7 @@ class PublicViewController < ApplicationController
   skip_before_filter CASClient::Frameworks::Rails::Filter
   helper :shifts
   helper :loc_groups
-  
+
   def index
     #@date = params[:date].to_date
     @loc_groups = LocGroup.find(:all, :conditions => ["#{:public} = ?", true])
@@ -16,7 +16,6 @@ class PublicViewController < ApplicationController
     @view_days = (Date.today..Date.today+7)
 
     @current_shifts = Shift.in_location(@location).signed_in(@location.department)
-    @upcoming_shifts = @location.shifts_between(Time.now, Time.now + 12.hours).delete_if{|shift| shift.submitted?}.sort_by{|shift| [shift.start]}.drop(@current_shifts.size).first(5)
+    @upcoming_shifts = @location.shifts_between(Time.now, Time.now + 12.hours).delete_if{|shift| shift.submitted?}.sort_by{|shift| [shift.start]}.delete_if{|shift| @current_shifts.include?(shift)}.first(5)
   end
 end
-
