@@ -1,0 +1,14 @@
+  <fieldset class="index" id="profile_photo_preview">
+    <legend>Profile Photo</legend>
+
+    <% if !mobile_device?%>
+      Full Photo<br />
+      <%= image_tag @user_profile.photo.url(:medium)%><br />
+    <% end %>
+    <br />
+    <% if @user_profile.photo? %>
+      Thumbnail<br />
+      <%= image_tag @user_profile.photo.url(:thumbnail)%><br />
+    <% end %>
+
+  </fieldset>

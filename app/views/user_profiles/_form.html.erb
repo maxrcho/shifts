@@ -1,39 +1,45 @@
 <% form_for @user_profile, :html => { :multipart => true} do |f| %>
   <%= f.error_messages %>
 
-<%= render :partial => 'user_info' %>
-  <p>
-    <% if @user_profile_entries %>
-      <% @user_profile_entries.each do |entry| %>
-        <% args = entry.prepare_form_helpers %>
-        <p>
-          <%= label "user_profile_entries[#{entry.id}]", "#{entry.field_name}" %><br/>
+<div id="left_stuff">
+  <fieldset class="index", id="user_profile_entries">
+  <legend>User Profile Entries</legend>
+    <%= render :partial => 'user_info' %>
 
-          <% if ["text_field", "select", "text_area"].include? entry.display_type %>
-            <%= send(entry.display_type, *args) %>
-          <% elsif entry.display_type == "picture_link" %>
-            <%= send("text_field", *args) %>
-          <% elsif ["radio_button"].include? entry.display_type %>
-            <% args.each do |options| %>
-              <%= send(entry.display_type, *options) %>
-              <%= label "user_profile_entries[#{entry.id}]", "#{options.third}" %>
+    <p>
+      <% if @user_profile_entries %>
+        <% @user_profile_entries.each do |entry| %>
+          <% args = entry.prepare_form_helpers %>
+          <p>
+            <%= label "user_profile_entries[#{entry.id}]", "#{entry.field_name}" %><br/>
+
+            <% if ["text_field", "select", "text_area"].include? entry.display_type %>
+              <%= send(entry.display_type, *args) %>
+            <% elsif entry.display_type == "picture_link" %>
+              <%= send("text_field", *args) %>
+            <% elsif ["radio_button"].include? entry.display_type %>
+              <% args.each do |options| %>
+                <%= send(entry.display_type, *options) %>
+                <%= label "user_profile_entries[#{entry.id}]", "#{options.third}" %>
+              <% end %>
+            <% elsif ["check_box"].include? entry.display_type %>
+              <% args.each do |options| %>
+                <%= send(entry.display_type, *options) %>
+                <%= label "user_profile_entries[#{entry.id}]", "#{options.second}" %>
             <% end %>
-          <% elsif ["check_box"].include? entry.display_type %>
-            <% args.each do |options| %>
-              <%= send(entry.display_type, *options) %>
-              <%= label "user_profile_entries[#{entry.id}]", "#{options.second}" %>
           <% end %>
+
         <% end %>
-
       <% end %>
-    <% end %>
-  </p>
-  <p>
-   Profile Photo (png and jpeg only)<br />
-   <%= f.file_field :photo %>
-  </p>
-
-  <p><%= f.submit "Update" %></p>
-
+    </p>
+    <p>
+     <%= f.file_field :photo %><br />
+     (png and jpeg only)
+    </p>
+    <p><%= f.submit "Update" %></p>
+  </fieldset>
+</div>
+<div id="right_stuff">
+  <%= render :partial => "profile_picture_preview" %>
+</div>
 <% end %>
-

@@ -1,16 +1,19 @@
 <% title "#{@user_profile.user.full_name_with_nick}'s Profile" %>
-<div class='profile'>
-	
-	<% if !mobile_device?%>
-	<%= image_tag @user_profile.photo.url(:medium)%>
-	<% elsif @user_profile.photo? %>
-	<%= image_tag @user_profile.photo.url(:thumbnail)%>
-	<% end %>
 
-  
+<div style="clear: both">
+<% if current_user.is_admin_of?(current_department) or current_user == @user_profile.user %>
+  <%= link_to 'Edit', edit_user_profile_path(@user_profile.user.login) %> | <% end %>
+  <%= link_to 'View All Profiles', user_profiles_path %>
+<br /><br />
+</div>
+
+<div id="left_stuff">
+  <fieldset class="index" id="user_profile_entries">
+  <legend>User Profile Entries</legend>
     <%= render :partial => 'user_profile_entries' %>
+  </fieldset>
+</div>
 
-<br />
-	<%= link_to 'Edit', edit_user_profile_path(@user_profile.user.login) if current_user.is_admin_of?(current_department) or current_user == @user_profile.user %> | 
-	<%= link_to 'Show All', user_profiles_path %> | 
+<div id="right_stuff">
+  <%= render :partial => "profile_picture_preview" %>
 </div>

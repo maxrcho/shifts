@@ -1,9 +1,12 @@
 <% title "#{@user_profile.user.proper_name}'s Profile" %>
 
+<div style="clear: both">
+  <%= link_to 'My Profile', user_profile_path(current_user.login) %> |
+  <%= link_to "View All Profiles", user_profiles_path %>
+<br /><br />
+</div>
+
 <%= render :partial => 'form' %>
 
-<p>
-
-  <%= link_to "View All", user_profiles_path %>
-</p>
-
+<div style="clear: both">
+</div>
