@@ -1,5 +1,5 @@
 <tr>
-	<td id="date"><%= day == @view_days.first ? "Today" : day.strftime("%A") %></td>
+	<td id="date"><%= day == @view_days.first ? "<b>Today</b>" : day.strftime("%A") %></td>
 	<% @day_blockset.each do |block| %>
 		<% block_time = block.change(:day => day.day, :month => day.month, :year => day.year) %>
 		<% if location.is_staffed_in_list?(shifts, block_time) %>

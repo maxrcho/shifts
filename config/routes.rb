@@ -1,8 +1,8 @@
 ActionController::Routing::Routes.draw do |map|
   map.resources :shifts_tasks
 
-  map.resources :tasks, :member => {:make_entry => :post}  
-  
+  map.resources :tasks, :member => {:make_entry => :post}
+
   map.resources :template_time_slots
 
   # map.resources :templates
@@ -67,7 +67,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :department_configs, :only => [:edit, :update]
 
   map.resources :stats,
-                :collection => {:for_user => [:post, :get], :for_location => [:post, :get], :index => [:post, :get]}
+                :member => {:for_user => [:post, :get], :for_location => [:post, :get], :index => [:post, :get]}
 
   map.resources :payforms,
                 :collection => {:index => [:post, :get], :prune => :delete, :go => :get, :search => [:post, :get]},
@@ -91,9 +91,9 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :requested_shifts
   map.resources :templates
-  
-  map.resources :public_view, :collection => {:for_location => [:post, :get]}
-  
+
+  map.resources :public_view, :member => {:for_location => [:post, :get]}
+
   map.resources :users, :collection => {:update_superusers => :post}, :member => {:toggle => [:get, :post]} do |user|
     user.resources :punch_clocks
   end
@@ -185,7 +185,7 @@ ActionController::Routing::Routes.draw do |map|
   # consider removing the them or commenting them out if you're using named routes and resources.
   map.connect ':controller/:action/:id'
   map.connect ':controller/:action/:id.:format'
-  
+
   map.connect '/reports/http://www.google.com', :controller => "reports", :action => "redirect_to_external_url"
   map.connect '/reports/http://weke.its.yale.edu/wiki/index.php?title=Special%3ASearch&search=', :controller => "reports", :action => "redirect_to_external_url"
 end
