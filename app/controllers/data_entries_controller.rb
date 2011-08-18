@@ -8,6 +8,13 @@ class DataEntriesController < ApplicationController
     @thickbox = true if params[:layout] == "false"
     layout_check
   end
+  
+  def new_multiple
+    @data_entry = DataEntry.new
+    @data_object = DataObject.find(params[:data_object_id])
+    @thickbox = true if params[:layout] == "false"
+    layout_check
+  end
 
   def create
     @data_entry = DataEntry.new({:data_object_id => params[:data_object_id]})

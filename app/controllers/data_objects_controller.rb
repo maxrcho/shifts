@@ -90,6 +90,7 @@ class DataObjectsController < ApplicationController
     redirect_to data_type_path(@data_type)
   end
 
+
 private
 
 # Currently not in use -ben

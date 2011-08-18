@@ -99,6 +99,8 @@ ActionController::Routing::Routes.draw do |map|
   end
   map.resources :reports, :except => [:new], :member => {:popup => :get} do |report|
     report.resources :report_items
+    # report.resources :unified_obj_update, :controller => "data_objects", :only => :unified_obj_update
+    report.connect 'unified_obj_update', :controller => "reports", :action => :unified_obj_update
   end
 
 #TODO Fix report items routing, this is temporary

@@ -102,7 +102,9 @@ class ReportsController < ApplicationController
     end
   end
 
-
+  def unified_obj_update
+    @report = params[:report_id] ? Report.find(params[:report_id]) : Report.find_by_shift_id(params[:shift_id])
+  end
 
 # Do we want this action? -ben
 #  def destroy

@@ -1,0 +1,1 @@
+<%= render :partial => 'data_entries/unified_obj_update', :collection => @report.data_objects.sort_by{|d| [d.data_type_id, d.name]} %>
