@@ -1,0 +1,4 @@
+    <%= stylesheet_link_tag 'reset', 'timeline', 'shift', 'public_view', 'application' %>
+
+<h1 id="page_title"><%=h yield(:title) %></h1>
+<%= render :partial => "location", :locals => {:location => @location} %>
