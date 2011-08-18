@@ -429,6 +429,16 @@ div#left_stuff {
  width: 47.5%;
 }
 
+div#public_right_stuff {
+ float:right;
+ width: 40%;
+}
+div#public_left_stuff {
+ float:left;
+ width: 55%;
+}
+
+
 div#left_stuff textarea {
  width: 90%;
 }
